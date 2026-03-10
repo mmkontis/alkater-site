@@ -1,134 +1,70 @@
-"use client";
-
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
-const STRIPES = Array.from({ length: 12 });
-
-export default function Home() {
-  const [dots, setDots] = useState(".");
-
-  useEffect(() => {
-    const id = setInterval(
-      () => setDots((d) => (d.length >= 3 ? "." : d + ".")),
-      600
-    );
-    return () => clearInterval(id);
-  }, []);
-
+export default function UnderConstruction() {
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#F5F3EF]">
-      {/* ── Diagonal warning stripes top bar ── */}
-      <div className="absolute inset-x-0 top-0 h-4 overflow-hidden">
-        <div className="flex h-full w-[200%]">
-          {STRIPES.map((_, i) => (
-            <div
-              key={i}
-              className="h-full flex-1"
-              style={{
-                background:
-                  i % 2 === 0 ? "#1B7A7A" : "#8B2020",
-              }}
-            />
-          ))}
-        </div>
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#111111] selection:bg-[#E63B2E] selection:text-white font-[var(--font-space-grotesk)]">
+
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover object-top sm:hidden"
+      >
+        <source src="/underconstruction-video-loop-mobile.mp4" type="video/mp4" />
+      </video>
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover hidden sm:block"
+      >
+        <source src="/underconstruction-video-loop.mp4" type="video/mp4" />
+      </video>
+
+      {/* <div className="absolute inset-0 bg-black/70" /> */}
+
+      {/* Noise Overlay */}
+      <div className="pointer-events-none fixed inset-0 z-[100] opacity-5 mix-blend-overlay">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
+          <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+        </svg>
       </div>
 
-      {/* ── Diagonal warning stripes bottom bar ── */}
-      <div className="absolute inset-x-0 bottom-0 h-4 overflow-hidden">
-        <div className="flex h-full w-[200%]">
-          {STRIPES.map((_, i) => (
-            <div
-              key={i}
-              className="h-full flex-1"
-              style={{
-                background:
-                  i % 2 === 0 ? "#8B2020" : "#1B7A7A",
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      {/* Brutalist Background Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(#F5F3EE_1px,transparent_1px),linear-gradient(90deg,#F5F3EE_1px,transparent_1px)] bg-[size:40px_40px] opacity-[0.03]"></div>
 
-      {/* ── Scaffold side accents ── */}
-      <div
-        className="absolute left-0 top-4 bottom-4 w-1.5 opacity-30"
-        style={{ background: "repeating-linear-gradient(to bottom, #1B7A7A 0px, #1B7A7A 20px, transparent 20px, transparent 40px)" }}
-      />
-      <div
-        className="absolute right-0 top-4 bottom-4 w-1.5 opacity-30"
-        style={{ background: "repeating-linear-gradient(to bottom, #8B2020 0px, #8B2020 20px, transparent 20px, transparent 40px)" }}
-      />
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center px-6 text-center max-w-4xl mx-auto w-full">
+        {/* <div className="font-['Space_Grotesk'] font-bold text-4xl md:text-5xl tracking-tighter mb-16 text-[#F5F3EE]">
+          ΑΛΚΑΤΕΡ<span className="text-[#E63B2E]">.</span>
+        </div> */}
 
-      {/* ── Card ── */}
-      <div className="relative mx-6 flex max-w-lg flex-col items-center gap-8 rounded-2xl border border-zinc-200 bg-white px-10 py-14 shadow-2xl shadow-zinc-300/60">
+        {/* <h1 className="mb-6 font-['Space_Grotesk'] font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter text-[#F5F3EE] uppercase">
+          ΣΥΝΤΟΜΑ<br/>ΚΟΝΤΑ ΣΑΣ.
+        </h1> */}
 
-        {/* Hard-hat icon */}
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#1B7A7A]/10 text-5xl select-none">
-          🏗️
-        </div>
+        {/* <div className="flex-1 bg-black/50 rounded-xl p-4 border border-white/10 font-['Space_Mono'] text-[#E8E4DD] text-sm md:text-base leading-relaxed relative overflow-hidden max-w-lg mx-auto w-full text-left mb-12">
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100%_4px] pointer-events-none"></div>
+            <span className="text-[#E63B2E] mr-2">{"//"}</span> Ο ιστότοπος της ΑΛΚΑΤΕΡ βρίσκεται υπό κατασκευή.<br/><br/>
+            <span className="text-[#E63B2E] mr-2">{">"}</span> Αναβαθμίζουμε τις ψηφιακές μας υποδομές. Θα είμαστε σύντομα διαθέσιμοι.
+            <span className="animate-pulse text-[#E63B2E] ml-1">_</span>
+        </div> */}
 
-        {/* Logo */}
-        <Image
-          src="/Photos/Logo/αλκατερ-logo.jpg"
-          alt="Alkater logo"
-          width={240}
-          height={80}
-          className="object-contain"
-          priority
-        />
-
-        {/* Divider */}
-        <div className="flex w-full items-center gap-3">
-          <div className="h-px flex-1 bg-zinc-200" />
-          <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
-            Υπό Κατασκευή
-          </span>
-          <div className="h-px flex-1 bg-zinc-200" />
-        </div>
-
-        {/* Headline */}
-        <h1 className="text-center text-3xl font-bold leading-tight text-zinc-800">
-          Ετοιμαζόμαστε<br />
-          <span style={{ color: "#1B7A7A" }}>για εσάς</span>
-          <span style={{ color: "#8B2020" }}>{dots}</span>
-        </h1>
-
-        {/* Sub-text */}
-        <p className="text-center text-base leading-relaxed text-zinc-500">
-          Ο ιστότοπος της{" "}
-          <span className="font-semibold text-zinc-700">Alkater Τεχνική Εταιρεία</span>{" "}
-          βρίσκεται υπό κατασκευή. Σύντομα θα είμαστε σε πλήρη λειτουργία!
-        </p>
-
-        {/* Progress bar */}
-        <div className="w-full">
-          <div className="mb-1.5 flex justify-between text-xs text-zinc-400">
-            <span>Πρόοδος</span>
-            <span style={{ color: "#1B7A7A" }}>75%</span>
-          </div>
-          <div className="h-2.5 w-full overflow-hidden rounded-full bg-zinc-100">
-            <div
-              className="h-full rounded-full transition-all"
-              style={{
-                width: "75%",
-                background: "linear-gradient(90deg, #1B7A7A, #8B2020)",
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Contact */}
-        <p className="text-center text-sm text-zinc-400">
-          Επικοινωνήστε μαζί μας:{" "}
+        <div className="mt-8 flex flex-col items-center gap-4 text-[#F5F3EE]/60 font-[var(--font-space-mono)]">
+          <p className="text-sm uppercase tracking-widest">Επικοινωνια</p>
           <a
-            href="mailto:info@alkater.gr"
-            className="font-medium underline underline-offset-2 transition-colors hover:text-[#1B7A7A]"
-            style={{ color: "#8B2020" }}
+            href="mailto:alkater2024@outlook.com"
+            className="group relative inline-flex overflow-hidden rounded-full bg-[#E63B2E] px-8 py-4 text-sm font-[var(--font-space-mono)] uppercase tracking-widest text-white hover:scale-[1.03] transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
           >
-            info@alkater.gr
+            <span className="relative z-10">alkater2024@outlook.com</span>
+            <span className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0 mix-blend-difference" />
           </a>
-        </p>
+        </div>
       </div>
     </div>
   );

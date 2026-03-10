@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  * { margin: 0; padding: 0; }
+  html, body, #map { width: 100%; height: 100%; }
+  .leaflet-control-attribution { display: none !important; }
+  .leaflet-control-zoom { border: none !important; }
+  .leaflet-control-zoom a {
+    background: rgba(0,0,0,0.7) !important;
+    color: rgba(255,255,255,0.7) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    backdrop-filter: blur(8px);
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 16px !important;
+  }
+  .leaflet-control-zoom a:hover {
+    color: #fff !important;
+    border-color: rgba(255,255,255,0.3) !important;
+  }
+  .leaflet-control-zoom-in { border-radius: 8px 8px 0 0 !important; }
+  .leaflet-control-zoom-out { border-radius: 0 0 8px 8px !important; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+var TILES = {
+  dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  dark_nolabels: 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+  voyager: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+  positron: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+};
+
+var map = L.map('map', {
+  center: [39.5036, 20.2653],
+  zoom: 15,
+  zoomControl: true,
+  attributionControl: false
+});
+
+var currentLayer = L.tileLayer(TILES.dark, {
+  maxZoom: 19,
+  subdomains: 'abcd'
+}).addTo(map);
+
+var markerIcon = L.divIcon({
+  className: '',
+  html: '<div style="width:20px;height:20px;background:#E63B2E;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.4);"></div>',
+  iconSize: [20, 20],
+  iconAnchor: [10, 10]
+});
+
+L.marker([39.5036, 20.2653], { icon: markerIcon }).addTo(map);
+
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'setTheme') {
+    var tileUrl = TILES[e.data.tiles] || TILES.dark;
+    map.removeLayer(currentLayer);
+    currentLayer = L.tileLayer(tileUrl, {
+      maxZoom: 19,
+      subdomains: 'abcd'
+    }).addTo(map);
+    document.getElementById('map').style.filter = e.data.filter || 'none';
+  }
+});
+</script>
+</body>
+</html>

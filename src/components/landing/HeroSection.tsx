@@ -1,0 +1,240 @@
+"use client";
+
+import { useRef, useEffect, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowDown, Palette, Sun, Moon } from "lucide-react";
+import { useTheme } from "./ThemeContext";
+
+const logoColorModes = [
+  { id: "white", blue: "#ffffff", red: "#ffffff", gray: "#ffffff", swatch: ["#ffffff"] },
+  { id: "fresh", blue: "#1B6B9E", red: "#E63B2E", gray: "#cccccc", swatch: ["#1B6B9E", "#E63B2E"] },
+  { id: "original", blue: "#063D64", red: "#A21B21", gray: "#918F90", swatch: ["#063D64", "#A21B21"] },
+  { id: "proposal", blue: "#111111", red: "#E63B2E", gray: "#918F90", swatch: ["#111111", "#E63B2E"] },
+] as const;
+
+function AlkaterLogo({ blue, red, gray, className }: { blue: string; red: string; gray: string; className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 425.197 226.772" className={className}>
+      <g fill={gray}>
+        <path d="M 99.054688 144.394531 L 94.449219 144.394531 L 94.449219 141.734375 L 106.625 141.734375 L 106.625 144.394531 L 101.996094 144.394531 L 101.996094 156.132812 L 99.054688 156.132812 Z" />
+        <path d="M 111.835938 141.734375 L 121.523438 141.734375 L 121.523438 144.394531 L 114.78125 144.394531 L 114.78125 147.320312 L 119.734375 147.320312 L 119.734375 149.828125 L 114.78125 149.828125 L 114.78125 153.472656 L 121.785156 153.472656 L 121.785156 156.132812 L 111.835938 156.132812 Z" />
+        <path d="M 135.699219 156.132812 L 132.648438 151.355469 L 129.59375 156.132812 L 126.234375 156.132812 L 131.011719 148.804688 L 126.515625 141.734375 L 129.875 141.734375 L 132.648438 146.273438 L 135.394531 141.734375 L 138.734375 141.734375 L 134.304688 148.804688 L 139.039062 156.132812 Z" />
+        <path d="M 156.535156 141.734375 L 156.535156 156.394531 L 155.554688 156.394531 L 147.21875 147.496094 L 147.21875 156.132812 L 144.273438 156.132812 L 144.273438 141.472656 L 145.230469 141.472656 L 153.589844 150.328125 L 153.589844 141.734375 Z" />
+        <path d="M 163.097656 141.734375 L 166.042969 141.734375 L 166.042969 156.132812 L 163.097656 156.132812 Z" />
+        <path d="M 181.730469 156.132812 L 175.554688 148.628906 L 175.554688 156.132812 L 172.609375 156.132812 L 172.609375 141.734375 L 175.554688 141.734375 L 175.554688 148.410156 L 181.050781 141.734375 L 184.566406 141.734375 L 179.046875 148.519531 L 185.285156 156.132812 Z" />
+        <path d="M 190.496094 141.734375 L 193.441406 141.734375 L 193.441406 147.253906 L 199.8125 147.253906 L 199.8125 141.734375 L 202.757812 141.734375 L 202.757812 156.132812 L 199.8125 156.132812 L 199.8125 149.914062 L 193.441406 149.914062 L 193.441406 156.132812 L 190.496094 156.132812 Z" />
+        <path d="M 218.703125 141.734375 L 228.390625 141.734375 L 228.390625 144.394531 L 221.648438 144.394531 L 221.648438 147.320312 L 226.601562 147.320312 L 226.601562 149.828125 L 221.648438 149.828125 L 221.648438 153.472656 L 228.648438 153.472656 L 228.648438 156.132812 L 218.703125 156.132812 Z" />
+        <path d="M 237.722656 144.394531 L 233.121094 144.394531 L 233.121094 141.734375 L 245.292969 141.734375 L 245.292969 144.394531 L 240.671875 144.394531 L 240.671875 156.132812 L 237.722656 156.132812 Z" />
+        <path d="M 254.414062 146.96875 L 252.492188 151.835938 L 256.332031 151.835938 Z M 257.355469 154.257812 L 251.464844 154.257812 L 250.660156 156.132812 L 247.496094 156.132812 L 253.929688 141.472656 L 254.914062 141.472656 L 261.328125 156.132812 L 258.164062 156.132812 Z" />
+        <path d="M 266.5625 141.734375 L 269.507812 141.734375 L 269.507812 156.132812 L 266.5625 156.132812 Z" />
+        <path d="M 281.484375 148.476562 C 282.855469 148.476562 283.664062 147.625 283.664062 146.382812 C 283.664062 145.160156 282.8125 144.332031 281.484375 144.332031 L 279.019531 144.332031 L 279.019531 148.476562 Z M 276.074219 141.734375 L 281.484375 141.734375 C 284.496094 141.734375 286.675781 143.609375 286.675781 146.382812 C 286.675781 149.132812 284.496094 151.050781 281.484375 151.050781 L 279.019531 151.050781 L 279.019531 156.132812 L 276.074219 156.132812 Z" />
+        <path d="M 292.304688 141.734375 L 301.988281 141.734375 L 301.988281 144.394531 L 295.246094 144.394531 L 295.246094 147.320312 L 300.199219 147.320312 L 300.199219 149.828125 L 295.246094 149.828125 L 295.246094 153.472656 L 302.25 153.472656 L 302.25 156.132812 L 292.304688 156.132812 Z" />
+        <path d="M 308.074219 141.734375 L 311.019531 141.734375 L 311.019531 156.132812 L 308.074219 156.132812 Z" />
+        <path d="M 323.125 146.96875 L 321.207031 151.835938 L 325.046875 151.835938 Z M 326.070312 154.257812 L 320.179688 154.257812 L 319.375 156.132812 L 316.210938 156.132812 L 322.644531 141.472656 L 323.628906 141.472656 L 330.042969 156.132812 L 326.878906 156.132812 Z" />
+      </g>
+      <g fill={blue}>
+        <path d="M 91.402344 83.144531 L 84.304688 101.132812 L 98.5 101.132812 Z M 102.292969 110.082031 L 80.515625 110.082031 L 77.53125 117.019531 L 65.839844 117.019531 L 89.628906 62.824219 L 93.257812 62.824219 L 116.96875 117.019531 L 105.277344 117.019531 Z" />
+        <path d="M 153.367188 117.019531 L 139.496094 84.679688 L 125.625 117.019531 L 113.929688 117.019531 L 137.71875 62.824219 L 141.347656 62.824219 L 165.0625 117.019531 Z" />
+        <path d="M 177.371094 99.304688 L 182.457031 94.089844 L 189.585938 101.519531 L 204.558594 101.519531 L 189.949219 86.601562 L 213.554688 62.820312 L 198.753906 62.820312 L 177.304688 84.105469 L 177.304688 62.820312 L 166.996094 62.820312 L 166.996094 116.53125 C 166.996094 116.667969 166.996094 116.773438 166.980469 117.027344 L 177.132812 107.035156 Z" />
+      </g>
+      <g fill={red}>
+        <path d="M 250.847656 82.621094 L 233.828125 82.621094 L 233.828125 72.78125 L 278.832031 72.78125 L 278.832031 82.621094 L 261.734375 82.621094 L 261.734375 126.007812 L 250.847656 126.007812 Z" />
+        <path d="M 278.832031 72.78125 L 314.640625 72.78125 L 314.640625 82.621094 L 289.71875 82.621094 L 289.71875 93.425781 L 308.027344 93.425781 L 308.027344 102.703125 L 289.71875 102.703125 L 289.71875 116.171875 L 315.609375 116.171875 L 315.609375 126.007812 L 278.832031 126.007812 Z" />
+        <path d="M 339.152344 97.703125 C 344.234375 97.703125 347.21875 94.554688 347.21875 89.957031 C 347.21875 85.441406 344.074219 82.378906 339.152344 82.378906 L 330.042969 82.378906 L 330.042969 97.703125 Z M 319.152344 72.78125 L 339.152344 72.78125 C 350.285156 72.78125 358.347656 79.714844 358.347656 89.957031 C 358.347656 100.121094 350.285156 107.21875 339.152344 107.21875 L 330.042969 107.21875 L 330.042969 126.011719 L 319.152344 126.011719 Z" />
+        <path d="M 204.558594 101.519531 L 189.585938 101.519531 L 166.964844 124.171875 L 167.011719 125.992188 L 179.957031 125.835938 L 197.09375 108.722656 Z" />
+        <path d="M 228.210938 62.832031 L 200.941406 90.304688 L 208.066406 97.734375 L 218.875 87.097656 L 218.875 107.1875 L 208.164062 107.1875 L 198.308594 117.027344 L 218.875 117.027344 L 218.875 126.007812 L 229.183594 126.007812 L 229.183594 62.820312 Z" />
+      </g>
+    </svg>
+  );
+}
+
+export function HeroSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [logoMode, setLogoMode] = useState(0);
+  const [showPicker, setShowPicker] = useState(false);
+  const { mode, toggleMode, setColorScheme } = useTheme();
+
+  const currentColors = logoColorModes[logoMode];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+
+  return (
+    <section
+      ref={containerRef}
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']"
+      style={{ backgroundColor: "var(--bg-primary)" }}
+    >
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+      `}} />
+
+      {/* Noise Overlay */}
+      <div className="pointer-events-none fixed inset-0 z-50 opacity-5 mix-blend-overlay">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
+          <filter id="noiseFilterHero">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#noiseFilterHero)" />
+        </svg>
+      </div>
+
+      <motion.div
+        style={mounted ? { scale, y, opacity } : {}}
+        className="absolute inset-0 z-0 h-full w-full"
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/Videos/construction/01_cement_truck_trench_ext_v1.mp4" type="video/mp4" />
+        </video>
+
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0" style={{ backgroundColor: "var(--overlay-bg)" }} />
+      </motion.div>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center px-6 text-center max-w-5xl mx-auto w-full pt-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-8 w-full max-w-md"
+        >
+          <AlkaterLogo
+            blue={currentColors.blue}
+            red={currentColors.red}
+            gray={currentColors.gray}
+            className="w-full transition-colors duration-500"
+          />
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mb-6 font-['Space_Grotesk'] font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tighter uppercase leading-[0.9]"
+          style={{ color: "var(--text-primary)" }}
+        >
+          ΧΤΙΖΟΥΜΕ <br />
+          <span className="text-transparent bg-clip-text" style={{ backgroundImage: `linear-gradient(to right, var(--accent), color-mix(in srgb, var(--accent), #ff9999 40%))` }}>ΤΟ ΑΥΡΙΟ.</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="font-['Space_Mono'] max-w-2xl mt-6 text-sm md:text-base leading-relaxed"
+          style={{ color: "var(--text-secondary)" }}
+        >
+          Τεχνική αρτιότητα, εμπειρία δεκαετιών και δέσμευση στην ποιότητα <br className="hidden md:block"/>
+          — αυτές είναι οι αξίες που οικοδομούν κάθε μας έργο.
+        </motion.p>
+      </div>
+
+      {/* Floating Theme & Logo Color Switcher */}
+      <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-2">
+        {showPicker && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="flex flex-col gap-2 p-3 rounded-2xl backdrop-blur-xl border transition-colors duration-300"
+            style={{ backgroundColor: "var(--logo-bg)", borderColor: "var(--border-color)" }}
+          >
+            {/* Dark/Light mode toggle */}
+            <div className="flex items-center gap-2 pb-2 mb-2" style={{ borderBottom: "1px solid var(--border-color)" }}>
+              <button
+                onClick={() => toggleMode()}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-['Space_Mono'] uppercase tracking-widest transition-all duration-200 hover:opacity-80"
+                style={{
+                  backgroundColor: mode === "dark" ? "var(--accent)" : "var(--accent)",
+                  color: "#fff"
+                }}
+              >
+                {mode === "dark" ? (
+                  <>
+                    <Sun className="w-3.5 h-3.5" /> Light
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-3.5 h-3.5" /> Dark
+                  </>
+                )}
+              </button>
+            </div>
+            {/* Logo color swatches */}
+            <div className="flex gap-2 justify-center">
+              {logoColorModes.map((m, i) => (
+                <button
+                  key={m.id}
+                  onClick={() => {
+                    setLogoMode(i);
+                    // "white" mode = default page, no color changes
+                    if (m.id === "white") {
+                      setColorScheme({ accent: "#E63B2E", tint: "transparent" });
+                    } else {
+                      setColorScheme({ accent: m.red, tint: m.blue });
+                    }
+                  }}
+                  className={`w-7 h-7 rounded-full border-2 transition-all duration-200 overflow-hidden flex ${
+                    logoMode === i ? "scale-110" : "border-white/20 hover:border-white/40"
+                  }`}
+                  style={logoMode === i ? { borderColor: "var(--accent)" } : {}}
+                >
+                  {m.swatch.map((color, j) => (
+                    <span key={j} className="flex-1 h-full" style={{ backgroundColor: color }} />
+                  ))}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+        <button
+          onClick={() => setShowPicker(!showPicker)}
+          className="w-12 h-12 rounded-full backdrop-blur-xl flex items-center justify-center transition-all duration-200 hover:opacity-80 border"
+          style={{
+            backgroundColor: "var(--logo-bg)",
+            borderColor: showPicker ? "var(--accent)" : "var(--border-color)"
+          }}
+        >
+          <Palette className="w-5 h-5" style={{ color: "var(--text-muted)" }} />
+        </button>
+      </div>
+
+      {/* Scroll Down Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-[55]"
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          className="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm border"
+          style={{ borderColor: "var(--border-hover)", backgroundColor: "var(--logo-bg)" }}
+        >
+          <ArrowDown className="text-[#E63B2E] w-5 h-5" />
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+}
