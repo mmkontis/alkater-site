@@ -31,6 +31,13 @@ const PROJECTS = [
   { title: "Οδοποιία Αγροτικών Δρόμων Θεσπρωτίας", category: "Αγροτικά Έργα", description: "Βελτίωση και ασφαλτόστρωση αγροτικών δρόμων συνολικού μήκους 20km στο νομό Θεσπρωτίας.", image_url: "/Photos/project-12.jpg" },
 ];
 
+// ── Hero slides ──
+const HERO_SLIDES = [
+  { heading: "ΧΤΙΖΟΥΜΕ", heading_accent: "ΤΟ ΑΥΡΙΟ.", subtitle: "Τεχνική αρτιότητα, εμπειρία δεκαετιών και δέσμευση στην ποιότητα — αυτές είναι οι αξίες που οικοδομούν κάθε μας έργο.", video_url: "/Videos/construction/01_cement_truck_trench_ext_v1.mp4", sort_order: 0 },
+  { heading: "ΠΟΙΟΤΗΤΑ", heading_accent: "ΣΕ ΚΑΘΕ ΕΡΓΟ.", subtitle: "Από μικρές επισκευές μέχρι μεγάλα έργα υποδομής, η ποιότητα είναι πάντα η προτεραιότητά μας.", video_url: "/Videos/construction/13_downloaded_v2.mp4", sort_order: 1 },
+  { heading: "ΕΜΠΕΙΡΙΑ", heading_accent: "ΔΕΚΑΕΤΙΩΝ.", subtitle: "Με πάνω από δεκαετίες εμπειρίας στον κατασκευαστικό κλάδο, φέρνουμε αξιοπιστία σε κάθε βήμα.", video_url: "/Videos/construction/08_road_line_painting_initial_v2.mp4", sort_order: 2 },
+];
+
 // ── Blog posts ──
 const BLOG_POSTS = [
   {
@@ -144,6 +151,19 @@ async function main() {
     sql += `  '${escapeSql(p.description)}',\n`;
     sql += `  '${escapeSql(p.category)}',\n`;
     sql += `  '${escapeSql(p.image_url)}',\n`;
+    sql += `  true\n`;
+    sql += `) ON CONFLICT DO NOTHING;\n\n`;
+  }
+
+  // Hero slides
+  sql += `-- ═══════════════════════════════════════\n-- SEED HERO SLIDES\n-- ═══════════════════════════════════════\n\n`;
+  for (const s of HERO_SLIDES) {
+    sql += `INSERT INTO public.hero_slides (heading, heading_accent, subtitle, video_url, sort_order, published) VALUES (\n`;
+    sql += `  '${escapeSql(s.heading)}',\n`;
+    sql += `  '${escapeSql(s.heading_accent)}',\n`;
+    sql += `  '${escapeSql(s.subtitle)}',\n`;
+    sql += `  '${escapeSql(s.video_url)}',\n`;
+    sql += `  ${s.sort_order},\n`;
     sql += `  true\n`;
     sql += `) ON CONFLICT DO NOTHING;\n\n`;
   }

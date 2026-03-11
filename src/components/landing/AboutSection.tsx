@@ -50,8 +50,8 @@ export function AboutSection() {
             className="order-2 lg:order-1"
           >
             <div className="flex items-center gap-4 mb-6">
-              <span className="w-12 h-[2px] bg-[#E63B2E]"></span>
-              <span className="font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E63B2E]">Η Εταιρεια</span>
+              <span className="w-12 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
+              <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>Η Εταιρεια</span>
             </div>
 
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase mb-8 leading-[1.1]" style={{ color: "var(--text-primary)" }}>

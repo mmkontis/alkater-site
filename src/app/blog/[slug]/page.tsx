@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 export async function generateMetadata({
   params,
@@ -83,8 +84,8 @@ export default async function BlogPostPage({
 
         <hr className="my-8 border-zinc-200" />
 
-        <div className="prose prose-zinc max-w-none whitespace-pre-wrap text-zinc-700 leading-relaxed">
-          {post.content}
+        <div className="max-w-none text-zinc-700 leading-relaxed">
+          <MarkdownRenderer content={post.content} />
         </div>
       </article>
     </div>

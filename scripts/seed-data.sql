@@ -3,102 +3,115 @@
 -- Run after the schema migration
 
 -- ═══════════════════════════════════════
--- SEED PROJECTS
+-- SEED PROJECTS (full schema)
 -- ═══════════════════════════════════════
 
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Ασφαλτόστρωση Εθνικής Οδού Ηγουμενίτσας - Ιωαννίνων',
-  'Ολοκληρωμένη ασφαλτόστρωση τμήματος 12km της Εθνικής Οδού με χρήση υψηλής ποιότητας ασφαλτικού μείγματος και σύγχρονο εξοπλισμό.',
+INSERT INTO public.projects (slug, title, location, category, description, image_url, gallery, year, client, scope, duration, sort_order, published) VALUES (
+  'asfaltostrosi-ethnikis-odou',
+  'Ασφαλτόστρωση Εθνικής Οδού',
+  'Ηγουμενίτσα - Ιωάννινα',
   'Οδοποιία',
-  '/Photos/project-1.jpg',
-  true
-) ON CONFLICT DO NOTHING;
+  'Ολοκληρωμένο έργο ασφαλτόστρωσης τμήματος της εθνικής οδού Ηγουμενίτσας – Ιωαννίνων. Το έργο περιλάμβανε αποξήλωση παλαιού οδοστρώματος, κατασκευή νέων στρώσεων βάσης και επικάλυψη με ασφαλτοσκυρόδεμα υψηλών προδιαγραφών.',
+  '/HighRes/image-1772752810544.png',
+  ARRAY['/HighRes/image-1772752810544.png', '/HighRes/image-1772752818829.png', '/HighRes/image-1772752827339.png', '/HighRes/image-1772752230967.png'],
+  '2025', 'Περιφέρεια Ηπείρου',
+  ARRAY['Αποξήλωση παλαιού οδοστρώματος', 'Κατασκευή στρώσεων βάσης & υπόβασης', 'Ασφαλτόστρωση με ασφαλτοσκυρόδεμα', 'Οριζόντια & κατακόρυφη σήμανση'],
+  '4 μήνες', 0, true
+) ON CONFLICT (slug) DO NOTHING;
 
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Κατασκευή Δημοτικού Οδικού Δικτύου Φιλιατών',
-  'Κατασκευή νέου δημοτικού οδικού δικτύου μήκους 8km στην περιοχή Φιλιατών, συμπεριλαμβανομένων πεζοδρομίων και φωτισμού.',
-  'Δημόσια Έργα',
-  '/Photos/project-2.jpg',
-  true
-) ON CONFLICT DO NOTHING;
+INSERT INTO public.projects (slug, title, location, category, description, image_url, gallery, year, client, scope, duration, sort_order, published) VALUES (
+  'diagrammisi-limaniou',
+  'Διαγράμμιση Χώρου Στάθμευσης',
+  'Λιμάνι Ηγουμενίτσας',
+  'Διαγραμμίσεις',
+  'Εκτέλεση εργασιών διαγράμμισης στον χώρο στάθμευσης του λιμανιού Ηγουμενίτσας. Χρήση πιστοποιημένων θερμοπλαστικών υλικών υψηλής αντοχής και ανακλαστικότητας.',
+  '/HighRes/image-1772753675852.jpg',
+  ARRAY['/HighRes/image-1772753675852.jpg', '/HighRes/image-1772753660495.png', '/HighRes/image-1772753104366.png', '/HighRes/image-1772753163950.png'],
+  '2025', 'ΟΛΗΓ Α.Ε.',
+  ARRAY['Διαγράμμιση θέσεων στάθμευσης', 'Σήμανση διαδρόμων κυκλοφορίας', 'Τοποθέτηση βελών κατεύθυνσης', 'Αντιολισθηρή σήμανση πεζοδρομίων'],
+  '2 εβδομάδες', 1, true
+) ON CONFLICT (slug) DO NOTHING;
 
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Συντήρηση Οδοστρώματος Εθνικής Οδού',
-  'Εργασίες συντήρησης και αποκατάστασης φθορών σε τμήμα εθνικής οδού, με αντικατάσταση ασφαλτικού τάπητα.',
-  'Συντήρηση',
-  '/Photos/project-3.jpg',
-  true
-) ON CONFLICT DO NOTHING;
-
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Χωματουργικά Έργα Βιομηχανικής Ζώνης',
-  'Εκτεταμένες χωματουργικές εργασίες για τη διαμόρφωση βιομηχανικής ζώνης, εκσκαφές και επιχώσεις.',
+INSERT INTO public.projects (slug, title, location, category, description, image_url, gallery, year, client, scope, duration, sort_order, published) VALUES (
+  'erga-ypodomis-ochetoi',
+  'Έργα Υποδομής - Οχετοί',
+  'Δήμος Σουλίου',
   'Χωματουργικά',
-  '/Photos/project-4.jpg',
-  true
-) ON CONFLICT DO NOTHING;
+  'Κατασκευή οχετών απορροής ομβρίων υδάτων σε αγροτικό οδικό δίκτυο. Χωματουργικές εργασίες εκσκαφής, τοποθέτηση σωληνωτών οχετών, κατασκευή πτερυγοτοίχων και αποκατάσταση περιβάλλοντος χώρου.',
+  '/HighRes/image-1772752202824.png',
+  ARRAY['/HighRes/image-1772752202824.png', '/HighRes/image-1772752030696.png', '/HighRes/image-1772752212833.png'],
+  '2024', 'Δήμος Σουλίου',
+  ARRAY['Εκσκαφές θεμελίωσης', 'Τοποθέτηση σωληνωτών οχετών', 'Κατασκευή πτερυγοτοίχων', 'Επιχωματώσεις & αποκατάσταση'],
+  '3 μήνες', 2, true
+) ON CONFLICT (slug) DO NOTHING;
 
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Κατασκευή Δικτύου Ύδρευσης Παραμυθιάς',
-  'Κατασκευή νέου δικτύου ύδρευσης σε αγροτική περιοχή με εγκατάσταση σωληνώσεων και αντλιοστασίων.',
-  'Υποδομές',
-  '/Photos/project-5.jpg',
-  true
-) ON CONFLICT DO NOTHING;
-
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Ανακατασκευή Πλατείας Κέντρου Ηγουμενίτσας',
-  'Πλήρης ανακατασκευή κεντρικής πλατείας με νέα πλακόστρωση, αστικό εξοπλισμό και χώρους πρασίνου.',
-  'Αστικά Έργα',
-  '/Photos/project-6.jpg',
-  true
-) ON CONFLICT DO NOTHING;
-
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Διάνοιξη Δασικού Οδικού Δικτύου',
-  'Διάνοιξη και κατασκευή δασικού οδικού δικτύου μήκους 15km για την πρόσβαση σε ορεινές περιοχές.',
+INSERT INTO public.projects (slug, title, location, category, description, image_url, gallery, year, client, scope, duration, sort_order, published) VALUES (
+  'anakataskevi-odikou-diktyou',
+  'Ανακατασκευή Οδικού Δικτύου',
+  'Πάργα',
   'Οδοποιία',
-  '/Photos/project-7.jpg',
+  'Πλήρης ανακατασκευή εσωτερικού οδικού δικτύου στην πόλη της Πάργας. Αντικατάσταση φθαρμένου οδοστρώματος, βελτίωση αποχέτευσης ομβρίων, κατασκευή πεζοδρομίων και τελική ασφαλτόστρωση.',
+  '/HighRes/image-1772753640619.jpg',
+  ARRAY['/HighRes/image-1772753640619.jpg', '/HighRes/image-1772752810544.png', '/HighRes/image-1772752827339.png'],
+  '2024', 'Δήμος Πάργας',
+  ARRAY['Καθαίρεση παλαιού οδοστρώματος', 'Κατασκευή δικτύου αποχέτευσης', 'Ανακατασκευή πεζοδρομίων', 'Ασφαλτόστρωση & σήμανση'],
+  '6 μήνες', 3, true
+) ON CONFLICT (slug) DO NOTHING;
+
+INSERT INTO public.projects (slug, title, location, category, description, image_url, gallery, year, client, scope, duration, sort_order, published) VALUES (
+  'toichio-antistirixis',
+  'Κατασκευή Τοιχίου Αντιστήριξης',
+  'Σύβοτα',
+  'Δημόσια Έργα',
+  'Κατασκευή τοιχίου αντιστήριξης από οπλισμένο σκυρόδεμα σε παράπλευρη οδό στα Σύβοτα. Στατική μελέτη, εκσκαφή θεμελίωσης, κατασκευή σκελετού οπλισμού και σκυροδέτηση με σκυρόδεμα υψηλής αντοχής.',
+  '/HighRes/image-1772753897780.jpg',
+  ARRAY['/HighRes/image-1772753897780.jpg', '/HighRes/image-1772753692358.png', '/HighRes/image-1772753736848.png', '/HighRes/image-1772753878297.png', '/HighRes/image-1772753887996.png'],
+  '2025', 'Δήμος Ηγουμενίτσας',
+  ARRAY['Εκσκαφή θεμελίωσης', 'Κατασκευή σκελετού οπλισμού', 'Σκυροδέτηση C25/30', 'Στεγανοποίηση & αποστράγγιση'],
+  '5 μήνες', 4, true
+) ON CONFLICT (slug) DO NOTHING;
+
+INSERT INTO public.projects (slug, title, location, category, description, image_url, gallery, year, client, scope, duration, sort_order, published) VALUES (
+  'diagrammisi-eparxiakou-diktyou',
+  'Διαγράμμιση Επαρχιακού Δικτύου',
+  'Θεσπρωτία',
+  'Διαγραμμίσεις',
+  'Διαγράμμιση επαρχιακού οδικού δικτύου στον Νομό Θεσπρωτίας. Εφαρμογή αξονικών & πλευρικών γραμμών, σήμανση κόμβων, διαβάσεων πεζών και στάσεων λεωφορείων.',
+  '/HighRes/image-1772753366441.png',
+  ARRAY['/HighRes/image-1772753366441.png', '/HighRes/image-1772753356440.png', '/HighRes/image-1772753675852.jpg'],
+  '2024', 'Περιφέρεια Ηπείρου',
+  ARRAY['Αξονικές & πλευρικές γραμμές', 'Σήμανση κόμβων & διασταυρώσεων', 'Διαβάσεις πεζών', 'Σήμανση στάσεων & διαδρόμων'],
+  '1 μήνας', 5, true
+) ON CONFLICT (slug) DO NOTHING;
+
+-- ═══════════════════════════════════════
+-- SEED HERO SLIDES
+-- ═══════════════════════════════════════
+
+INSERT INTO public.hero_slides (heading, heading_accent, subtitle, video_url, sort_order, published) VALUES (
+  'ΧΤΙΖΟΥΜΕ',
+  'ΤΟ ΑΥΡΙΟ.',
+  'Τεχνική αρτιότητα, εμπειρία δεκαετιών και δέσμευση στην ποιότητα — αυτές είναι οι αξίες που οικοδομούν κάθε μας έργο.',
+  '/Videos/construction/01_cement_truck_trench_ext_v1.mp4',
+  0,
   true
 ) ON CONFLICT DO NOTHING;
 
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Αποχέτευση & Βιολογικός Καθαρισμός Μαργαριτίου',
-  'Κατασκευή δικτύου αποχέτευσης και μονάδας βιολογικού καθαρισμού για τον οικισμό Μαργαριτίου.',
-  'Υποδομές',
-  '/Photos/project-8.jpg',
+INSERT INTO public.hero_slides (heading, heading_accent, subtitle, video_url, sort_order, published) VALUES (
+  'ΠΟΙΟΤΗΤΑ',
+  'ΣΕ ΚΑΘΕ ΕΡΓΟ.',
+  'Από μικρές επισκευές μέχρι μεγάλα έργα υποδομής, η ποιότητα είναι πάντα η προτεραιότητά μας.',
+  '/Videos/construction/13_downloaded_v2.mp4',
+  1,
   true
 ) ON CONFLICT DO NOTHING;
 
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Κατασκευή Γέφυρας ποταμού Καλαμά',
-  'Κατασκευή γέφυρας μήκους 45m πάνω από τον ποταμό Καλαμά, με οπλισμένο σκυρόδεμα.',
-  'Τεχνικά Έργα',
-  '/Photos/project-9.jpg',
-  true
-) ON CONFLICT DO NOTHING;
-
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Ασφαλτόστρωση Περιφερειακής Οδού Πρέβεζας',
-  'Νέα ασφαλτόστρωση περιφερειακής οδού με τρεις λωρίδες κυκλοφορίας και σύγχρονη σήμανση.',
-  'Οδοποιία',
-  '/Photos/project-10.jpg',
-  true
-) ON CONFLICT DO NOTHING;
-
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Αντιπλημμυρικά Έργα Ρέματος Σουλίου',
-  'Κατασκευή αντιπλημμυρικών έργων για την προστασία οικισμών, περιλαμβάνει τοιχία αντιστήριξης.',
-  'Υδραυλικά',
-  '/Photos/project-11.jpg',
-  true
-) ON CONFLICT DO NOTHING;
-
-INSERT INTO public.projects (title, description, category, image_url, published) VALUES (
-  'Οδοποιία Αγροτικών Δρόμων Θεσπρωτίας',
-  'Βελτίωση και ασφαλτόστρωση αγροτικών δρόμων συνολικού μήκους 20km στο νομό Θεσπρωτίας.',
-  'Αγροτικά Έργα',
-  '/Photos/project-12.jpg',
+INSERT INTO public.hero_slides (heading, heading_accent, subtitle, video_url, sort_order, published) VALUES (
+  'ΕΜΠΕΙΡΙΑ',
+  'ΔΕΚΑΕΤΙΩΝ.',
+  'Με πάνω από δεκαετίες εμπειρίας στον κατασκευαστικό κλάδο, φέρνουμε αξιοπιστία σε κάθε βήμα.',
+  '/Videos/construction/08_road_line_painting_initial_v2.mp4',
+  2,
   true
 ) ON CONFLICT DO NOTHING;
 

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { signout } from "../actions";
 import ImageUpload from "./image-upload";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 import type { User } from "@supabase/supabase-js";
 import {
   Home,
@@ -12,10 +13,9 @@ import {
   Mail,
   Users,
   Image as ImageIcon,
-  Menu,
-  X,
   ChevronDown,
   Sparkles,
+  ExternalLink,
 } from "lucide-react";
 
 interface Project {
@@ -123,7 +123,6 @@ export default function Dashboard({
 }) {
   const supabase = createClient();
   const [section, setSection] = useState<Section>("home");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // ── Projects state ──
   const [projects, setProjects] = useState<Project[]>(initialProjects);
@@ -155,6 +154,7 @@ export default function Dashboard({
     published: false,
   };
   const [blogForm, setBlogForm] = useState(emptyPost);
+  const [contentPreview, setContentPreview] = useState(false);
 
   // ── AI generation state ──
   const [aiTopic, setAiTopic] = useState("");
@@ -338,10 +338,27 @@ export default function Dashboard({
     if (data) setBlogPosts(data);
   }
 
+  async function resolveUniqueSlug(baseSlug: string, excludeId?: string): Promise<string> {
+    let candidate = baseSlug;
+    let suffix = 0;
+    while (true) {
+      let query = supabase
+        .from("blog_posts")
+        .select("id")
+        .eq("slug", candidate);
+      if (excludeId) query = query.neq("id", excludeId);
+      const { data } = await query.limit(1);
+      if (!data || data.length === 0) return candidate;
+      suffix++;
+      candidate = `${baseSlug}-${suffix}`;
+    }
+  }
+
   async function handleSavePost() {
     setSavingPost(true);
-    const slug = blogForm.slug || slugify(blogForm.title);
+    const baseSlug = blogForm.slug || slugify(blogForm.title);
     if (editingPost) {
+      const slug = await resolveUniqueSlug(baseSlug, editingPost.id);
       const { error } = await supabase
         .from("blog_posts")
         .update({
@@ -361,6 +378,7 @@ export default function Dashboard({
         await refreshBlogPosts();
       }
     } else {
+      const slug = await resolveUniqueSlug(baseSlug);
       const { error } = await supabase.from("blog_posts").insert({
         title: blogForm.title,
         slug,
@@ -470,22 +488,10 @@ export default function Dashboard({
     }
   }
 
-  async function uploadAiImageToSupabase() {
+  function useAiImageAsCover() {
     if (!aiGeneratedImage) return;
-    try {
-      const res = await fetch(aiGeneratedImage);
-      const blob = await res.blob();
-      const name = `blog/${Date.now()}-ai-cover.png`;
-      const { error } = await supabase.storage
-        .from("media")
-        .upload(name, blob, { upsert: false, contentType: "image/png" });
-      if (error) throw error;
-      const { data: { publicUrl } } = supabase.storage.from("media").getPublicUrl(name);
-      setBlogForm((prev) => ({ ...prev, cover_image: publicUrl }));
-      setAiGeneratedImage(null);
-    } catch {
-      setAiError("Αποτυχία μεταφόρτωσης εικόνας.");
-    }
+    setBlogForm((prev) => ({ ...prev, cover_image: aiGeneratedImage }));
+    setAiGeneratedImage(null);
   }
 
   // ═══════════════════════════════════════
@@ -577,27 +583,9 @@ export default function Dashboard({
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
       `}} />
 
-      {/* Mobile hamburger */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 left-4 z-[60] flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-white border border-[#111111]/10 shadow-sm md:hidden"
-      >
-        {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-      </button>
-
-      {/* Overlay for mobile sidebar */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/30 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Left Sidebar */}
+      {/* Left Sidebar — hidden on mobile, bottom nav used instead */}
       <aside
-        className={`fixed top-0 left-0 z-50 flex h-full w-64 flex-col border-r border-[#111111]/10 bg-white transition-transform duration-300 md:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className="fixed top-0 left-0 z-50 hidden md:flex h-full w-64 flex-col border-r border-[#111111]/10 bg-white"
       >
         {/* Logo */}
         <div className="flex items-center justify-center border-b border-[#111111]/10 px-5 py-7">
@@ -621,7 +609,6 @@ export default function Dashboard({
                 key={s}
                 onClick={() => {
                   setSection(s);
-                  setSidebarOpen(false);
                 }}
                 className={`mb-1 flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-left transition-all ${
                   isActive
@@ -669,14 +656,14 @@ export default function Dashboard({
       </aside>
 
       {/* Main content area */}
-      <main className="md:ml-64 min-h-screen">
-        <div className="mx-auto max-w-5xl px-6 py-10 pt-16 md:pt-10">
+      <main className="md:ml-64 min-h-screen pb-20 md:pb-0">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 py-6 md:py-10">
           {/* Page Title */}
-          <div className="mb-10">
-            <p className="font-['Space_Mono'] text-[#E63B2E] uppercase tracking-widest text-sm mb-3 border-l-2 border-[#E63B2E] pl-4">
+          <div className="mb-6 md:mb-10">
+            <p className="font-['Space_Mono'] text-[#E63B2E] uppercase tracking-widest text-xs sm:text-sm mb-2 sm:mb-3 border-l-2 border-[#E63B2E] pl-4">
               {sectionLabels[section]}
             </p>
-            <h1 className="font-['Space_Grotesk'] font-bold text-3xl md:text-4xl text-[#111111] tracking-tighter uppercase">
+            <h1 className="font-['Space_Grotesk'] font-bold text-2xl sm:text-3xl md:text-4xl text-[#111111] tracking-tighter uppercase">
               {section === "home" && "Dashboard."}
               {section === "projects" && "Διαχείριση Έργων."}
               {section === "blog" && "Διαχείριση Blog."}
@@ -905,13 +892,13 @@ export default function Dashboard({
                   {projects.map((p) => (
                     <div
                       key={p.id}
-                      className="flex items-center gap-5 rounded-2xl border border-[#111111]/10 bg-white p-5 transition-all hover:border-[#111111]/20"
+                      className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 rounded-2xl border border-[#111111]/10 bg-white p-4 sm:p-5 transition-all hover:border-[#111111]/20"
                     >
                       {p.image_url && (
                         <img
                           src={p.image_url}
                           alt={p.title}
-                          className="h-16 w-24 rounded-xl object-cover"
+                          className="h-32 sm:h-16 w-full sm:w-24 rounded-xl object-cover"
                         />
                       )}
                       <div className="flex-1 min-w-0">
@@ -938,7 +925,7 @@ export default function Dashboard({
                           {p.description}
                         </p>
                       </div>
-                      <div className="flex shrink-0 items-center gap-2">
+                      <div className="flex shrink-0 items-center gap-2 border-t sm:border-t-0 border-[#111111]/5 pt-3 sm:pt-0">
                         <button
                           onClick={() => toggleProjectPublished(p)}
                           className={btnSmall("default")}
@@ -964,7 +951,7 @@ export default function Dashboard({
               )}
 
               {projectTab === "form" && (
-                <div className="rounded-2xl border border-[#111111]/10 bg-white p-8">
+                <div className="rounded-2xl border border-[#111111]/10 bg-white p-4 sm:p-8">
                   <h2 className="mb-6 font-['Space_Grotesk'] font-bold text-2xl text-[#111111] tracking-tighter uppercase">
                     {editingProject ? "Επεξεργασία Έργου" : "Νέο Έργο"}
                   </h2>
@@ -1062,14 +1049,14 @@ export default function Dashboard({
           {/* ═══════════ BLOG SECTION ═══════════ */}
           {section === "blog" && (
             <>
-              <div className="mb-6 flex gap-3">
+              <div className="mb-6 flex flex-wrap gap-2 sm:gap-3">
                 <button
                   onClick={() => {
                     setBlogTab("list");
                     setEditingPost(null);
                     setBlogForm(emptyPost);
                   }}
-                  className={`cursor-pointer rounded-xl px-5 py-2.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${
+                  className={`cursor-pointer rounded-xl px-4 sm:px-5 py-2.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${
                     blogTab === "list"
                       ? "bg-[#111111] text-white"
                       : "bg-white border border-[#111111]/10 text-[#111111]/50 hover:text-[#111111]"
@@ -1083,7 +1070,7 @@ export default function Dashboard({
                     setEditingPost(null);
                     setBlogForm(emptyPost);
                   }}
-                  className={`cursor-pointer rounded-xl px-5 py-2.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${
+                  className={`cursor-pointer rounded-xl px-4 sm:px-5 py-2.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${
                     blogTab === "form"
                       ? "bg-[#111111] text-white"
                       : "bg-white border border-[#111111]/10 text-[#111111]/50 hover:text-[#111111]"
@@ -1099,7 +1086,7 @@ export default function Dashboard({
                     setAiError(null);
                     setAiGeneratedImage(null);
                   }}
-                  className={`cursor-pointer rounded-xl px-5 py-2.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${
+                  className={`cursor-pointer rounded-xl px-4 sm:px-5 py-2.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${
                     blogTab === "ai"
                       ? "bg-[#E63B2E] text-white"
                       : "bg-white border border-[#E63B2E]/20 text-[#E63B2E]/60 hover:text-[#E63B2E]"
@@ -1121,13 +1108,13 @@ export default function Dashboard({
                   {blogPosts.map((post) => (
                     <div
                       key={post.id}
-                      className="flex items-center gap-5 rounded-2xl border border-[#111111]/10 bg-white p-5 transition-all hover:border-[#111111]/20"
+                      className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 rounded-2xl border border-[#111111]/10 bg-white p-4 sm:p-5 transition-all hover:border-[#111111]/20"
                     >
                       {post.cover_image && (
                         <img
                           src={post.cover_image}
                           alt={post.title}
-                          className="h-16 w-24 rounded-xl object-cover"
+                          className="h-32 sm:h-16 w-full sm:w-24 rounded-xl object-cover"
                         />
                       )}
                       <div className="flex-1 min-w-0">
@@ -1152,7 +1139,16 @@ export default function Dashboard({
                           {post.excerpt}
                         </p>
                       </div>
-                      <div className="flex shrink-0 items-center gap-2">
+                      <div className="flex shrink-0 items-center gap-2 border-t sm:border-t-0 border-[#111111]/5 pt-3 sm:pt-0">
+                        <a
+                          href={`/blog/${post.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-[#111111]/10 text-[#111111]/40 hover:text-[#111111] hover:border-[#111111]/30 transition-all"
+                          title="Προβολή"
+                        >
+                          <ExternalLink size={14} />
+                        </a>
                         <button
                           onClick={() => togglePostPublished(post)}
                           className={btnSmall("default")}
@@ -1178,7 +1174,7 @@ export default function Dashboard({
               )}
 
               {blogTab === "form" && (
-                <div className="rounded-2xl border border-[#111111]/10 bg-white p-8">
+                <div className="rounded-2xl border border-[#111111]/10 bg-white p-4 sm:p-8">
                   <h2 className="mb-6 font-['Space_Grotesk'] font-bold text-2xl text-[#111111] tracking-tighter uppercase">
                     {editingPost ? "Επεξεργασία Άρθρου" : "Νέο Άρθρο"}
                   </h2>
@@ -1230,16 +1226,37 @@ export default function Dashboard({
                       />
                     </div>
                     <div>
-                      <label className={labelClass}>Περιεχόμενο</label>
-                      <textarea
-                        value={blogForm.content}
-                        onChange={(e) =>
-                          setBlogForm({ ...blogForm, content: e.target.value })
-                        }
-                        rows={12}
-                        className={inputClass}
-                        placeholder="Γράψτε το άρθρο εδώ..."
-                      />
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/50">
+                          Περιεχόμενο (Markdown)
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => setContentPreview(!contentPreview)}
+                          className={`cursor-pointer rounded-lg border px-3 py-1 font-['Space_Mono'] text-[9px] uppercase tracking-widest transition-all ${
+                            contentPreview
+                              ? "border-[#E63B2E]/20 bg-[#E63B2E]/5 text-[#E63B2E]"
+                              : "border-[#111111]/10 text-[#111111]/40 hover:text-[#111111]"
+                          }`}
+                        >
+                          {contentPreview ? "Επεξεργασία" : "Προεπισκόπηση"}
+                        </button>
+                      </div>
+                      {contentPreview ? (
+                        <div className="prose prose-zinc max-w-none rounded-xl border border-[#111111]/10 bg-white p-5 min-h-[300px] text-sm">
+                          <MarkdownRenderer content={blogForm.content || "*Κενό περιεχόμενο*"} />
+                        </div>
+                      ) : (
+                        <textarea
+                          value={blogForm.content}
+                          onChange={(e) =>
+                            setBlogForm({ ...blogForm, content: e.target.value })
+                          }
+                          rows={12}
+                          className={inputClass + " font-mono text-[13px]"}
+                          placeholder="## Υπότιτλος&#10;&#10;Γράψτε το άρθρο εδώ σε **Markdown**..."
+                        />
+                      )}
                     </div>
                     <div>
                       <label className={labelClass}>Εξώφυλλο</label>
@@ -1250,6 +1267,57 @@ export default function Dashboard({
                         }
                         folder="blog"
                       />
+                      {/* AI Image Generation */}
+                      <div className="mt-3 rounded-xl border border-[#E63B2E]/15 bg-[#E63B2E]/[0.02] p-4">
+                        <p className={labelClass}>AI Εικόνα (Humanlike)</p>
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          <input
+                            type="text"
+                            value={aiImagePrompt}
+                            onChange={(e) => setAiImagePrompt(e.target.value)}
+                            className={inputClass + " flex-1"}
+                            placeholder="π.χ. Road construction site, asphalt paving..."
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleAiImage()}
+                            disabled={aiImageGenerating || !aiImagePrompt.trim()}
+                            className="shrink-0 cursor-pointer rounded-xl bg-[#E63B2E] px-4 py-3 font-['Space_Mono'] text-[10px] uppercase tracking-widest text-white transition-all hover:bg-[#c4161c] disabled:opacity-60 flex items-center gap-2"
+                          >
+                            <Sparkles size={14} />
+                            {aiImageGenerating ? "Δημιουργία..." : "AI Εικόνα"}
+                          </button>
+                        </div>
+                        {aiGeneratedImage && (
+                          <div className="mt-3">
+                            <img
+                              src={aiGeneratedImage}
+                              alt="AI Generated"
+                              className="w-full max-h-60 object-cover rounded-xl border border-[#111111]/10"
+                            />
+                            <div className="mt-2 flex gap-2">
+                              <button
+                                type="button"
+                                onClick={useAiImageAsCover}
+                                className={btnSmall("accent")}
+                              >
+                                Χρήση ως εξώφυλλο
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleAiImage()}
+                                disabled={aiImageGenerating}
+                                className={btnSmall("default")}
+                              >
+                                Νέα εικόνα
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                        {aiError && (
+                          <p className="mt-2 text-xs text-[#E63B2E]">{aiError}</p>
+                        )}
+                      </div>
                     </div>
                     <label className="flex items-center gap-3">
                       <input
@@ -1304,7 +1372,7 @@ export default function Dashboard({
                     <p className="mb-4 text-sm text-[#111111]/50">
                       Περιγράψτε το θέμα και η AI θα δημιουργήσει τίτλο, περίληψη, περιεχόμενο και πρόταση εικόνας.
                     </p>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <input
                         type="text"
                         value={aiTopic}
@@ -1417,7 +1485,7 @@ export default function Dashboard({
                           />
                           <div className="mt-3 flex gap-3">
                             <button
-                              onClick={uploadAiImageToSupabase}
+                              onClick={useAiImageAsCover}
                               className={btnPrimary}
                             >
                               Χρήση ως εξώφυλλο
@@ -1473,17 +1541,17 @@ export default function Dashboard({
                     }`}
                   >
                     <div
-                      className="flex items-center gap-5 p-5 cursor-pointer"
+                      className="flex items-start sm:items-center gap-3 sm:gap-5 p-4 sm:p-5 cursor-pointer"
                       onClick={() =>
                         setExpandedContact(
                           expandedContact === c.id ? null : c.id
                         )
                       }
                     >
-                      <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${c.read ? "bg-[#111111]/10" : "bg-[#E63B2E]"}`} />
+                      <div className={`w-2.5 h-2.5 rounded-full shrink-0 mt-1.5 sm:mt-0 ${c.read ? "bg-[#111111]/10" : "bg-[#E63B2E]"}`} />
 
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
                           <h3 className="font-['Space_Grotesk'] font-bold text-[#111111] truncate tracking-tight">
                             {c.name}
                           </h3>
@@ -1500,10 +1568,13 @@ export default function Dashboard({
                         <p className="mt-1 line-clamp-1 text-sm text-[#111111]/50">
                           {c.message}
                         </p>
+                        <p className="mt-1 sm:hidden font-['Space_Mono'] text-[9px] text-[#111111]/30 uppercase tracking-widest">
+                          {formatDate(c.created_at)}
+                        </p>
                       </div>
 
                       <div className="flex shrink-0 items-center gap-3">
-                        <span className="font-['Space_Mono'] text-[9px] text-[#111111]/30 uppercase tracking-widest">
+                        <span className="hidden sm:inline font-['Space_Mono'] text-[9px] text-[#111111]/30 uppercase tracking-widest">
                           {formatDate(c.created_at)}
                         </span>
                         <ChevronDown
@@ -1516,13 +1587,13 @@ export default function Dashboard({
                     </div>
 
                     {expandedContact === c.id && (
-                      <div className="border-t border-[#111111]/5 px-5 py-5">
-                        <div className="bg-[#F5F3EE] rounded-xl p-5 mb-4">
+                      <div className="border-t border-[#111111]/5 px-4 sm:px-5 py-4 sm:py-5">
+                        <div className="bg-[#F5F3EE] rounded-xl p-4 sm:p-5 mb-4">
                           <p className="text-sm text-[#111111]/80 whitespace-pre-wrap leading-relaxed">
                             {c.message}
                           </p>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                           <button
                             onClick={() => toggleContactRead(c)}
                             className={btnSmall("default")}
@@ -1639,20 +1710,22 @@ export default function Dashboard({
                   {authUsers.map((u) => (
                     <div
                       key={u.id}
-                      className="flex items-center gap-5 rounded-2xl border border-[#111111]/10 bg-white p-5"
+                      className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 rounded-2xl border border-[#111111]/10 bg-white p-4 sm:p-5"
                     >
-                      <div className="w-10 h-10 rounded-full bg-[#111111] flex items-center justify-center text-white font-['Space_Mono'] text-xs uppercase">
-                        {u.email?.charAt(0) ?? "?"}
+                      <div className="flex items-center gap-3 sm:gap-5">
+                        <div className="w-10 h-10 rounded-full bg-[#111111] flex items-center justify-center text-white font-['Space_Mono'] text-xs uppercase shrink-0">
+                          {u.email?.charAt(0) ?? "?"}
+                        </div>
+                        <div className="min-w-0 flex-1 sm:flex-none">
+                          <h3 className="font-['Space_Grotesk'] font-bold text-[#111111] truncate tracking-tight">
+                            {u.email}
+                          </h3>
+                          <p className="font-['Space_Mono'] text-[9px] text-[#111111]/30 uppercase tracking-widest mt-1">
+                            ID: {u.id.slice(0, 8)}...
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-['Space_Grotesk'] font-bold text-[#111111] truncate tracking-tight">
-                          {u.email}
-                        </h3>
-                        <p className="font-['Space_Mono'] text-[9px] text-[#111111]/30 uppercase tracking-widest mt-1">
-                          ID: {u.id.slice(0, 8)}...
-                        </p>
-                      </div>
-                      <div className="text-right shrink-0">
+                      <div className="sm:ml-auto sm:text-right border-t sm:border-t-0 border-[#111111]/5 pt-3 sm:pt-0 shrink-0">
                         <p className="font-['Space_Mono'] text-[9px] text-[#111111]/40 uppercase tracking-widest">
                           Εγγραφή: {formatDate(u.created_at)}
                         </p>
@@ -1820,13 +1893,43 @@ export default function Dashboard({
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-[#111111]/10 py-8">
+        <footer className="hidden md:block border-t border-[#111111]/10 py-8">
           <div className="mx-auto max-w-5xl px-6 flex justify-between items-center font-['Space_Mono'] text-[9px] text-[#111111]/30 uppercase tracking-widest">
             <p>&copy; {new Date().getFullYear()} ALKATER S.A.</p>
             <p>Admin Panel</p>
           </div>
         </footer>
       </main>
+
+      {/* Bottom Navigation — mobile only */}
+      <nav className="fixed bottom-0 inset-x-0 z-50 flex md:hidden border-t border-[#111111]/10 bg-white/95 backdrop-blur-lg">
+        {(["home", "projects", "blog", "contacts", "admins", "media"] as Section[]).map((s) => {
+          const isActive = section === s;
+          const Icon = sectionIcons[s];
+          return (
+            <button
+              key={s}
+              onClick={() => setSection(s)}
+              className={`flex-1 flex flex-col items-center gap-0.5 py-2.5 cursor-pointer transition-colors relative ${
+                isActive ? "text-[#E63B2E]" : "text-[#111111]/40"
+              }`}
+            >
+              {isActive && (
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 h-0.5 w-6 rounded-full bg-[#E63B2E]" />
+              )}
+              <Icon size={18} />
+              <span className="font-['Space_Mono'] text-[8px] uppercase tracking-widest leading-none">
+                {sectionLabels[s]}
+              </span>
+              {s === "contacts" && unreadCount > 0 && (
+                <span className="absolute top-1.5 right-1/2 -translate-x-[-10px] h-4 min-w-4 flex items-center justify-center rounded-full bg-[#E63B2E] font-['Space_Mono'] text-[8px] text-white px-1">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </nav>
     </div>
   );
 }

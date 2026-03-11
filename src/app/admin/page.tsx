@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { login } from "./actions";
 
-export default function AdminLoginPage() {
+function AdminLoginForm() {
+  const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const prefillEmail = searchParams.get("email") ?? "";
+  const prefillCode = searchParams.get("code") ?? "";
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
@@ -28,7 +32,7 @@ export default function AdminLoginPage() {
           <img
             src="/Photos/Logo/alkater-logo.svg"
             alt="ΑΛΚΑΤΕΡ"
-            className="mx-auto mb-1 h-12 w-auto"
+            className="mx-auto mb-3 h-32 w-auto"
             style={{ filter: "brightness(0)" }}
           />
           <p className="font-['Space_Mono'] text-[#111111]/50 uppercase tracking-widest text-[10px]">
@@ -49,6 +53,7 @@ export default function AdminLoginPage() {
               name="email"
               type="email"
               required
+              defaultValue={prefillEmail}
               className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE] px-4 py-3 text-sm text-[#111111] outline-none transition-all focus:border-[#E63B2E] focus:ring-2 focus:ring-[#E63B2E]/10 font-['Space_Grotesk']"
               placeholder="admin@alkater.gr"
             />
@@ -67,6 +72,7 @@ export default function AdminLoginPage() {
               type="password"
               required
               minLength={6}
+              defaultValue={prefillCode}
               className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE] px-4 py-3 text-sm text-[#111111] outline-none transition-all focus:border-[#E63B2E] focus:ring-2 focus:ring-[#E63B2E]/10 font-['Space_Grotesk']"
               placeholder="••••••••"
             />
@@ -88,5 +94,13 @@ export default function AdminLoginPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense>
+      <AdminLoginForm />
+    </Suspense>
   );
 }

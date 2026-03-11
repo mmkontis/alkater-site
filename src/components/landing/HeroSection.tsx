@@ -1,16 +1,33 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, Palette, Sun, Moon } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { ArrowDown, Palette } from "lucide-react";
 import { useTheme } from "./ThemeContext";
 
 const logoColorModes = [
-  { id: "white", blue: "#ffffff", red: "#ffffff", gray: "#ffffff", swatch: ["#ffffff"] },
-  { id: "fresh", blue: "#1B6B9E", red: "#E63B2E", gray: "#cccccc", swatch: ["#1B6B9E", "#E63B2E"] },
-  { id: "original", blue: "#063D64", red: "#A21B21", gray: "#918F90", swatch: ["#063D64", "#A21B21"] },
-  { id: "proposal", blue: "#111111", red: "#E63B2E", gray: "#918F90", swatch: ["#111111", "#E63B2E"] },
+  // Row 1: Red accent variants
+  { id: "default", blue: "#ffffff", red: "#ffffff", gray: "#ffffff", swatch: ["#333333", "#E63B2E"], accent: "#E63B2E", tint: "transparent", logoLeft: "#ffffff", logoRight: "#ffffff" },
+  { id: "white", blue: "#1B6B9E", red: "#E63B2E", gray: "#cccccc", swatch: ["#1B6B9E", "#E63B2E"], accent: "#E63B2E", tint: "#1B6B9E", logoLeft: "#1B6B9E", logoRight: "#E63B2E" },
+  { id: "fresh", blue: "#1B6B9E", red: "#E63B2E", gray: "#cccccc", swatch: ["#1B6B9E", "#E63B2E"], accent: "#E63B2E", tint: "#1B6B9E", logoLeft: "#1B6B9E", logoRight: "#E63B2E" },
+  { id: "original", blue: "#063D64", red: "#A21B21", gray: "#918F90", swatch: ["#063D64", "#A21B21"], accent: "#A21B21", tint: "#063D64", logoLeft: "#063D64", logoRight: "#A21B21" },
+  { id: "proposal", blue: "#111111", red: "#E63B2E", gray: "#918F90", swatch: ["#111111", "#E63B2E"], accent: "#E63B2E", tint: "#111111", logoLeft: "var(--text-primary)", logoRight: "#E63B2E" },
+  { id: "classic", blue: "#ffffff", red: "#E63B2E", gray: "#ffffff", swatch: ["#E63B2E"], accent: "#E63B2E", tint: "transparent", logoLeft: "var(--text-primary)", logoRight: "#E63B2E" },
+  // Row 2: Blue accent variants
+  { id: "blue-fresh", blue: "#1B6B9E", red: "#1B6B9E", gray: "#cccccc", swatch: ["#1B6B9E"], accent: "#1B6B9E", tint: "#0D3B5E", logoLeft: "#1B6B9E", logoRight: "#1B6B9E" },
+  { id: "blue-original", blue: "#063D64", red: "#063D64", gray: "#918F90", swatch: ["#063D64"], accent: "#063D64", tint: "#031E32", logoLeft: "#063D64", logoRight: "#063D64" },
+  { id: "blue-red", blue: "#1B6B9E", red: "#A21B21", gray: "#918F90", swatch: ["#A21B21", "#1B6B9E"], accent: "#1B6B9E", tint: "#A21B21", logoLeft: "#1B6B9E", logoRight: "#A21B21" },
+  { id: "red-dark", blue: "#A21B21", red: "#A21B21", gray: "#918F90", swatch: ["#A21B21"], accent: "#A21B21", tint: "#4a0d10", logoLeft: "#A21B21", logoRight: "#A21B21" },
 ] as const;
+
+import type { HeroSlide } from "@/lib/queries";
+export type { HeroSlide };
+
+const DEFAULT_SLIDES: HeroSlide[] = [
+  { id: "1", heading: "ΧΤΙΖΟΥΜΕ", heading_accent: "ΤΟ ΑΥΡΙΟ.", subtitle: "Τεχνική αρτιότητα, εμπειρία δεκαετιών και δέσμευση στην ποιότητα — αυτές είναι οι αξίες που οικοδομούν κάθε μας έργο.", video_url: "/Videos/construction/01_cement_truck_trench_ext_v1.mp4", sort_order: 0 },
+  { id: "2", heading: "ΠΟΙΟΤΗΤΑ", heading_accent: "ΣΕ ΚΑΘΕ ΕΡΓΟ.", subtitle: "Από μικρές επισκευές μέχρι μεγάλα έργα υποδομής, η ποιότητα είναι πάντα η προτεραιότητά μας.", video_url: "/Videos/construction/13_downloaded_v2.mp4", sort_order: 1 },
+  { id: "3", heading: "ΕΜΠΕΙΡΙΑ", heading_accent: "ΔΕΚΑΕΤΙΩΝ.", subtitle: "Με πάνω από δεκαετίες εμπειρίας στον κατασκευαστικό κλάδο, φέρνουμε αξιοπιστία σε κάθε βήμα.", video_url: "/Videos/construction/08_road_line_painting_initial_v2.mp4", sort_order: 2 },
+];
 
 function AlkaterLogo({ blue, red, gray, className }: { blue: string; red: string; gray: string; className?: string }) {
   return (
@@ -48,21 +65,38 @@ function AlkaterLogo({ blue, red, gray, className }: { blue: string; red: string
   );
 }
 
-export function HeroSection() {
+export function HeroSection({ slides: slidesProp }: { slides?: HeroSlide[] }) {
+  const slides = slidesProp?.length ? slidesProp : DEFAULT_SLIDES;
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [mounted, setMounted] = useState(false);
   const [logoMode, setLogoMode] = useState(0);
   const [showPicker, setShowPicker] = useState(false);
-  const { mode, toggleMode, setColorScheme } = useTheme();
+  const [activeSlide, setActiveSlide] = useState(0);
+  const { mode, setMode, setColorScheme } = useTheme();
 
   const currentColors = logoColorModes[logoMode];
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMounted(true);
-    }, 0);
+    const timer = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timer);
   }, []);
+
+  // Auto-advance based on video duration
+  useEffect(() => {
+    if (slides.length <= 1) return;
+
+    const scheduleNext = () => {
+      const video = videoRefs.current[activeSlide];
+      const duration = video?.duration && isFinite(video.duration) ? video.duration * 1000 : 6000;
+      return setTimeout(() => {
+        setActiveSlide((prev) => (prev + 1) % slides.length);
+      }, duration);
+    };
+
+    const timer = scheduleNext();
+    return () => clearTimeout(timer);
+  }, [activeSlide, slides.length]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -73,10 +107,12 @@ export function HeroSection() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
 
+  const slide = slides[activeSlide];
+
   return (
     <section
       ref={containerRef}
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']"
+      className="relative z-10 flex min-h-screen flex-col items-center justify-center selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']"
       style={{ backgroundColor: "var(--bg-primary)" }}
     >
       <style dangerouslySetInnerHTML={{__html: `
@@ -93,26 +129,30 @@ export function HeroSection() {
         </svg>
       </div>
 
+      {/* Video backgrounds */}
       <motion.div
         style={mounted ? { scale, y, opacity } : {}}
-        className="absolute inset-0 z-0 h-full w-full"
+        className="absolute inset-0 z-0 h-full w-full overflow-hidden"
       >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-        >
-          <source src="/Videos/construction/01_cement_truck_trench_ext_v1.mp4" type="video/mp4" />
-        </video>
-
-        {/* Dark overlay for better text readability */}
+        {slides.map((s, i) => (
+          <video
+            key={s.id}
+            ref={(el) => { videoRefs.current[i] = el; }}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
+            style={{ opacity: mounted && activeSlide === i ? 1 : 0 }}
+          >
+            <source src={s.video_url} type="video/mp4" />
+          </video>
+        ))}
         <div className="absolute inset-0" style={{ backgroundColor: "var(--overlay-bg)" }} />
       </motion.div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center px-6 text-center max-w-5xl mx-auto w-full pt-20">
+      <div className="relative z-10 flex flex-col items-center px-6 text-center max-w-5xl mx-auto w-full pt-20 pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -127,27 +167,56 @@ export function HeroSection() {
           />
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mb-6 font-['Space_Grotesk'] font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tighter uppercase leading-[0.9]"
-          style={{ color: "var(--text-primary)" }}
-        >
-          ΧΤΙΖΟΥΜΕ <br />
-          <span className="text-transparent bg-clip-text" style={{ backgroundImage: `linear-gradient(to right, var(--accent), color-mix(in srgb, var(--accent), #ff9999 40%))` }}>ΤΟ ΑΥΡΙΟ.</span>
-        </motion.h1>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSlide}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center"
+          >
+            <h1
+              className="mb-6 font-['Space_Grotesk'] font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tighter uppercase leading-[0.9]"
+              style={{ color: "var(--text-primary)" }}
+            >
+              {slide.heading} <br />
+              <span className="text-transparent bg-clip-text" style={{ backgroundImage: `linear-gradient(to right, var(--accent), color-mix(in srgb, var(--accent), #ff9999 40%))` }}>
+                {slide.heading_accent}
+              </span>
+            </h1>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="font-['Space_Mono'] max-w-2xl mt-6 text-sm md:text-base leading-relaxed"
-          style={{ color: "var(--text-secondary)" }}
-        >
-          Τεχνική αρτιότητα, εμπειρία δεκαετιών και δέσμευση στην ποιότητα <br className="hidden md:block"/>
-          — αυτές είναι οι αξίες που οικοδομούν κάθε μας έργο.
-        </motion.p>
+            <p
+              className="font-['Space_Mono'] max-w-2xl mt-6 text-sm md:text-base leading-relaxed"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              {slide.subtitle}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Slide indicators — hidden when only 1 slide */}
+        {slides.length > 1 && (
+          <div className="flex gap-2 mt-10">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveSlide(i)}
+                aria-label={`Slide ${i + 1}`}
+                className="py-2 cursor-pointer group"
+              >
+                <span
+                  className="block h-[3px] rounded-full transition-all duration-500 group-hover:opacity-80"
+                  style={{
+                    width: activeSlide === i ? "2.5rem" : "1rem",
+                    backgroundColor: activeSlide === i ? "var(--accent)" : "var(--text-muted)",
+                    opacity: activeSlide === i ? 1 : 0.4,
+                  }}
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Floating Theme & Logo Color Switcher */}
@@ -156,51 +225,71 @@ export function HeroSection() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="flex flex-col gap-2 p-3 rounded-2xl backdrop-blur-xl border transition-colors duration-300"
+            className="flex flex-col gap-3 p-3 rounded-2xl backdrop-blur-xl border transition-colors duration-300"
             style={{ backgroundColor: "var(--logo-bg)", borderColor: "var(--border-color)" }}
           >
-            {/* Dark/Light mode toggle */}
-            <div className="flex items-center gap-2 pb-2 mb-2" style={{ borderBottom: "1px solid var(--border-color)" }}>
-              <button
-                onClick={() => toggleMode()}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-['Space_Mono'] uppercase tracking-widest transition-all duration-200 hover:opacity-80"
-                style={{
-                  backgroundColor: mode === "dark" ? "var(--accent)" : "var(--accent)",
-                  color: "#fff"
-                }}
-              >
-                {mode === "dark" ? (
-                  <>
-                    <Sun className="w-3.5 h-3.5" /> Light
-                  </>
-                ) : (
-                  <>
-                    <Moon className="w-3.5 h-3.5" /> Dark
-                  </>
-                )}
-              </button>
-            </div>
-            {/* Logo color swatches */}
+            {/* Dark mode combos - Row 1 */}
             <div className="flex gap-2 justify-center">
-              {logoColorModes.map((m, i) => (
+              {logoColorModes.slice(0, 6).map((m, i) => (
                 <button
                   key={m.id}
                   onClick={() => {
                     setLogoMode(i);
-                    // "white" mode = default page, no color changes
-                    if (m.id === "white") {
-                      setColorScheme({ accent: "#E63B2E", tint: "transparent" });
-                    } else {
-                      setColorScheme({ accent: m.red, tint: m.blue });
-                    }
+                    setMode("dark");
+                    setColorScheme({ accent: m.accent, tint: m.tint, logoLeft: m.logoLeft, logoRight: m.logoRight });
                   }}
-                  className={`w-7 h-7 rounded-full border-2 transition-all duration-200 overflow-hidden flex ${
-                    logoMode === i ? "scale-110" : "border-white/20 hover:border-white/40"
+                  className={`w-9 h-9 rounded-full border-2 transition-all duration-200 overflow-hidden flex ${
+                    logoMode === i && mode === "dark" ? "scale-110" : "border-white/20 hover:border-white/40"
                   }`}
-                  style={logoMode === i ? { borderColor: "var(--accent)" } : {}}
+                  style={logoMode === i && mode === "dark" ? { borderColor: "var(--accent)" } : {}}
                 >
                   {m.swatch.map((color, j) => (
                     <span key={j} className="flex-1 h-full" style={{ backgroundColor: color }} />
+                  ))}
+                </button>
+              ))}
+            </div>
+            {/* Dark mode combos - Row 2 */}
+            <div className="flex gap-2 justify-center">
+              {logoColorModes.slice(6).map((m, i) => (
+                <button
+                  key={m.id}
+                  onClick={() => {
+                    setLogoMode(i + 6);
+                    setMode("dark");
+                    setColorScheme({ accent: m.accent, tint: m.tint, logoLeft: m.logoLeft, logoRight: m.logoRight });
+                  }}
+                  className={`w-9 h-9 rounded-full border-2 transition-all duration-200 overflow-hidden flex ${
+                    logoMode === i + 6 && mode === "dark" ? "scale-110" : "border-white/20 hover:border-white/40"
+                  }`}
+                  style={logoMode === i + 6 && mode === "dark" ? { borderColor: "var(--accent)" } : {}}
+                >
+                  {m.swatch.map((color, j) => (
+                    <span key={j} className="flex-1 h-full" style={{ backgroundColor: color }} />
+                  ))}
+                </button>
+              ))}
+            </div>
+            {/* Light mode combos - Row 3 */}
+            <div className="flex gap-2 justify-center pt-2" style={{ borderTop: "1px solid var(--border-color)" }}>
+              {logoColorModes.slice(1).map((m, i) => (
+                <button
+                  key={`light-${m.id}`}
+                  onClick={() => {
+                    setLogoMode(i + 1);
+                    setMode("light");
+                    setColorScheme({ accent: m.accent, tint: m.tint, logoLeft: m.logoLeft, logoRight: m.logoRight });
+                  }}
+                  className={`w-9 h-9 rounded-full border-2 transition-all duration-200 overflow-hidden flex ${
+                    logoMode === i + 1 && mode === "light" ? "scale-110" : "border-white/20 hover:border-white/40"
+                  }`}
+                  style={{
+                    background: "#F5F3EE",
+                    ...(logoMode === i + 1 && mode === "light" ? { borderColor: "var(--accent)" } : {}),
+                  }}
+                >
+                  {m.swatch.map((color, j) => (
+                    <span key={j} className="flex-1 h-3 self-end rounded-t-sm" style={{ backgroundColor: color }} />
                   ))}
                 </button>
               ))}
@@ -224,10 +313,10 @@ export function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-[55]"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20"
       >
         <motion.div
-          animate={{ y: [0, 10, 0] }}
+          animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           className="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm border"
           style={{ borderColor: "var(--border-hover)", backgroundColor: "var(--logo-bg)" }}

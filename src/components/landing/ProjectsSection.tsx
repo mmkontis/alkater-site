@@ -5,9 +5,20 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { PROJECTS } from "@/lib/projects";
+import type { Project } from "@/lib/queries";
+import { PROJECTS as DEFAULT_PROJECTS } from "@/lib/projects";
 
-export function ProjectsSection() {
+export function ProjectsSection({ projects: projectsProp }: { projects?: Project[] }) {
+  const projectItems = projectsProp?.length
+    ? projectsProp.map((p) => ({
+        id: p.sort_order,
+        slug: p.slug,
+        title: p.title,
+        location: p.location,
+        category: p.category,
+        image: p.image_url,
+      }))
+    : DEFAULT_PROJECTS;
   const containerRef = useRef<HTMLElement>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -40,9 +51,9 @@ export function ProjectsSection() {
           className="text-center mb-16 md:mb-24"
         >
           <div className="flex justify-center items-center gap-4 mb-6">
-            <span className="w-8 h-[2px] bg-[#E63B2E]"></span>
-            <span className="font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E63B2E]">Χαρτοφυλακιο</span>
-            <span className="w-8 h-[2px] bg-[#E63B2E]"></span>
+            <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
+            <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>Χαρτοφυλακιο</span>
+            <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
           </div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase mx-auto max-w-3xl leading-[1.1]" style={{ color: "var(--text-primary)" }}>
@@ -58,7 +69,7 @@ export function ProjectsSection() {
           style={mounted ? { y } : {}}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
         >
-          {PROJECTS.map((project, index) => (
+          {projectItems.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </motion.div>
@@ -91,7 +102,7 @@ function ProjectCard({ project, index }: { project: { id: number; slug: string; 
       className="group relative aspect-[4/5] overflow-hidden cursor-pointer"
       style={{ backgroundColor: "var(--bg-surface)" }}
     >
-      <Link href={`/proposals/concept-5/projects/${project.slug}`} className="absolute inset-0 z-30" />
+      <Link href={`/proposals/concept-1/projects/${project.slug}`} className="absolute inset-0 z-30" />
       <div className="absolute inset-0 z-10 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
 
       <div className="absolute inset-0 p-6 flex flex-col justify-between z-20 pointer-events-none">

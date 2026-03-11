@@ -2,11 +2,21 @@ import { HeroSection } from "@/components/landing/HeroSection";
 import { ServicesSection } from "@/components/landing/ServicesSection";
 import { AboutSection } from "@/components/landing/AboutSection";
 import { ProjectsSection } from "@/components/landing/ProjectsSection";
+import { CertificationsSection } from "@/components/landing/CertificationsSection";
 import { ContactSection } from "@/components/landing/ContactSection";
+import { BlogSection } from "@/components/landing/BlogSection";
+import { Footer } from "@/components/landing/Footer";
 import { CookieBanner } from "@/components/landing/CookieBanner";
 import { ThemeProvider } from "@/components/landing/ThemeContext";
+import { NavMenu } from "@/components/landing/NavMenu";
+import { getHeroSlides, getProjects, getBlogPosts } from "@/lib/queries";
 
-export default function Concept1() {
+// Revalidate every hour — slides & projects cached as static HTML
+export const revalidate = 3600;
+
+export default async function Concept1() {
+  const [slides, projects, blogPosts] = await Promise.all([getHeroSlides(), getProjects(), getBlogPosts()]);
+
   return (
     <ThemeProvider>
       <main className="min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white" style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}>
@@ -24,11 +34,15 @@ export default function Concept1() {
           </svg>
         </div>
 
-        <HeroSection />
+        <NavMenu />
+        <HeroSection slides={slides} />
         <ServicesSection />
         <AboutSection />
-        <ProjectsSection />
+        <ProjectsSection projects={projects} />
+        <CertificationsSection />
         <ContactSection />
+        <BlogSection posts={blogPosts} />
+        <Footer />
         <CookieBanner />
       </main>
     </ThemeProvider>

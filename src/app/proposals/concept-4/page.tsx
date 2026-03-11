@@ -75,7 +75,7 @@ const SERVICES = [
     icon: Building2,
     title: "Δημόσια Έργα",
     description: "Κατασκευή και συντήρηση δημοσίων υποδομών με τήρηση αυστηρών προδιαγραφών και χρονοδιαγραμμάτων.",
-    image: "/HighRes/image-1772753692358.jpg",
+    image: "/HighRes/image-1772753692358.png",
   },
   {
     icon: HardHat,
@@ -87,7 +87,7 @@ const SERVICES = [
     icon: Truck,
     title: "Οδοποιία & Ασφαλτοστρώσεις",
     description: "Κατασκευή, ανακατασκευή και συντήρηση οδικών δικτύων με σύγχρονα μηχανήματα.",
-    image: "/HighRes/image-1772753887996.jpg",
+    image: "/HighRes/image-1772753887996.png",
   },
   {
     icon: Paintbrush,
@@ -99,7 +99,7 @@ const SERVICES = [
     icon: Ruler,
     title: "Χωματουργικά Έργα",
     description: "Εκσκαφές, επιχωματώσεις, διαμορφώσεις εδάφους και προετοιμασία εργοταξίου.",
-    image: "/HighRes/image-1772753660495.jpg",
+    image: "/HighRes/image-1772753660495.png",
   },
   {
     icon: Droplets,
@@ -124,11 +124,11 @@ const WHY_US = [
 ];
 
 const GALLERY = [
-  { src: "/HighRes/image-1772753736848.jpg", span: "col-span-2 row-span-2" },
-  { src: "/HighRes/image-1772753878297.jpg", span: "" },
+  { src: "/HighRes/image-1772753736848.png", span: "sm:col-span-2 sm:row-span-2" },
+  { src: "/HighRes/image-1772753878297.png", span: "" },
   { src: "/Photos/project-6.jpg", span: "" },
   { src: "/Photos/project-10.jpg", span: "" },
-  { src: "/Photos/project-11.jpg", span: "col-span-2" },
+  { src: "/Photos/project-11.jpg", span: "sm:col-span-2" },
   { src: "/Photos/project-12.jpg", span: "" },
   { src: "/Photos/project-13.jpg", span: "" },
   { src: "/Photos/project-14.jpg", span: "" },
@@ -256,7 +256,7 @@ export default function Concept4() {
               playsInline
               className="h-full w-full object-cover opacity-60"
             >
-              <source src="/Videos/sample_3-3.mp4" type="video/mp4" />
+              <source src="/Videos/construction/10_asphalt_dump_truck_ext_v3.mp4" type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-gradient-to-br from-[var(--brand-blue-dark)]/80 via-[var(--brand-blue-dark)]/50 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/90 via-transparent to-black/30" />
@@ -421,7 +421,7 @@ export default function Concept4() {
                 <Reveal
                   key={i}
                   className={`group relative cursor-pointer overflow-hidden rounded-xl ${item.span} ${
-                    item.span.includes("row-span-2") ? "aspect-square" : "aspect-[4/3]"
+                    item.span.includes("row-span-2") ? "aspect-[4/3] sm:aspect-square" : "aspect-[4/3]"
                   }`}
                   animation="animate-scale-in"
                   delay={`delay-${Math.min((i + 1) * 100, 700)}`}
@@ -463,7 +463,7 @@ export default function Concept4() {
                   </div>
                   <div className="absolute -bottom-5 -right-5 hidden h-44 w-44 overflow-hidden rounded-2xl border-4 border-white shadow-xl md:block">
                     <Image
-                      src="/HighRes/image-1772753692358.jpg"
+                      src="/HighRes/image-1772753692358.png"
                       alt="Έργο ΑΛΚΑΤΕΡ"
                       fill
                       className="object-cover"
@@ -541,7 +541,7 @@ export default function Concept4() {
         <section id="contact" className="relative overflow-hidden py-28 lg:py-36">
           <div className="absolute inset-0">
             <Image
-              src="/HighRes/image-1772753887996.jpg"
+              src="/HighRes/image-1772753887996.png"
               alt="Επικοινωνία"
               fill
               className="object-cover"
@@ -585,7 +585,7 @@ export default function Concept4() {
 
               {/* Right — Glass card */}
               <Reveal className="w-full lg:w-1/2" animation="animate-slide-right">
-                <div className="space-y-7 rounded-2xl border border-white/15 bg-white/[0.07] p-10 backdrop-blur-xl">
+                <div className="space-y-7 rounded-2xl border border-white/15 bg-white/[0.07] p-6 md:p-10 backdrop-blur-xl">
                   {[
                     {
                       icon: MapPin,

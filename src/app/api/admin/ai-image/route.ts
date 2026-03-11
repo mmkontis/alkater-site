@@ -56,8 +56,40 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const imageUrl = data.imageUrls[0];
+
+    // Download the image and upload to Supabase storage server-side
+    const imgRes = await fetch(imageUrl);
+    if (!imgRes.ok) {
+      return NextResponse.json(
+        { error: "Failed to download generated image" },
+        { status: 500 }
+      );
+    }
+    const imgBlob = await imgRes.blob();
+    const imgBuffer = Buffer.from(await imgBlob.arrayBuffer());
+    const fileName = `blog/${Date.now()}-ai-cover.png`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("media")
+      .upload(fileName, imgBuffer, {
+        upsert: false,
+        contentType: imgBlob.type || "image/png",
+      });
+
+    if (uploadError) {
+      return NextResponse.json(
+        { error: `Upload failed: ${uploadError.message}` },
+        { status: 500 }
+      );
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from("media")
+      .getPublicUrl(fileName);
+
     return NextResponse.json({
-      imageUrl: data.imageUrls[0],
+      imageUrl: publicUrl,
       timing: data.timing,
     });
   } catch (err) {

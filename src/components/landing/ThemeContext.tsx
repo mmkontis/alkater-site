@@ -7,9 +7,11 @@ export type ThemeMode = "dark" | "light";
 export interface ColorScheme {
   accent: string;
   tint: string; // blue color from logo mode, used for subtle bg/overlay tints
+  logoLeft: string;  // color for the left part of the logo (ΑΛΚ)
+  logoRight: string; // color for the right part of the logo (ΑΤΕΡ)
 }
 
-const DEFAULT_SCHEME: ColorScheme = { accent: "#E63B2E", tint: "transparent" };
+const DEFAULT_SCHEME: ColorScheme = { accent: "#E63B2E", tint: "transparent", logoLeft: "#ffffff", logoRight: "#ffffff" };
 
 export interface ThemeColors {
   bgPrimary: string;
@@ -113,9 +115,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       : colors.overlayBg,
     "--card-bg": colors.cardBg,
     "--logo-bg": colors.logoBg,
+    "--logo-left": scheme.logoLeft === "var(--text-primary)" ? colors.textPrimary : scheme.logoLeft,
+    "--logo-right": scheme.logoRight,
     "--tint-subtle": hasTint
       ? `color-mix(in srgb, ${scheme.tint} 8%, transparent)`
       : "transparent",
+    "--link-color": hasTint ? scheme.tint : scheme.accent,
   } as React.CSSProperties;
 
   // Global CSS overrides that remap all hardcoded Tailwind #E63B2E classes to var(--accent)
@@ -133,8 +138,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     .selection\\:bg-\\[\\#E63B2E\\]::selection,
     .selection\\:bg-\\[\\#E63B2E\\] ::selection { background-color: var(--accent) !important; }
     .hover\\:text-\\[\\#E63B2E\\]:hover { color: var(--accent) !important; }
+    .hover\\:border-\\[\\#E63B2E\\]\\/30:hover { border-color: color-mix(in srgb, var(--accent) 30%, transparent) !important; }
     .hover\\:border-\\[\\#E63B2E\\]\\/50:hover { border-color: color-mix(in srgb, var(--accent) 50%, transparent) !important; }
+    .border-\\[\\#E63B2E\\]\\/30 { border-color: color-mix(in srgb, var(--accent) 30%, transparent) !important; }
     .group:hover .group-hover\\:text-\\[\\#E63B2E\\]\\/20 { color: color-mix(in srgb, var(--accent) 20%, transparent) !important; }
+    .group:hover .group-hover\\:bg-\\[\\#E63B2E\\]\\/20 { background-color: color-mix(in srgb, var(--accent) 20%, transparent) !important; }
     .group:hover .group-hover\\:bg-\\[\\#E63B2E\\] { background-color: var(--accent) !important; }
     .focus\\:border-\\[\\#E63B2E\\]:focus { border-color: var(--accent) !important; }
     .from-\\[\\#E63B2E\\] { --tw-gradient-from: var(--accent) !important; }

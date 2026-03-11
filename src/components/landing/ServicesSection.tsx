@@ -8,26 +8,26 @@ const SERVICES = [
   {
     title: "Ασφαλτοστρώσεις",
     description: "Ολοκληρωμένες υπηρεσίες ασφαλτόστρωσης υψηλών προδιαγραφών για οδικά δίκτυα, χώρους στάθμευσης και ιδιωτικές εγκαταστάσεις.",
-    icon: <Construction className="w-8 h-8 md:w-12 md:h-12 text-[#E63B2E]" />,
+    icon: <Construction className="w-8 h-8 md:w-12 md:h-12" style={{ color: "var(--text-muted)" }} />,
     video: "/Videos/construction/09_asphalt_dump_truck_initial_v1.mp4",
     startTime: 1,
   },
   {
     title: "Διαγραμμίσεις Οδών",
     description: "Επαγγελματικές διαγραμμίσεις οδικών δικτύων, χώρων στάθμευσης και βιομηχανικών εγκαταστάσεων με πιστοποιημένα υλικά.",
-    icon: <PaintBucket className="w-8 h-8 md:w-12 md:h-12 text-[#E63B2E]" />,
+    icon: <PaintBucket className="w-8 h-8 md:w-12 md:h-12" style={{ color: "var(--text-muted)" }} />,
     video: "/Videos/construction/08_road_line_painting_initial_v2.mp4",
   },
   {
     title: "Χωματουργικά & Υποδομές",
     description: "Εκσκαφές, επιχωματώσεις, διανοίξεις οδών, δημιουργία δικτύων αποχέτευσης και έργα υποδομής μεγάλης κλίμακας.",
-    icon: <Truck className="w-8 h-8 md:w-12 md:h-12 text-[#E63B2E]" />,
+    icon: <Truck className="w-8 h-8 md:w-12 md:h-12" style={{ color: "var(--text-muted)" }} />,
     video: "/Videos/sample_3-3.mp4",
   },
   {
     title: "Δημόσια Έργα",
     description: "Ανάληψη και εκτέλεση δημοσίων έργων με συνέπεια, τήρηση χρονοδιαγραμμάτων και αυστηρών προδιαγραφών ποιότητας.",
-    icon: <HardHat className="w-8 h-8 md:w-12 md:h-12 text-[#E63B2E]" />,
+    icon: <HardHat className="w-8 h-8 md:w-12 md:h-12" style={{ color: "var(--text-muted)" }} />,
     video: "/Videos/construction/11_road_survey_trimmed_8s_v2.mp4",
   },
 ];
@@ -60,8 +60,8 @@ export function ServicesSection() {
         >
           <div>
             <div className="flex items-center gap-4 mb-4">
-              <span className="w-8 h-[2px] bg-[#E63B2E]"></span>
-              <span className="font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E63B2E]">Εξειδικευση</span>
+              <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
+              <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>Εξειδικευση</span>
             </div>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter uppercase max-w-2xl leading-[0.9]">
               Οι <span className="text-[#E63B2E]">Υπηρεσιες</span> Μας.
@@ -79,7 +79,7 @@ export function ServicesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           {SERVICES.map((service, index) => (
-            <a href="/proposals/concept-5/services/asphalt" key={index} className="block w-full">
+            <a href="/proposals/concept-1/projects/asfaltostrosi-ethnikis-odou" key={index} className="block w-full">
               <ServiceCard
                 service={service}
                 index={index}
@@ -96,17 +96,63 @@ function ServiceCard({ service, index }: { service: { title: string; description
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile (no hover capability)
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // Intersection Observer for mobile scroll-triggered activation
+  // Uses rootMargin to create a "sweet spot" in the center of the viewport
+  // so cards activate when they're roughly centered on screen
+  useEffect(() => {
+    if (!isMobile || !cardRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.3, rootMargin: "-20% 0px -20% 0px" }
+    );
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [isMobile]);
+
+  const isActive = isMobile ? isInView : isHovered;
+
+  // On mobile: always keep videos playing (muted autoplay is allowed on iOS/Android).
+  // Only toggle visual state (grayscale/color) via isActive.
+  // On desktop: play/pause on hover as before.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (isMobile) {
+      // On mobile, start playing immediately and never pause
+      if (service.startTime) video.currentTime = service.startTime;
+      video.play().catch(() => {});
+    } else {
+      if (isActive) {
+        if (service.startTime) video.currentTime = service.startTime;
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    }
+  }, [isActive, isMobile, service.startTime]);
 
   useEffect(() => {
-    if (isHovered && videoRef.current) {
-      if (service.startTime) {
-        videoRef.current.currentTime = service.startTime;
-      }
-      videoRef.current.play().catch(() => {});
-    } else if (videoRef.current) {
-      videoRef.current.pause();
-    }
-  }, [isHovered, service.startTime]);
+    const video = videoRef.current;
+    if (!video || !service.startTime) return;
+    const handleEnded = () => {
+      video.currentTime = service.startTime!;
+      video.play().catch(() => {});
+    };
+    video.addEventListener("ended", handleEnded);
+    return () => video.removeEventListener("ended", handleEnded);
+  }, [service.startTime]);
 
   return (
     <motion.div
@@ -123,37 +169,71 @@ function ServiceCard({ service, index }: { service: { title: string; description
       <div className="absolute inset-0 w-full h-full">
         <video
           ref={videoRef}
-          src={`${service.video}#t=0.1`}
+          src={`${service.video}#t=${service.startTime ?? 0.1}`}
           muted
+          autoPlay={isMobile}
           loop
           playsInline
-          preload="metadata"
-          className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ${
-            isHovered
+          preload={isMobile ? "auto" : "metadata"}
+          className={`absolute inset-0 w-full h-full object-cover ${
+            isActive
               ? "opacity-60 scale-110 grayscale-0"
               : "opacity-40 scale-100 grayscale mix-blend-luminosity"
           }`}
+          style={{
+            transition: isActive
+              ? "opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), filter 0.8s cubic-bezier(0.4, 0, 0.2, 1)"
+              : "opacity 0.6s cubic-bezier(0.4, 0, 1, 1), transform 0.8s cubic-bezier(0.4, 0, 1, 1), filter 0.6s cubic-bezier(0.4, 0, 1, 1)",
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
       </div>
 
       <div className="relative z-10 flex flex-col justify-end h-full p-6 md:p-10">
-        <div className="mb-4 transform transition-transform duration-500 group-hover:-translate-y-2">
+        <div
+          className={`mb-4 transform ${isActive ? "-translate-y-2" : ""} group-hover:-translate-y-2`}
+          style={{
+            transition: isActive
+              ? "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
+              : "transform 0.4s cubic-bezier(0.4, 0, 1, 1)",
+          }}
+        >
           {service.icon}
         </div>
 
-        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-tight mb-4 transform transition-transform duration-500 group-hover:-translate-y-2 text-white">
+        <h3
+          className={`text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-tight mb-4 transform ${isActive ? "-translate-y-2" : ""} group-hover:-translate-y-2 text-white`}
+          style={{
+            transition: isActive
+              ? "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.05s"
+              : "transform 0.4s cubic-bezier(0.4, 0, 1, 1)",
+          }}
+        >
           {service.title}
         </h3>
 
-        <div className="overflow-hidden h-0 group-hover:h-auto opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+        <div
+          className={`overflow-hidden transform ${isActive ? "h-auto opacity-100 translate-y-0" : "h-0 opacity-0 translate-y-4"} group-hover:h-auto group-hover:opacity-100 group-hover:translate-y-0`}
+          style={{
+            transition: isActive
+              ? "height 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s"
+              : "height 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.3s cubic-bezier(0.4, 0, 1, 1), transform 0.3s cubic-bezier(0.4, 0, 1, 1)",
+          }}
+        >
           <p className="font-['Space_Mono'] text-[#E8E4DD]/80 text-sm md:text-base">
             {service.description}
           </p>
         </div>
       </div>
 
-      <div className="absolute top-6 right-6 font-['Space_Mono'] text-white/20 text-4xl font-bold group-hover:text-[#E63B2E]/20 transition-colors duration-500">
+      <div
+        className={`absolute top-6 right-6 font-['Space_Mono'] text-4xl font-bold ${isActive ? "text-white/30" : "text-white/20"} group-hover:text-white/30`}
+        style={{
+          transition: isActive
+            ? "color 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
+            : "color 0.4s cubic-bezier(0.4, 0, 1, 1)",
+        }}
+      >
         0{index + 1}
       </div>
     </motion.div>

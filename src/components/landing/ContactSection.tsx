@@ -62,7 +62,7 @@ export function ContactSection() {
       className="relative py-24 md:py-32 font-['Space_Grotesk'] overflow-hidden transition-colors duration-500"
       style={{ backgroundColor: "var(--bg-surface)", borderTop: "1px solid var(--border-color)" }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(230,59,46,0.05),transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--border-color),transparent_50%)]"></div>
       <div className="absolute inset-0 transition-colors duration-500 pointer-events-none" style={{ backgroundColor: "var(--tint-subtle)" }} />
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
@@ -77,8 +77,8 @@ export function ContactSection() {
           >
             <div>
               <div className="flex items-center gap-4 mb-6">
-                <span className="w-8 h-[2px] bg-[#E63B2E]"></span>
-                <span className="font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E63B2E]">Επικοινωνια</span>
+                <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
+                <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>Επικοινωνια</span>
               </div>
 
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase mb-8 leading-[1.1]" style={{ color: "var(--text-primary)" }}>
@@ -98,7 +98,7 @@ export function ContactSection() {
                 className="group flex items-center gap-6 p-6 rounded-2xl transition-colors"
                 style={{ backgroundColor: "var(--bg-primary)", border: "1px solid var(--border-color)" }}
               >
-                <div className="w-12 h-12 rounded-full bg-[#E63B2E]/10 flex items-center justify-center text-[#E63B2E] group-hover:bg-[#E63B2E] group-hover:text-white transition-colors">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center transition-colors" style={{ backgroundColor: "var(--border-color)", color: "var(--text-muted)" }}>
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
@@ -112,7 +112,7 @@ export function ContactSection() {
                 className="flex items-center gap-6 p-6 rounded-2xl"
                 style={{ backgroundColor: "var(--bg-primary)", border: "1px solid var(--border-color)" }}
               >
-                <div className="w-12 h-12 rounded-full bg-[#E63B2E]/10 flex items-center justify-center text-[#E63B2E]">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: "var(--border-color)", color: "var(--text-muted)" }}>
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
@@ -139,7 +139,7 @@ export function ContactSection() {
             className="p-8 md:p-12 rounded-3xl relative overflow-hidden"
             style={{ backgroundColor: "var(--bg-primary)", border: "1px solid var(--border-hover)" }}
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#E63B2E]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" style={{ backgroundColor: "var(--border-color)" }}></div>
 
             <h3 className="text-2xl font-bold font-['Space_Grotesk'] uppercase tracking-tight mb-8" style={{ color: "var(--text-primary)" }}>
               Στειλτε μας μηνυμα
@@ -210,7 +210,7 @@ export function ContactSection() {
           {showMap && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 450 }}
+              animate={{ opacity: 1, height: "min(450px, 60vh)" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
               className="mt-12 rounded-3xl overflow-hidden relative"
@@ -230,7 +230,7 @@ export function ContactSection() {
                   <button
                     key={t.name}
                     onClick={() => handleThemeChange(i)}
-                    className={`px-3 py-1.5 rounded-lg font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all duration-300 backdrop-blur-sm ${
+                    className={`px-3 py-2 min-h-[36px] rounded-lg font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all duration-300 backdrop-blur-sm ${
                       i === themeIndex
                         ? "bg-[#E63B2E] text-white border border-[#E63B2E]"
                         : "bg-black/60 text-white/70 border border-white/20 hover:border-white/40 hover:text-white"
@@ -259,16 +259,6 @@ export function ContactSection() {
         </AnimatePresence>
       </div>
 
-      {/* Footer minimal */}
-      <div className="mt-24 pt-8 container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-4 font-['Space_Mono'] text-xs uppercase tracking-widest" style={{ borderTop: "1px solid var(--border-color)", color: "var(--text-muted)" }}>
-        <div>
-          &copy; {new Date().getFullYear()} ΑΛΚΑΤΕΡ ΚΑΤΑΣΚΕΥΑΣΤΙΚΗ.
-        </div>
-        <div className="flex gap-6">
-          <a href="#" className="hover:text-[#E63B2E] transition-colors">Οροι Χρησης</a>
-          <a href="#" className="hover:text-[#E63B2E] transition-colors">Πολιτικη Απορρητου</a>
-        </div>
-      </div>
     </section>
   );
 }

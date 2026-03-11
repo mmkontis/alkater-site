@@ -27,8 +27,8 @@ export async function POST(request: NextRequest) {
 
   const systemPrompt =
     language === "el"
-      ? `Είσαι ειδικός copywriter για κατασκευαστική εταιρεία οδοποιίας και ασφαλτόστρωσης (ΑΛΚΑΤΕΡ Α.Ε.). Γράψε ένα σύντομο επαγγελματικό άρθρο blog. Απάντησε ΜΟΝΟ σε JSON χωρίς markdown blocks.`
-      : `You are a professional copywriter for a road construction and asphalt company (ALKATER S.A.). Write a short professional blog article. Respond ONLY in JSON without markdown blocks.`;
+      ? `Είσαι ειδικός copywriter για κατασκευαστική εταιρεία οδοποιίας και ασφαλτόστρωσης (ΑΛΚΑΤΕΡ Α.Ε.). Γράψε ένα επαγγελματικό άρθρο blog σε μορφή Markdown. Απάντησε ΜΟΝΟ σε JSON χωρίς markdown blocks.`
+      : `You are a professional copywriter for a road construction and asphalt company (ALKATER S.A.). Write a professional blog article in Markdown format. Respond ONLY in JSON without markdown blocks.`;
 
   const userPrompt =
     language === "el"
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 {
   "title": "τίτλος άρθρου",
   "excerpt": "σύντομη περίληψη 1-2 προτάσεις",
-  "content": "το πλήρες άρθρο (3-5 παράγραφοι, απλό κείμενο)",
+  "content": "το πλήρες άρθρο σε Markdown (## υποτίτλοι, **bold**, λίστες, παράγραφοι, 4-6 ενότητες). Μην βάζεις # τίτλο στην αρχή γιατί εμφανίζεται ξεχωριστά.",
   "imagePrompt": "μια αγγλική περιγραφή εικόνας που ταιριάζει στο άρθρο, φωτορεαλιστικό στυλ, κατασκευαστικά έργα"
 }`
       : `Write a blog article about: "${topic}"
@@ -47,13 +47,13 @@ Respond in JSON with this structure:
 {
   "title": "article title",
   "excerpt": "short summary 1-2 sentences",
-  "content": "full article (3-5 paragraphs, plain text)",
+  "content": "full article in Markdown (## subheadings, **bold**, lists, paragraphs, 4-6 sections). Do not include a # title at the start as it is shown separately.",
   "imagePrompt": "an English image description that fits the article, photorealistic style, construction works"
 }`;
 
   try {
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,6 +65,19 @@ Respond in JSON with this structure:
             temperature: 0.7,
             maxOutputTokens: 2048,
             responseMimeType: "application/json",
+            responseSchema: {
+              type: "OBJECT",
+              properties: {
+                title: { type: "STRING", description: "Article title" },
+                excerpt: { type: "STRING", description: "Short summary 1-2 sentences" },
+                content: { type: "STRING", description: "Full article in Markdown with ## subheadings, **bold**, lists, paragraphs" },
+                imagePrompt: { type: "STRING", description: "English image description, photorealistic style, construction works" },
+              },
+              required: ["title", "excerpt", "content", "imagePrompt"],
+            },
+            thinkingConfig: {
+              thinkingBudget: 1024,
+            },
           },
         }),
       }
@@ -79,8 +92,8 @@ Respond in JSON with this structure:
     }
 
     const data = await res.json();
-    const text =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    const parts = data.candidates?.[0]?.content?.parts ?? [];
+    const text = parts.filter((p: { text?: string }) => p.text).pop()?.text ?? "";
 
     const article = JSON.parse(text);
 
