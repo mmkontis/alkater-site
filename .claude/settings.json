@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx next:*)",
+      "Bash(pnpm next:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/proposals/concept-1)",
+      "Bash(npx tsc:*)",
+      "Bash(ls /Users/minasmarioskontis/Projects/alkater-site/public/Photos/project-*.jpg)",
+      "Bash(claude mcp:*)",
+      "Read(//Users/minasmarioskontis/**)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\(''''mcpServers'''',d.get\\(''''projects'''',{}\\).get\\(''''/Users/minasmarioskontis/Projects/alkater-site'''',{}\\).get\\(''''mcpServers'''',{}\\)\\), indent=2\\)\\)\")",
+      "Bash(npx -y @supabase/mcp-server-supabase@latest --access-token sbp_7176a7be56371b18ebbf970b99b90df209896bba --help)"
+    ]
+  }
+}
