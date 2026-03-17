@@ -105,7 +105,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
           <h1 className="text-6xl font-bold text-[#F5F3EE] mb-4">404</h1>
           <p className="text-[#E8E4DD]/60 font-['Space_Mono'] mb-8">Το έργο δεν βρέθηκε.</p>
           <Link
-            href="/proposals/concept-1"
+            href="/"
             className="inline-flex items-center gap-2 text-[#E63B2E] font-['Space_Mono'] text-sm uppercase tracking-widest hover:gap-4 transition-all"
           >
             <ArrowLeft className="w-4 h-4" /> Επιστροφη
@@ -137,11 +137,11 @@ export function ProjectSubpage({ slug }: { slug: string }) {
 
       {/* Fixed Nav with Back Button */}
       <div className="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center md:mix-blend-difference text-white">
-        <Link href="/proposals/concept-1" className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors">
+        <Link href="/" className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors">
           <ChevronLeft className="w-5 h-5" />
           Πισω
         </Link>
-        <Link href="/proposals/concept-1">
+        <Link href="/">
           <AlkaterLogoWhite className="h-24 w-auto" />
         </Link>
       </div>
@@ -384,7 +384,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
                 <p className="font-['Space_Mono'] text-[#E8E4DD]/60">Δείτε περισσότερα από τα έργα μας.</p>
               </div>
               <Link
-                href="/proposals/concept-1"
+                href="/"
                 className="hidden md:flex items-center gap-2 font-['Space_Mono'] text-sm uppercase tracking-widest text-[#E8E4DD]/60 hover:text-white transition-colors"
               >
                 Ολα τα εργα <ArrowRight className="w-4 h-4" />
@@ -393,7 +393,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[prev, next].filter(Boolean).map((proj, idx) => (
-                <Link key={proj!.slug} href={`/proposals/concept-1/projects/${proj!.slug}`}>
+                <Link key={proj!.slug} href={`/projects/${proj!.slug}`}>
                   <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}

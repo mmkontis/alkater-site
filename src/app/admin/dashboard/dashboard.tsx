@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { signout } from "../actions";
 import ImageUpload from "./image-upload";
@@ -17,10 +17,123 @@ import {
   Sparkles,
   ExternalLink,
   Layers,
+  Construction,
+  HardHat,
+  Truck,
+  PaintBucket,
+  Ruler,
+  ShieldCheck,
+  Wrench,
+  Hammer,
+  Cone,
+  Shovel,
+  Fence,
+  Drill,
+  Landmark,
+  Building,
+  Factory,
+  Warehouse,
+  Blocks,
+  Combine,
+  MapPin,
+  Map,
+  Route,
+  Compass,
+  Gauge,
+  Cog,
+  Settings,
+  Shield,
+  BadgeCheck,
+  ClipboardCheck,
+  ClipboardList,
+  FileCheck,
+  FileCog,
+  Scan,
+  ScanLine,
+  Pipette,
+  Paintbrush,
+  PenTool,
+  Shapes,
+  Triangle,
+  Square,
+  Circle,
+  Hexagon,
+  Mountain,
+  TreePine,
+  Leaf,
+  Droplets,
+  Zap,
+  Bolt,
+  Cable,
+  Container,
+  Package,
+  Weight,
+  Milestone,
+  Signpost,
+  TrafficCone,
+  type LucideIcon,
 } from "lucide-react";
+
+const SERVICE_ICONS: { name: string; icon: LucideIcon; label: string }[] = [
+  { name: "Construction", icon: Construction, label: "Κατασκευή" },
+  { name: "HardHat", icon: HardHat, label: "Κράνος" },
+  { name: "Truck", icon: Truck, label: "Φορτηγό" },
+  { name: "PaintBucket", icon: PaintBucket, label: "Βαφή" },
+  { name: "Ruler", icon: Ruler, label: "Χάρακας" },
+  { name: "ShieldCheck", icon: ShieldCheck, label: "Ποιοτ. Έλεγχος" },
+  { name: "Wrench", icon: Wrench, label: "Κλειδί" },
+  { name: "Hammer", icon: Hammer, label: "Σφυρί" },
+  { name: "Cone", icon: Cone, label: "Κώνος" },
+  { name: "Shovel", icon: Shovel, label: "Φτυάρι" },
+  { name: "Fence", icon: Fence, label: "Φράχτης" },
+  { name: "Drill", icon: Drill, label: "Τρυπάνι" },
+  { name: "TrafficCone", icon: TrafficCone, label: "Κώνος Οδικός" },
+  { name: "Landmark", icon: Landmark, label: "Μνημείο" },
+  { name: "Building", icon: Building, label: "Κτίριο" },
+  { name: "Building2", icon: Building2, label: "Κτίριο 2" },
+  { name: "Factory", icon: Factory, label: "Εργοστάσιο" },
+  { name: "Warehouse", icon: Warehouse, label: "Αποθήκη" },
+  { name: "Blocks", icon: Blocks, label: "Τούβλα" },
+  { name: "Combine", icon: Combine, label: "Μηχάνημα" },
+  { name: "MapPin", icon: MapPin, label: "Τοποθεσία" },
+  { name: "Map", icon: Map, label: "Χάρτης" },
+  { name: "Route", icon: Route, label: "Διαδρομή" },
+  { name: "Compass", icon: Compass, label: "Πυξίδα" },
+  { name: "Milestone", icon: Milestone, label: "Χιλιομετρικό" },
+  { name: "Signpost", icon: Signpost, label: "Πινακίδα" },
+  { name: "Gauge", icon: Gauge, label: "Μετρητής" },
+  { name: "Cog", icon: Cog, label: "Γρανάζι" },
+  { name: "Settings", icon: Settings, label: "Ρυθμίσεις" },
+  { name: "Shield", icon: Shield, label: "Ασπίδα" },
+  { name: "BadgeCheck", icon: BadgeCheck, label: "Πιστοποίηση" },
+  { name: "ClipboardCheck", icon: ClipboardCheck, label: "Έλεγχος" },
+  { name: "ClipboardList", icon: ClipboardList, label: "Λίστα Ελέγχου" },
+  { name: "FileCheck", icon: FileCheck, label: "Αρχείο OK" },
+  { name: "FileCog", icon: FileCog, label: "Τεχν. Αρχείο" },
+  { name: "Scan", icon: Scan, label: "Σάρωση" },
+  { name: "ScanLine", icon: ScanLine, label: "Γραμμή Σάρωσης" },
+  { name: "Pipette", icon: Pipette, label: "Πιπέτα" },
+  { name: "Paintbrush", icon: Paintbrush, label: "Πινέλο" },
+  { name: "PenTool", icon: PenTool, label: "Σχεδίαση" },
+  { name: "Shapes", icon: Shapes, label: "Σχήματα" },
+  { name: "Triangle", icon: Triangle, label: "Τρίγωνο" },
+  { name: "Hexagon", icon: Hexagon, label: "Εξάγωνο" },
+  { name: "Mountain", icon: Mountain, label: "Βουνό" },
+  { name: "TreePine", icon: TreePine, label: "Δέντρο" },
+  { name: "Leaf", icon: Leaf, label: "Φύλλο" },
+  { name: "Droplets", icon: Droplets, label: "Σταγόνες" },
+  { name: "Zap", icon: Zap, label: "Ενέργεια" },
+  { name: "Bolt", icon: Bolt, label: "Μπουλόνι" },
+  { name: "Cable", icon: Cable, label: "Καλώδιο" },
+  { name: "Container", icon: Container, label: "Κοντέινερ" },
+  { name: "Package", icon: Package, label: "Πακέτο" },
+  { name: "Weight", icon: Weight, label: "Βάρος" },
+  { name: "Layers", icon: Layers, label: "Στρώσεις" },
+];
 
 interface Service {
   id: string;
+  slug: string;
   name: string;
   description: string;
   icon: string;
@@ -32,6 +145,7 @@ interface Service {
 
 interface Project {
   id: string;
+  slug: string;
   title: string;
   description: string;
   category: string;
@@ -125,6 +239,112 @@ const LOCAL_VIDEOS = [
   { name: "sample_3-3.mp4", path: "/Videos/sample_3-3.mp4" },
 ];
 
+function IconPicker({ value, onChange }: { value: string; onChange: (name: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const filtered = search
+    ? SERVICE_ICONS.filter(
+        (i) =>
+          i.name.toLowerCase().includes(search.toLowerCase()) ||
+          i.label.toLowerCase().includes(search.toLowerCase())
+      )
+    : SERVICE_ICONS;
+
+  const selected = SERVICE_ICONS.find((i) => i.name === value);
+  const SelectedIcon = selected?.icon;
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="flex w-full cursor-pointer items-center gap-3 rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 text-left font-['Space_Grotesk'] text-sm text-[#111111] transition-all hover:border-[#111111]/20 focus:outline-none focus:ring-2 focus:ring-[#E63B2E]/20"
+      >
+        {SelectedIcon ? (
+          <SelectedIcon className="h-5 w-5 shrink-0 text-[#111111]/70" />
+        ) : (
+          <Layers className="h-5 w-5 shrink-0 text-[#111111]/30" />
+        )}
+        <span className={`flex-1 truncate ${value ? "text-[#111111]" : "text-[#111111]/40"}`}>
+          {selected ? `${selected.label} (${selected.name})` : "Επιλέξτε εικονίδιο..."}
+        </span>
+        <ChevronDown className={`h-4 w-4 shrink-0 text-[#111111]/40 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-xl border border-[#111111]/10 bg-white shadow-xl">
+          <div className="border-b border-[#111111]/5 p-2">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Αναζήτηση εικονιδίου..."
+              className="w-full rounded-lg bg-[#F5F3EE]/50 px-3 py-2 font-['Space_Grotesk'] text-sm text-[#111111] placeholder:text-[#111111]/30 outline-none focus:ring-2 focus:ring-[#E63B2E]/20"
+              autoFocus
+            />
+          </div>
+          <div className="grid max-h-64 grid-cols-4 gap-1 overflow-y-auto p-2 sm:grid-cols-6">
+            {filtered.map((item) => {
+              const Icon = item.icon;
+              const isSelected = item.name === value;
+              return (
+                <button
+                  key={item.name}
+                  type="button"
+                  onClick={() => {
+                    onChange(item.name);
+                    setOpen(false);
+                    setSearch("");
+                  }}
+                  className={`group flex cursor-pointer flex-col items-center gap-1 rounded-lg p-2 transition-all ${
+                    isSelected
+                      ? "bg-[#E63B2E]/10 ring-1 ring-[#E63B2E]/30"
+                      : "hover:bg-[#F5F3EE]"
+                  }`}
+                  title={`${item.label} (${item.name})`}
+                >
+                  <Icon
+                    className={`h-6 w-6 ${
+                      isSelected ? "text-[#E63B2E]" : "text-[#111111]/60 group-hover:text-[#111111]"
+                    }`}
+                  />
+                  <span
+                    className={`line-clamp-1 font-['Space_Mono'] text-[8px] uppercase tracking-wider ${
+                      isSelected ? "text-[#E63B2E]" : "text-[#111111]/40"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+            {filtered.length === 0 && (
+              <div className="col-span-full py-6 text-center font-['Space_Mono'] text-[10px] text-[#111111]/30 uppercase tracking-widest">
+                Κανένα αποτέλεσμα
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function resolveServiceIcon(name: string): LucideIcon {
+  const found = SERVICE_ICONS.find((i) => i.name === name);
+  return found?.icon ?? Layers;
+}
+
 export default function Dashboard({
   user,
   projects: initialProjects,
@@ -148,6 +368,7 @@ export default function Dashboard({
   const [serviceTab, setServiceTab] = useState<"list" | "form">("list");
 
   const emptyService: Omit<Service, "id"> = {
+    slug: "",
     name: "",
     description: "",
     icon: "",
@@ -165,6 +386,7 @@ export default function Dashboard({
   const [projectTab, setProjectTab] = useState<"list" | "form">("list");
 
   const emptyProject: Omit<Project, "id" | "created_at"> = {
+    slug: "",
     title: "",
     description: "",
     category: "",
@@ -190,6 +412,18 @@ export default function Dashboard({
   };
   const [blogForm, setBlogForm] = useState(emptyPost);
   const [contentPreview, setContentPreview] = useState(false);
+  const [slugConflict, setSlugConflict] = useState<Record<string, string | null>>({});
+
+  async function checkSlugConflict(table: "services" | "projects" | "blog_posts", slug: string, excludeId?: string) {
+    if (!slug) { setSlugConflict((prev) => ({ ...prev, [table]: null })); return; }
+    let query = supabase.from(table).select("id").eq("slug", slug);
+    if (excludeId) query = query.neq("id", excludeId);
+    const { data } = await query.limit(1);
+    setSlugConflict((prev) => ({
+      ...prev,
+      [table]: data && data.length > 0 ? `Το slug "${slug}" χρησιμοποιείται ήδη. Θα προστεθεί αριθμός αυτόματα.` : null,
+    }));
+  }
 
   // ── AI generation state ──
   const [aiTopic, setAiTopic] = useState("");
@@ -309,19 +543,21 @@ export default function Dashboard({
 
   async function handleSaveService() {
     setSavingService(true);
-    const payload = {
-      name: serviceForm.name,
-      description: serviceForm.description,
-      icon: serviceForm.icon,
-      image_url: serviceForm.image_url || null,
-      video_url: serviceForm.video_url || null,
-      video_start_time: serviceForm.video_start_time,
-      sort_order: serviceForm.sort_order,
-    };
+    const baseSlug = serviceForm.slug || slugify(serviceForm.name);
     if (editingService) {
+      const slug = await resolveUniqueSlug("services", baseSlug, editingService.id);
       const { error } = await supabase
         .from("services")
-        .update(payload)
+        .update({
+          slug,
+          name: serviceForm.name,
+          description: serviceForm.description,
+          icon: serviceForm.icon,
+          image_url: serviceForm.image_url || null,
+          video_url: serviceForm.video_url || null,
+          video_start_time: serviceForm.video_start_time,
+          sort_order: serviceForm.sort_order,
+        })
         .eq("id", editingService.id);
       if (!error) {
         setEditingService(null);
@@ -330,7 +566,17 @@ export default function Dashboard({
         await refreshServices();
       }
     } else {
-      const { error } = await supabase.from("services").insert(payload);
+      const slug = await resolveUniqueSlug("services", baseSlug);
+      const { error } = await supabase.from("services").insert({
+        slug,
+        name: serviceForm.name,
+        description: serviceForm.description,
+        icon: serviceForm.icon,
+        image_url: serviceForm.image_url || null,
+        video_url: serviceForm.video_url || null,
+        video_start_time: serviceForm.video_start_time,
+        sort_order: serviceForm.sort_order,
+      });
       if (!error) {
         setServiceForm(emptyService);
         setServiceTab("list");
@@ -349,6 +595,7 @@ export default function Dashboard({
   function startEditService(service: Service) {
     setEditingService(service);
     setServiceForm({
+      slug: service.slug,
       name: service.name,
       description: service.description,
       icon: service.icon,
@@ -362,18 +609,20 @@ export default function Dashboard({
 
   async function handleSaveProject() {
     setSavingProject(true);
-    const payload = {
-      title: projectForm.title,
-      description: projectForm.description,
-      category: projectForm.category,
-      image_url: projectForm.image_url,
-      published: projectForm.published,
-      service_id: projectForm.service_id || null,
-    };
+    const baseSlug = projectForm.slug || slugify(projectForm.title);
     if (editingProject) {
+      const slug = await resolveUniqueSlug("projects", baseSlug, editingProject.id);
       const { error } = await supabase
         .from("projects")
-        .update(payload)
+        .update({
+          slug,
+          title: projectForm.title,
+          description: projectForm.description,
+          category: projectForm.category,
+          image_url: projectForm.image_url,
+          published: projectForm.published,
+          service_id: projectForm.service_id || null,
+        })
         .eq("id", editingProject.id);
       if (!error) {
         setEditingProject(null);
@@ -382,7 +631,16 @@ export default function Dashboard({
         await refreshProjects();
       }
     } else {
-      const { error } = await supabase.from("projects").insert(payload);
+      const slug = await resolveUniqueSlug("projects", baseSlug);
+      const { error } = await supabase.from("projects").insert({
+        slug,
+        title: projectForm.title,
+        description: projectForm.description,
+        category: projectForm.category,
+        image_url: projectForm.image_url,
+        published: projectForm.published,
+        service_id: projectForm.service_id || null,
+      });
       if (!error) {
         setProjectForm(emptyProject);
         setProjectTab("list");
@@ -401,6 +659,7 @@ export default function Dashboard({
   function startEditProject(project: Project) {
     setEditingProject(project);
     setProjectForm({
+      slug: project.slug,
       title: project.title,
       description: project.description,
       category: project.category,
@@ -431,12 +690,12 @@ export default function Dashboard({
     if (data) setBlogPosts(data);
   }
 
-  async function resolveUniqueSlug(baseSlug: string, excludeId?: string): Promise<string> {
+  async function resolveUniqueSlug(table: "services" | "projects" | "blog_posts", baseSlug: string, excludeId?: string): Promise<string> {
     let candidate = baseSlug;
     let suffix = 0;
     while (true) {
       let query = supabase
-        .from("blog_posts")
+        .from(table)
         .select("id")
         .eq("slug", candidate);
       if (excludeId) query = query.neq("id", excludeId);
@@ -451,7 +710,7 @@ export default function Dashboard({
     setSavingPost(true);
     const baseSlug = blogForm.slug || slugify(blogForm.title);
     if (editingPost) {
-      const slug = await resolveUniqueSlug(baseSlug, editingPost.id);
+      const slug = await resolveUniqueSlug("blog_posts", baseSlug, editingPost.id);
       const { error } = await supabase
         .from("blog_posts")
         .update({
@@ -471,7 +730,7 @@ export default function Dashboard({
         await refreshBlogPosts();
       }
     } else {
-      const slug = await resolveUniqueSlug(baseSlug);
+      const slug = await resolveUniqueSlug("blog_posts", baseSlug);
       const { error } = await supabase.from("blog_posts").insert({
         title: blogForm.title,
         slug,
@@ -1006,7 +1265,10 @@ export default function Dashboard({
                       className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 rounded-2xl border border-[#111111]/10 bg-white p-4 sm:p-5 transition-all hover:border-[#111111]/20"
                     >
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#111111]/5">
-                        <span className="font-['Space_Mono'] text-[10px] text-[#111111]/60 uppercase">{s.icon || "—"}</span>
+                        {(() => {
+                          const Icon = resolveServiceIcon(s.icon);
+                          return <Icon className="h-5 w-5 text-[#111111]/60" />;
+                        })()}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3">
@@ -1020,13 +1282,15 @@ export default function Dashboard({
                         <p className="mt-1 line-clamp-1 text-sm text-[#111111]/50">
                           {s.description}
                         </p>
-                        {(s.video_url || s.image_url) && (
-                          <p className="font-['Space_Mono'] text-[9px] text-[#E63B2E] uppercase tracking-widest mt-1">
-                            {s.video_url && "Video"}
-                            {s.video_url && s.image_url && " · "}
-                            {s.image_url && "Image"}
-                          </p>
-                        )}
+                        <p className="font-['Space_Mono'] text-[9px] uppercase tracking-widest mt-1">
+                          {s.slug && (
+                            <span className="text-[#111111]/30">/services/{s.slug}</span>
+                          )}
+                          {s.slug && (s.video_url || s.image_url) && <span className="text-[#111111]/20 mx-1">·</span>}
+                          {s.video_url && <span className="text-[#E63B2E]">Video</span>}
+                          {s.video_url && s.image_url && <span className="text-[#111111]/20 mx-1">·</span>}
+                          {s.image_url && <span className="text-[#E63B2E]">Image</span>}
+                        </p>
                       </div>
                       <div className="flex shrink-0 items-center gap-2 border-t sm:border-t-0 border-[#111111]/5 pt-3 sm:pt-0">
                         <button
@@ -1058,10 +1322,34 @@ export default function Dashboard({
                       <input
                         type="text"
                         value={serviceForm.name}
-                        onChange={(e) => setServiceForm({ ...serviceForm, name: e.target.value })}
+                        onChange={(e) => {
+                          const name = e.target.value;
+                          setServiceForm({
+                            ...serviceForm,
+                            name,
+                            slug: editingService ? serviceForm.slug : slugify(name),
+                          });
+                        }}
                         className={inputClass}
                         placeholder="π.χ. Ασφαλτοστρώσεις"
                       />
+                    </div>
+                    <div>
+                      <label className={labelClass}>Slug (URL)</label>
+                      <div className="flex items-center gap-3">
+                        <span className="font-['Space_Mono'] text-[10px] text-[#111111]/30 uppercase tracking-widest whitespace-nowrap">
+                          /services/
+                        </span>
+                        <input
+                          type="text"
+                          value={serviceForm.slug}
+                          onChange={(e) =>
+                            setServiceForm({ ...serviceForm, slug: e.target.value })
+                          }
+                          className={inputClass}
+                          placeholder="asfaltostroseis"
+                        />
+                      </div>
                     </div>
                     <div>
                       <label className={labelClass}>Περιγραφή</label>
@@ -1075,13 +1363,10 @@ export default function Dashboard({
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
-                        <label className={labelClass}>Εικονίδιο (Lucide icon name)</label>
-                        <input
-                          type="text"
+                        <label className={labelClass}>Εικονίδιο</label>
+                        <IconPicker
                           value={serviceForm.icon}
-                          onChange={(e) => setServiceForm({ ...serviceForm, icon: e.target.value })}
-                          className={inputClass}
-                          placeholder="π.χ. Construction, Truck, HardHat"
+                          onChange={(name) => setServiceForm({ ...serviceForm, icon: name })}
                         />
                       </div>
                       <div>
@@ -1129,7 +1414,7 @@ export default function Dashboard({
                     <div className="flex gap-3 pt-3">
                       <button
                         onClick={handleSaveService}
-                        disabled={savingService || !serviceForm.name}
+                        disabled={savingService || !serviceForm.name || !serviceForm.slug}
                         className={btnPrimary}
                       >
                         {savingService
@@ -1240,6 +1525,11 @@ export default function Dashboard({
                         <p className="mt-1 line-clamp-1 text-sm text-[#111111]/50">
                           {p.description}
                         </p>
+                        {p.slug && (
+                          <p className="font-['Space_Mono'] text-[9px] text-[#111111]/30 uppercase tracking-widest mt-1">
+                            /projects/{p.slug}
+                          </p>
+                        )}
                       </div>
                       <div className="flex shrink-0 items-center gap-2 border-t sm:border-t-0 border-[#111111]/5 pt-3 sm:pt-0">
                         <button
@@ -1277,12 +1567,34 @@ export default function Dashboard({
                       <input
                         type="text"
                         value={projectForm.title}
-                        onChange={(e) =>
-                          setProjectForm({ ...projectForm, title: e.target.value })
-                        }
+                        onChange={(e) => {
+                          const title = e.target.value;
+                          setProjectForm({
+                            ...projectForm,
+                            title,
+                            slug: editingProject ? projectForm.slug : slugify(title),
+                          });
+                        }}
                         className={inputClass}
                         placeholder="π.χ. Κατασκευή οδοποιίας - Λάρισα"
                       />
+                    </div>
+                    <div>
+                      <label className={labelClass}>Slug (URL)</label>
+                      <div className="flex items-center gap-3">
+                        <span className="font-['Space_Mono'] text-[10px] text-[#111111]/30 uppercase tracking-widest whitespace-nowrap">
+                          /projects/
+                        </span>
+                        <input
+                          type="text"
+                          value={projectForm.slug}
+                          onChange={(e) =>
+                            setProjectForm({ ...projectForm, slug: e.target.value })
+                          }
+                          className={inputClass}
+                          placeholder="kataskevi-odopoiias-larisa"
+                        />
+                      </div>
                     </div>
                     <div>
                       <label className={labelClass}>Κατηγορία</label>
@@ -1351,7 +1663,7 @@ export default function Dashboard({
                     <div className="flex gap-3 pt-3">
                       <button
                         onClick={handleSaveProject}
-                        disabled={savingProject || !projectForm.title}
+                        disabled={savingProject || !projectForm.title || !projectForm.slug}
                         className={btnPrimary}
                       >
                         {savingProject
@@ -1541,10 +1853,14 @@ export default function Dashboard({
                           onChange={(e) =>
                             setBlogForm({ ...blogForm, slug: e.target.value })
                           }
+                          onBlur={() => checkSlugConflict("blog_posts", blogForm.slug, editingPost?.id)}
                           className={inputClass}
                           placeholder="neo-ergo-asfaltostroshs"
                         />
                       </div>
+                      {slugConflict.blog_posts && (
+                        <p className="mt-1.5 font-['Space_Mono'] text-[10px] text-amber-600">{slugConflict.blog_posts}</p>
+                      )}
                     </div>
                     <div>
                       <label className={labelClass}>Περίληψη</label>
@@ -1668,7 +1984,7 @@ export default function Dashboard({
                     <div className="flex gap-3 pt-3">
                       <button
                         onClick={handleSavePost}
-                        disabled={savingPost || !blogForm.title}
+                        disabled={savingPost || !blogForm.title || !blogForm.slug}
                         className={btnPrimary}
                       >
                         {savingPost

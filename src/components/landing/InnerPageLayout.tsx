@@ -4,15 +4,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { ChevronLeft, Menu, X } from "lucide-react";
 import { Footer } from "./Footer";
+import { EspaBanner } from "./EspaBanner";
 import { ThemeProvider } from "./ThemeContext";
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
-  { href: "/proposals/concept-1", label: "Αρχικη" },
-  { href: "/proposals/concept-1/about", label: "Εταιρεια" },
-  { href: "/proposals/concept-1/certifications", label: "Πιστοποιησεις" },
-  { href: "/proposals/concept-1#blog", label: "Αρθρα" },
-  { href: "/proposals/concept-1/contact", label: "Επικοινωνια" },
+  { href: "/", label: "Αρχικη" },
+  { href: "/about", label: "Εταιρεια" },
+  { href: "/certifications", label: "Πιστοποιησεις" },
+  { href: "/#blog", label: "Αρθρα" },
+  { href: "/contact", label: "Επικοινωνια" },
 ];
 
 function AlkaterLogoWhite({ className }: { className?: string }) {
@@ -70,14 +71,16 @@ export function InnerPageLayout({ children }: { children: React.ReactNode }) {
         </svg>
       </div>
 
+      <EspaBanner />
+
       {/* Top bar */}
       <div className="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center mix-blend-difference text-white">
-        <Link href="/proposals/concept-1" className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors">
+        <Link href="/" className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors">
           <ChevronLeft className="w-5 h-5" />
           Πισω
         </Link>
-        <Link href="/proposals/concept-1">
-          <AlkaterLogoWhite className="h-24 w-auto" />
+        <Link href="/">
+          <AlkaterLogoWhite className="h-10 sm:h-12 w-auto" />
         </Link>
         <button
           onClick={() => setMenuOpen(!menuOpen)}
@@ -117,10 +120,26 @@ export function InnerPageLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function PageHero({ label, title, subtitle, image }: { label: string; title: React.ReactNode; subtitle: string; image?: string }) {
+export function PageHero({ label, title, subtitle, image, video, videoStartTime }: { label: string; title: React.ReactNode; subtitle: string; image?: string; video?: string; videoStartTime?: number }) {
+  const hasMedia = !!(video || image);
   return (
     <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden">
-      {image && (
+      {video && (
+        <>
+          <div className="absolute inset-0 z-0">
+            <video
+              src={`${video}#t=${videoStartTime || 0.1}`}
+              muted
+              autoPlay
+              loop
+              playsInline
+              className="w-full h-full object-cover opacity-30 grayscale-[0.5]"
+            />
+          </div>
+          <div className="absolute inset-0 z-0" style={{ background: "linear-gradient(to top, color-mix(in srgb, var(--bg-primary) 97%, var(--tint)), color-mix(in srgb, var(--bg-primary) 97%, var(--tint)) 10%, rgba(17,17,17,0.80) 50%, rgba(17,17,17,0.60))" }} />
+        </>
+      )}
+      {!video && image && (
         <>
           <div className="absolute inset-0 z-0">
             <img src={image} alt="" className="w-full h-full object-cover opacity-30 grayscale-[0.5]" />
@@ -128,7 +147,7 @@ export function PageHero({ label, title, subtitle, image }: { label: string; tit
           <div className="absolute inset-0 z-0" style={{ background: "linear-gradient(to top, color-mix(in srgb, var(--bg-primary) 97%, var(--tint)), color-mix(in srgb, var(--bg-primary) 97%, var(--tint)) 10%, rgba(17,17,17,0.80) 50%, rgba(17,17,17,0.60))" }} />
         </>
       )}
-      {!image && (
+      {!hasMedia && (
         <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent 50%, color-mix(in srgb, var(--tint) 8%, transparent))" }} />
       )}
       <div className="container mx-auto px-6 max-w-7xl relative z-10">

@@ -1,14 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck, Award, FileCheck2, BadgeCheck, ArrowRight } from "lucide-react";
+import { ShieldCheck, Award, FileCheck2, BadgeCheck, ArrowRight, Zap } from "lucide-react";
 import Link from "next/link";
 
 const CERTS = [
-  { icon: ShieldCheck, title: "ISO 9001:2015", label: "Διαχείριση Ποιότητας" },
-  { icon: Award, title: "ISO 14001:2015", label: "Περιβαλλοντική Διαχείριση" },
-  { icon: FileCheck2, title: "ISO 45001:2018", label: "Υγεία & Ασφάλεια" },
-  { icon: BadgeCheck, title: "Μ.Ε.ΕΠ.", label: "Μητρώο Εργοληπτών" },
+  { icon: ShieldCheck, title: "ISO 9001:2015", label: "Διαχείριση Ποιότητας", pdfUrl: "/certifications/iso-9001.pdf" },
+  { icon: Award, title: "ISO 14001:2015", label: "Περιβαλλοντική Διαχείριση", pdfUrl: "/certifications/iso-14001.pdf" },
+  { icon: FileCheck2, title: "ISO 45001:2018", label: "Υγεία & Ασφάλεια", pdfUrl: "/certifications/iso-45001.pdf" },
+  { icon: Zap, title: "ISO 50001:2018", label: "Ενεργειακή Διαχείριση", pdfUrl: "/certifications/iso-50001.pdf" },
+  { icon: BadgeCheck, title: "Μ.Ε.ΕΠ.", label: "Μητρώο Εργοληπτών", pdfUrl: null },
 ];
 
 export function CertificationsSection() {
@@ -34,7 +35,7 @@ export function CertificationsSection() {
               <span className="text-[#E63B2E]">Πιστοποιημενη.</span>
             </h2>
             <Link
-              href="/proposals/concept-1/certifications"
+              href="/certifications"
               className="group flex items-center gap-3 font-['Space_Mono'] text-sm uppercase tracking-widest text-[#E63B2E] hover:gap-5 transition-all shrink-0"
             >
               Ολες οι πιστοποιησεις
@@ -43,26 +44,48 @@ export function CertificationsSection() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {CERTS.map((cert, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="p-6 md:p-8 border transition-colors group hover:border-[#E63B2E]/30"
-              style={{ borderColor: "var(--border-hover)", backgroundColor: "var(--bg-surface)" }}
-            >
-              <cert.icon className="w-10 h-10 mb-6" style={{ color: "var(--text-muted)" }} />
-              <h3 className="text-lg md:text-xl font-bold uppercase tracking-tight mb-2" style={{ color: "var(--text-primary)" }}>
-                {cert.title}
-              </h3>
-              <p className="font-['Space_Mono'] text-xs uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-                {cert.label}
-              </p>
-            </motion.div>
-          ))}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+          {CERTS.map((cert, i) => {
+            const content = (
+              <>
+                <cert.icon className="w-10 h-10 mb-6" style={{ color: "var(--text-muted)" }} />
+                <h3 className="text-lg md:text-xl font-bold uppercase tracking-tight mb-2" style={{ color: "var(--text-primary)" }}>
+                  {cert.title}
+                </h3>
+                <p className="font-['Space_Mono'] text-xs uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
+                  {cert.label}
+                </p>
+              </>
+            );
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                {cert.pdfUrl ? (
+                  <a
+                    href={cert.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-6 md:p-8 border transition-colors group hover:border-[#E63B2E]/30 cursor-pointer"
+                    style={{ borderColor: "var(--border-hover)", backgroundColor: "var(--bg-surface)" }}
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <div
+                    className="p-6 md:p-8 border transition-colors group hover:border-[#E63B2E]/30"
+                    style={{ borderColor: "var(--border-hover)", backgroundColor: "var(--bg-surface)" }}
+                  >
+                    {content}
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -6,14 +6,14 @@
 -- SEED SERVICES
 -- ═══════════════════════════════════════
 
-INSERT INTO public.services (name, description, icon, image_url, video_url, video_start_time, sort_order) VALUES
-  ('Ασφαλτοστρώσεις', 'Ολοκληρωμένες υπηρεσίες ασφαλτόστρωσης υψηλών προδιαγραφών για οδικά δίκτυα, χώρους στάθμευσης και ιδιωτικές εγκαταστάσεις.', 'Construction', NULL, '/Videos/construction/09_asphalt_dump_truck_initial_v1.mp4', 1, 0),
-  ('Διαγραμμίσεις Οδών', 'Επαγγελματικές διαγραμμίσεις οδικών δικτύων, χώρων στάθμευσης και βιομηχανικών εγκαταστάσεων με πιστοποιημένα υλικά.', 'PaintBucket', NULL, '/Videos/construction/08_road_line_painting_initial_v2.mp4', 0, 1),
-  ('Χωματουργικά & Υποδομές', 'Εκσκαφές, επιχωματώσεις, διανοίξεις οδών, δημιουργία δικτύων αποχέτευσης και έργα υποδομής μεγάλης κλίμακας.', 'Truck', NULL, '/Videos/sample_3-3.mp4', 0, 2),
-  ('Δημόσια Έργα', 'Ανάληψη και εκτέλεση δημοσίων έργων με συνέπεια, τήρηση χρονοδιαγραμμάτων και αυστηρών προδιαγραφών ποιότητας.', 'HardHat', NULL, '/Videos/construction/11_road_survey_trimmed_8s_v2.mp4', 0, 3),
-  ('Τεχνικές Μελέτες', 'Εκπόνηση τεχνικών μελετών, τοπογραφικών αποτυπώσεων και σχεδιασμός έργων υποδομής με σύγχρονα εργαλεία και μεθοδολογίες.', 'Ruler', NULL, '/Videos/construction/13_downloaded_v2.mp4', 0, 4),
-  ('Ποιοτικός Έλεγχος', 'Αυστηρός ποιοτικός έλεγχος σε κάθε στάδιο κατασκευής, με πιστοποιημένες διαδικασίες ISO και εξειδικευμένο εργαστηριακό εξοπλισμό.', 'ShieldCheck', NULL, '/Videos/construction/01_cement_truck_trench_ext_v1.mp4', 2, 5)
-ON CONFLICT DO NOTHING;
+INSERT INTO public.services (slug, name, description, icon, image_url, video_url, video_start_time, sort_order) VALUES
+  ('asfaltostroseis', 'Ασφαλτοστρώσεις', 'Ολοκληρωμένες υπηρεσίες ασφαλτόστρωσης υψηλών προδιαγραφών για οδικά δίκτυα, χώρους στάθμευσης και ιδιωτικές εγκαταστάσεις.', 'Construction', '/HighRes/image-1772752810544.png', '/Videos/construction/09_asphalt_dump_truck_initial_v1.mp4', 1, 0),
+  ('diagrammiseis-odon', 'Διαγραμμίσεις Οδών', 'Επαγγελματικές διαγραμμίσεις οδικών δικτύων, χώρων στάθμευσης και βιομηχανικών εγκαταστάσεων με πιστοποιημένα υλικά.', 'PaintBucket', '/HighRes/image-1772753675852.jpg', '/Videos/construction/08_road_line_painting_initial_v2.mp4', 0, 1),
+  ('chomatourgika-ypodomes', 'Χωματουργικά & Υποδομές', 'Εκσκαφές, επιχωματώσεις, διανοίξεις οδών, δημιουργία δικτύων αποχέτευσης και έργα υποδομής μεγάλης κλίμακας.', 'Truck', '/HighRes/image-1772752202824.png', '/Videos/sample_3-3.mp4', 0, 2),
+  ('dimosia-erga', 'Δημόσια Έργα', 'Ανάληψη και εκτέλεση δημοσίων έργων με συνέπεια, τήρηση χρονοδιαγραμμάτων και αυστηρών προδιαγραφών ποιότητας.', 'HardHat', '/HighRes/image-1772753897780.jpg', '/Videos/construction/11_road_survey_trimmed_8s_v2.mp4', 0, 3),
+  ('technikes-meletes', 'Τεχνικές Μελέτες', 'Εκπόνηση τεχνικών μελετών, τοπογραφικών αποτυπώσεων και σχεδιασμός έργων υποδομής με σύγχρονα εργαλεία και μεθοδολογίες.', 'Ruler', '/HighRes/image-1772753640619.jpg', '/Videos/construction/13_downloaded_v2.mp4', 0, 4),
+  ('poiotikos-elegchos', 'Ποιοτικός Έλεγχος', 'Αυστηρός ποιοτικός έλεγχος σε κάθε στάδιο κατασκευής, με πιστοποιημένες διαδικασίες ISO και εξειδικευμένο εργαστηριακό εξοπλισμό.', 'ShieldCheck', '/HighRes/image-1772753366441.png', '/Videos/construction/01_cement_truck_trench_ext_v1.mp4', 2, 5)
+ON CONFLICT (slug) DO NOTHING;
 
 -- ═══════════════════════════════════════
 -- SEED PROJECTS (full schema)

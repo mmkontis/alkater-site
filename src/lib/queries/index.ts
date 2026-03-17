@@ -13,6 +13,7 @@ export type HeroSlide = {
 
 export type Service = {
   id: string;
+  slug: string;
   name: string;
   description: string;
   icon: string;
@@ -55,7 +56,7 @@ export async function getServices(): Promise<Service[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("services")
-    .select("id, name, description, icon, image_url, video_url, video_start_time, sort_order")
+    .select("id, slug, name, description, icon, image_url, video_url, video_start_time, sort_order")
     .order("sort_order", { ascending: true });
   return data ?? [];
 }
@@ -68,6 +69,16 @@ export async function getProjects(): Promise<Project[]> {
     .eq("published", true)
     .order("sort_order", { ascending: true });
   return data ?? [];
+}
+
+export async function getServiceBySlug(slug: string): Promise<Service | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("services")
+    .select("id, slug, name, description, icon, image_url, video_url, video_start_time, sort_order")
+    .eq("slug", slug)
+    .single();
+  return data;
 }
 
 export type BlogPost = {

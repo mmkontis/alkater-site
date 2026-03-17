@@ -31,29 +31,30 @@ export function CookieBanner() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] w-[calc(100%-3rem)] max-w-lg"
+            className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-[200] w-[calc(100%-1.5rem)] sm:w-[calc(100%-3rem)] max-w-lg"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
             <div
-              className="relative rounded-2xl backdrop-blur-xl px-6 py-5 shadow-2xl transition-colors duration-300"
+              className="relative rounded-lg sm:rounded-2xl backdrop-blur-xl px-2.5 py-2.5 sm:px-6 sm:py-5 shadow-2xl transition-colors duration-300"
               style={{
-                backgroundColor: "var(--card-bg)",
-                border: "1px solid var(--border-hover)",
+                backgroundColor: "color-mix(in srgb, var(--bg-primary) 65%, var(--tint, #1B6B9E))",
+                border: "1px solid color-mix(in srgb, var(--tint, #1B6B9E) 30%, transparent)",
               }}
             >
               <button
                 onClick={accept}
-                className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center transition-colors hover:opacity-70"
+                className="absolute top-1.5 right-1.5 sm:top-3 sm:right-3 w-5 h-5 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-colors hover:opacity-70"
                 style={{ color: "var(--text-muted)" }}
               >
-                <X className="w-4 h-4" />
+                <X className="w-2.5 h-2.5 sm:w-4 sm:h-4" />
               </button>
 
-              <div className="flex items-start gap-4">
-                <Cookie className="w-5 h-5 shrink-0 mt-1" style={{ color: "var(--accent)" }} />
+              <div className="flex flex-col sm:flex-row sm:items-start sm:gap-4">
+                <Cookie className="hidden sm:block w-5 h-5 shrink-0 mt-1" style={{ color: "white" }} />
 
                 <div className="flex-1 min-w-0">
-                  <p className="font-['Space_Grotesk'] font-semibold text-sm mb-1" style={{ color: "var(--text-primary)" }}>
+                  <p className="font-['Space_Grotesk'] font-semibold text-[10px] sm:text-sm leading-tight mb-0 sm:mb-1 flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
+                    <Cookie className="w-3 h-3 sm:hidden shrink-0" style={{ color: "white" }} />
                     Χρησιμοποιούμε cookies
                   </p>
 
@@ -65,25 +66,28 @@ export function CookieBanner() {
                   {/* Mobile: learn more link */}
                   <button
                     onClick={() => setShowModal(true)}
-                    className="sm:hidden flex items-center gap-1.5 font-['Space_Mono'] text-xs mb-4 hover:opacity-80 transition-opacity"
+                    className="sm:hidden flex items-center gap-1 font-['Space_Mono'] text-[9px] mb-1.5 hover:opacity-80 transition-opacity"
                     style={{ color: "var(--accent)" }}
                   >
                     Μαθετε περισσοτερα
-                    <ExternalLink className="w-3 h-3" />
+                    <ExternalLink className="w-2.5 h-2.5" />
                   </button>
 
-                  <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex flex-row gap-1.5 sm:gap-3">
                     <button
                       onClick={accept}
-                      className="w-full rounded-xl px-5 py-3 text-xs font-['Space_Mono'] font-medium uppercase tracking-widest text-white transition-all hover:scale-[1.03] active:scale-[0.97]"
+                      className="w-full rounded-md sm:rounded-xl px-2 py-1.5 sm:px-5 sm:py-3 text-[9px] sm:text-xs font-['Space_Mono'] font-medium uppercase tracking-wider sm:tracking-widest text-white transition-all hover:scale-[1.03] active:scale-[0.97]"
                       style={{ backgroundColor: "var(--accent)" }}
                     >
                       Αποδοχη
                     </button>
                     <button
                       onClick={accept}
-                      className="w-full rounded-xl px-5 py-3 text-xs font-['Space_Mono'] uppercase tracking-widest transition-all hover:opacity-70"
-                      style={{ color: "var(--text-muted)", border: "1px solid var(--border-hover)" }}
+                      className="w-full rounded-md sm:rounded-xl px-2 py-1.5 sm:px-5 sm:py-3 text-[9px] sm:text-xs font-['Space_Mono'] uppercase tracking-wider sm:tracking-widest transition-all hover:opacity-70"
+                      style={{
+                        color: "var(--text-muted)",
+                        border: "1px solid color-mix(in srgb, var(--tint, #1B6B9E) 25%, transparent)",
+                      }}
                     >
                       Απορριψη
                     </button>
@@ -103,9 +107,12 @@ export function CookieBanner() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[250] flex flex-col"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", backgroundColor: "var(--bg-primary)" }}
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              backgroundColor: "color-mix(in srgb, var(--bg-primary) 90%, var(--tint, #1B6B9E))",
+            }}
           >
-            <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: "var(--border-color)" }}>
+            <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: "color-mix(in srgb, var(--tint, #1B6B9E) 20%, transparent)" }}>
               <div className="flex items-center gap-3">
                 <Cookie className="w-5 h-5" style={{ color: "var(--accent)" }} />
                 <h2 className="font-['Space_Grotesk'] font-bold text-lg" style={{ color: "var(--text-primary)" }}>
@@ -155,7 +162,7 @@ export function CookieBanner() {
               </div>
             </div>
 
-            <div className="px-6 py-6 border-t space-y-3" style={{ borderColor: "var(--border-color)" }}>
+            <div className="px-6 py-6 border-t space-y-3" style={{ borderColor: "color-mix(in srgb, var(--tint, #1B6B9E) 20%, transparent)" }}>
               <button
                 onClick={accept}
                 className="w-full rounded-xl px-5 py-4 text-sm font-['Space_Mono'] font-medium uppercase tracking-widest text-white transition-all active:scale-[0.97]"
@@ -166,7 +173,10 @@ export function CookieBanner() {
               <button
                 onClick={accept}
                 className="w-full rounded-xl px-5 py-4 text-sm font-['Space_Mono'] uppercase tracking-widest transition-all active:scale-[0.97]"
-                style={{ color: "var(--text-muted)", border: "1px solid var(--border-hover)" }}
+                style={{
+                  color: "var(--text-muted)",
+                  border: "1px solid color-mix(in srgb, var(--tint, #1B6B9E) 25%, transparent)",
+                }}
               >
                 Απορριψη
               </button>

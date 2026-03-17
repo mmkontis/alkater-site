@@ -102,7 +102,7 @@ function ProjectCard({ project, index }: { project: { id: number; slug: string; 
       className="group relative aspect-[4/5] overflow-hidden cursor-pointer"
       style={{ backgroundColor: "var(--bg-surface)" }}
     >
-      <Link href={`/proposals/concept-1/projects/${project.slug}`} className="absolute inset-0 z-30" />
+      <Link href={`/projects/${project.slug}`} className="absolute inset-0 z-30" />
       <div className="absolute inset-0 z-10 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
 
       <div className="absolute inset-0 p-6 flex flex-col justify-between z-20 pointer-events-none">

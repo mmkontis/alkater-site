@@ -46,7 +46,7 @@ export function BlogSection({ posts: postsProp }: { posts?: BlogPost[] }) {
               className="flex"
             >
               <Link
-                href={`/proposals/concept-1/blog/${post.slug}`}
+                href={`/blog/${post.slug}`}
                 className="group flex flex-col border transition-all duration-500 overflow-hidden w-full hover:border-[color:var(--link-color)]/30"
                 style={{ borderColor: "color-mix(in srgb, var(--tint) 20%, var(--border-color))", backgroundColor: "color-mix(in srgb, var(--bg-secondary, #1A1A1A) 92%, var(--tint))" }}
               >

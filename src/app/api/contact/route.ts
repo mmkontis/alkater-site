@@ -80,9 +80,7 @@ export async function POST(request: NextRequest) {
       recipients.push(process.env.SMTP_USER_MINAS);
     }
 
-    const siteUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "https://alkater-site.vercel.app";
+    const siteUrl = process.env.SITE_URL || "https://alkater.gr";
     const logoUrl = `${siteUrl}/Photos/Logo/alkater-logo-email.jpg`;
     const now = new Date().toLocaleDateString("el-GR", {
       day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit",

@@ -4,10 +4,10 @@ import Link from "next/link";
 import { Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/proposals/concept-1", label: "Αρχικη" },
-  { href: "/proposals/concept-1/about", label: "Εταιρεια" },
-  { href: "/proposals/concept-1/certifications", label: "Πιστοποιησεις" },
-  { href: "/proposals/concept-1/contact", label: "Επικοινωνια" },
+  { href: "/", label: "Αρχικη" },
+  { href: "/about", label: "Εταιρεια" },
+  { href: "/certifications", label: "Πιστοποιησεις" },
+  { href: "/contact", label: "Επικοινωνια" },
 ];
 
 function AlkaterLogoFooter({ className }: { className?: string }) {
@@ -61,7 +61,7 @@ export function Footer() {
 
           {/* Brand column */}
           <div className="md:col-span-5">
-            <Link href="/proposals/concept-1" className="inline-block mb-6">
+            <Link href="/" className="inline-block mb-6">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="65 55 295 80" className="h-20 w-auto opacity-90 hover:opacity-100 transition-opacity duration-300">
                 <g fill="#ffffff">
                   <path d="M 91.402344 83.144531 L 84.304688 101.132812 L 98.5 101.132812 Z M 102.292969 110.082031 L 80.515625 110.082031 L 77.53125 117.019531 L 65.839844 117.019531 L 89.628906 62.824219 L 93.257812 62.824219 L 116.96875 117.019531 L 105.277344 117.019531 Z" />

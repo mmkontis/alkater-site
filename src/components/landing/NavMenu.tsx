@@ -5,11 +5,11 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/proposals/concept-1", label: "Αρχικη" },
-  { href: "/proposals/concept-1/about", label: "Εταιρεια" },
-  { href: "/proposals/concept-1/certifications", label: "Πιστοποιησεις" },
+  { href: "/", label: "Αρχικη" },
+  { href: "/about", label: "Εταιρεια" },
+  { href: "/certifications", label: "Πιστοποιησεις" },
   { href: "#blog", label: "Αρθρα" },
-  { href: "/proposals/concept-1/contact", label: "Επικοινωνια" },
+  { href: "/contact", label: "Επικοινωνια" },
 ];
 
 export function NavMenu() {
@@ -43,7 +43,7 @@ export function NavMenu() {
           }}
         >
           <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between h-20">
-            <Link href="/proposals/concept-1" className="inline-block">
+            <Link href="/" className="inline-block">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="65 60 295 70" className="h-10 w-auto">
                 <g fill="#ffffff">
                   <path d="M 91.402344 83.144531 L 84.304688 101.132812 L 98.5 101.132812 Z M 102.292969 110.082031 L 80.515625 110.082031 L 77.53125 117.019531 L 65.839844 117.019531 L 89.628906 62.824219 L 93.257812 62.824219 L 116.96875 117.019531 L 105.277344 117.019531 Z" />

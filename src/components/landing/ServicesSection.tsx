@@ -4,19 +4,26 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useScroll } from "framer-motion";
 import {
   HardHat, Truck, Construction, PaintBucket, Ruler, ShieldCheck,
-  Layers, Wrench, type LucideIcon,
+  Layers, Wrench, Hammer, Cone, Shovel, Fence, Drill,
+  Landmark, Building, Building2, Factory, Warehouse, Blocks, Combine,
+  MapPin, Map, Route, Compass, Gauge, Cog, Settings, Shield, BadgeCheck,
+  ClipboardCheck, ClipboardList, FileCheck, FileCog, Scan, ScanLine,
+  Pipette, Paintbrush, PenTool, Shapes, Triangle, Hexagon,
+  Mountain, TreePine, Leaf, Droplets, Zap, Bolt, Cable, Container,
+  Package, Weight, Milestone, Signpost, TrafficCone,
+  type LucideIcon,
 } from "lucide-react";
 import type { Service } from "@/lib/queries";
 
 const ICON_MAP: Record<string, LucideIcon> = {
-  Construction,
-  PaintBucket,
-  Truck,
-  HardHat,
-  Ruler,
-  ShieldCheck,
-  Layers,
-  Wrench,
+  Construction, PaintBucket, Truck, HardHat, Ruler, ShieldCheck, Layers, Wrench,
+  Hammer, Cone, Shovel, Fence, Drill, TrafficCone,
+  Landmark, Building, Building2, Factory, Warehouse, Blocks, Combine,
+  MapPin, Map, Route, Compass, Milestone, Signpost,
+  Gauge, Cog, Settings, Shield, BadgeCheck,
+  ClipboardCheck, ClipboardList, FileCheck, FileCog, Scan, ScanLine,
+  Pipette, Paintbrush, PenTool, Shapes, Triangle, Hexagon,
+  Mountain, TreePine, Leaf, Droplets, Zap, Bolt, Cable, Container, Package, Weight,
 };
 
 function resolveIcon(name: string) {
@@ -72,7 +79,7 @@ export function ServicesSection({ services }: { services: Service[] }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {services.map((service, index) => (
-            <a href={`/proposals/concept-1/services/${service.id}`} key={service.id} className="block w-full">
+            <a href={`/services/${service.slug}`} key={service.id} className="block w-full">
               <ServiceCard
                 service={{
                   title: service.name,
