@@ -1,34 +1,31 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/proxy";
+import createIntlMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
 
-const BYPASS_COOKIE = "site_preview";
+const intlMiddleware = createIntlMiddleware(routing);
+
+const EXCLUDED_PATHS = /^\/(api|_next|_vercel|auth|admin|coming-soon|concept-1|landing-gemini|progress|proposal|proposal-logo|proposals|static-underconstruction|underconstruction|videos|vr)(\/|$)/;
+const STATIC_FILE = /\.(svg|png|jpg|jpeg|gif|webp|mp4|ico|css|js|woff2?|ttf|eot|pdf|txt|xml|json)$/;
 
 export async function proxy(request: NextRequest) {
-  const { pathname, searchParams } = request.nextUrl;
+  const { pathname } = request.nextUrl;
 
-  if (pathname === "/coming-soon") {
-    return NextResponse.next();
-  }
-
-  if (searchParams.get("test") === "true") {
-    const response = await updateSession(request);
-    response.cookies.set(BYPASS_COOKIE, "1", {
-      httpOnly: true,
-      maxAge: 60 * 60 * 24 * 30,
-      path: "/",
-      sameSite: "lax",
-    });
-    return response;
-  }
-
-  if (request.cookies.get(BYPASS_COOKIE)?.value === "1") {
+  if (STATIC_FILE.test(pathname)) {
     return await updateSession(request);
   }
 
-  const url = request.nextUrl.clone();
-  url.pathname = "/coming-soon";
-  url.search = "";
-  return NextResponse.redirect(url);
+  if (EXCLUDED_PATHS.test(pathname)) {
+    return await updateSession(request);
+  }
+
+  const intlResponse = intlMiddleware(request);
+
+  if (intlResponse.headers.get("x-middleware-rewrite") || intlResponse.status === 307 || intlResponse.status === 308) {
+    return intlResponse;
+  }
+
+  return await updateSession(request);
 }
 
 export const config = {

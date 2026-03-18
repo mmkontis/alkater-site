@@ -2,10 +2,12 @@
 
 import { useState, type FormEvent } from "react";
 import { CheckCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type Status = "idle" | "sending" | "success" | "error";
 
 export function ContactForm({ className, title }: { className?: string; title?: string }) {
+  const t = useTranslations("contactForm");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -31,7 +33,7 @@ export function ContactForm({ className, title }: { className?: string; title?: 
 
       if (!res.ok) {
         setStatus("error");
-        setErrorMsg(data.error || "Κάτι πήγε στραβά.");
+        setErrorMsg(data.error || t("errorGeneric"));
         return;
       }
 
@@ -43,7 +45,7 @@ export function ContactForm({ className, title }: { className?: string; title?: 
       setMessage("");
     } catch {
       setStatus("error");
-      setErrorMsg("Αποτυχία σύνδεσης. Δοκιμάστε ξανά.");
+      setErrorMsg(t("errorConnection"));
     }
   }
 
@@ -51,8 +53,8 @@ export function ContactForm({ className, title }: { className?: string; title?: 
     "w-full rounded-xl px-4 py-3 focus:outline-none focus:border-[#E63B2E] transition-colors text-sm backdrop-blur-sm";
 
   const inputStyle = {
-    backgroundColor: "color-mix(in srgb, var(--bg-primary) 80%, var(--tint, #1B6B9E))",
-    border: "1px solid color-mix(in srgb, var(--tint, #1B6B9E) 20%, var(--border-hover))",
+    backgroundColor: "var(--form-bg)",
+    border: "1px solid var(--form-border)",
     color: "var(--text-primary)",
   };
 
@@ -61,7 +63,7 @@ export function ContactForm({ className, title }: { className?: string; title?: 
       <div className={`relative z-10 font-['Space_Mono'] flex flex-col items-center justify-center text-center py-12 md:py-16 ${className ?? ""}`}>
         <div
           className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
-          style={{ backgroundColor: "color-mix(in srgb, #22c55e 15%, var(--bg-primary))" }}
+          style={{ backgroundColor: "var(--form-success)" }}
         >
           <CheckCircle className="w-10 h-10 text-green-500" />
         </div>
@@ -69,17 +71,17 @@ export function ContactForm({ className, title }: { className?: string; title?: 
           className="text-2xl md:text-3xl font-bold font-['Space_Grotesk'] uppercase tracking-tight mb-3"
           style={{ color: "var(--text-primary)" }}
         >
-          Ευχαριστουμε!
+          {t("successTitle")}
         </h3>
         <p className="text-sm md:text-base mb-8 max-w-sm" style={{ color: "var(--text-muted)" }}>
-          Το μήνυμά σας στάλθηκε επιτυχώς. Θα επικοινωνήσουμε μαζί σας σύντομα.
+          {t("successMessage")}
         </p>
         <button
           onClick={() => setStatus("idle")}
           className="text-xs uppercase tracking-widest px-6 py-3 rounded-xl border transition-colors hover:text-[#E63B2E]"
           style={{ borderColor: "var(--border-hover)", color: "var(--text-muted)" }}
         >
-          Στειλτε νεο μηνυμα
+          {t("sendAnother")}
         </button>
       </div>
     );
@@ -99,7 +101,7 @@ export function ContactForm({ className, title }: { className?: string; title?: 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-1.5">
             <label htmlFor="cf-name" className="text-[10px] uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-              Ονοματεπωνυμο *
+              {t("nameLabel")}
             </label>
             <input
               type="text"
@@ -109,12 +111,12 @@ export function ContactForm({ className, title }: { className?: string; title?: 
               onChange={(e) => setName(e.target.value)}
               className={inputClass}
               style={inputStyle}
-              placeholder="π.χ. Γιάννης Παπαδόπουλος"
+              placeholder={t("namePlaceholder")}
             />
           </div>
           <div className="space-y-1.5">
             <label htmlFor="cf-email" className="text-[10px] uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-              Email *
+              {t("emailLabel")}
             </label>
             <input
               type="email"
@@ -124,14 +126,14 @@ export function ContactForm({ className, title }: { className?: string; title?: 
               onChange={(e) => setEmail(e.target.value)}
               className={inputClass}
               style={inputStyle}
-              placeholder="π.χ. email@example.com"
+              placeholder={t("emailPlaceholder")}
             />
           </div>
         </div>
 
         <div className="space-y-1.5">
           <label htmlFor="cf-phone" className="text-[10px] uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-            Τηλεφωνο
+            {t("phoneLabel")}
           </label>
           <input
             type="tel"
@@ -140,13 +142,13 @@ export function ContactForm({ className, title }: { className?: string; title?: 
             onChange={(e) => setPhone(e.target.value)}
             className={inputClass}
             style={inputStyle}
-            placeholder="π.χ. 69XXXXXXXX"
+            placeholder={t("phonePlaceholder")}
           />
         </div>
 
         <div className="space-y-1.5">
           <label htmlFor="cf-subject" className="text-[10px] uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-            Θεμα
+            {t("subjectLabel")}
           </label>
           <input
             type="text"
@@ -155,13 +157,13 @@ export function ContactForm({ className, title }: { className?: string; title?: 
             onChange={(e) => setSubject(e.target.value)}
             className={inputClass}
             style={inputStyle}
-            placeholder="Τι αφορά το μήνυμά σας;"
+            placeholder={t("subjectPlaceholder")}
           />
         </div>
 
         <div className="space-y-1.5">
           <label htmlFor="cf-message" className="text-[10px] uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-            Μηνυμα *
+            {t("messageLabel")}
           </label>
           <textarea
             id="cf-message"
@@ -171,7 +173,7 @@ export function ContactForm({ className, title }: { className?: string; title?: 
             onChange={(e) => setMessage(e.target.value)}
             className={`${inputClass} resize-none`}
             style={inputStyle}
-            placeholder="Περιγράψτε το έργο ή το αίτημά σας..."
+            placeholder={t("messagePlaceholder")}
           />
         </div>
 
@@ -185,7 +187,7 @@ export function ContactForm({ className, title }: { className?: string; title?: 
           className="w-full group relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-[#E63B2E] px-8 py-4 text-sm font-['Space_Mono'] uppercase tracking-widest text-white hover:scale-[1.02] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <span className="relative z-10">
-            {status === "sending" ? "Αποστολη..." : "Αποστολη Μηνυματος"}
+            {status === "sending" ? t("sending") : t("submit")}
           </span>
           <span className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0 mix-blend-difference" />
         </button>

@@ -5,10 +5,12 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { Project } from "@/lib/queries";
 import { PROJECTS as DEFAULT_PROJECTS } from "@/lib/projects";
 
 export function ProjectsSection({ projects: projectsProp }: { projects?: Project[] }) {
+  const t = useTranslations("projects");
   const projectItems = projectsProp?.length
     ? projectsProp.map((p) => ({
         id: p.sort_order,
@@ -52,16 +54,15 @@ export function ProjectsSection({ projects: projectsProp }: { projects?: Project
         >
           <div className="flex justify-center items-center gap-4 mb-6">
             <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
-            <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>Χαρτοφυλακιο</span>
+            <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>{t("sectionLabel")}</span>
             <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
           </div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase mx-auto max-w-3xl leading-[1.1]" style={{ color: "var(--text-primary)" }}>
-            Επιλεγμενα <span className="text-[#E63B2E]">Εργα.</span>
+            {t("titleMain")} <span className="text-[#E63B2E]">{t("titleAccent")}</span>
           </h2>
           <p className="font-['Space_Mono'] text-sm md:text-base mt-6 max-w-2xl mx-auto" style={{ color: "var(--text-muted)" }}>
-            Εξερευνήστε ένα δείγμα από τα πρόσφατα κατασκευαστικά μας έργα. Κάθε εικόνα
-            αντιπροσωπεύει τη δέσμευσή μας στην ποιότητα και την αξιοπιστία.
+            {t("description")}
           </p>
         </motion.div>
 
@@ -76,12 +77,12 @@ export function ProjectsSection({ projects: projectsProp }: { projects?: Project
 
         <div className="mt-16 md:mt-24 text-center">
           <a
-            href="mailto:alkater2024@outlook.com?subject=Ενδιαφέρον για συνεργασία - Έργο"
+            href="#contact"
             className="group relative inline-flex items-center justify-center overflow-hidden rounded-full px-8 py-4 text-sm font-['Space_Mono'] uppercase tracking-widest transition-colors duration-300 border"
             style={{ borderColor: "var(--border-hover)", color: "var(--text-primary)" }}
           >
             <span className="relative z-10 flex items-center gap-2">
-              Συζητηστε το εργο σας <ChevronRight className="w-4 h-4" />
+              {t("cta")} <ChevronRight className="w-4 h-4" />
             </span>
             <span className="absolute inset-0 bg-[#E63B2E] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
             <span className="relative z-10 group-hover:text-white transition-colors duration-300" />
@@ -102,7 +103,7 @@ function ProjectCard({ project, index }: { project: { id: number; slug: string; 
       className="group relative aspect-[4/5] overflow-hidden cursor-pointer"
       style={{ backgroundColor: "var(--bg-surface)" }}
     >
-      <Link href={`/projects/${project.slug}`} className="absolute inset-0 z-30" />
+      <Link href={`/projects/${project.slug}`} aria-label={project.title} className="absolute inset-0 z-30" />
       <div className="absolute inset-0 z-10 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
 
       <div className="absolute inset-0 p-6 flex flex-col justify-between z-20 pointer-events-none">

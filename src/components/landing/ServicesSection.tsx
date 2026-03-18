@@ -13,6 +13,7 @@ import {
   Package, Weight, Milestone, Signpost, TrafficCone,
   type LucideIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { Service } from "@/lib/queries";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -33,6 +34,7 @@ function resolveIcon(name: string) {
 }
 
 export function ServicesSection({ services }: { services: Service[] }) {
+  const t = useTranslations("services");
   const containerRef = useRef<HTMLElement>(null);
 
   useScroll({
@@ -61,18 +63,16 @@ export function ServicesSection({ services }: { services: Service[] }) {
           <div>
             <div className="flex items-center gap-4 mb-4">
               <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
-              <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>Εξειδικευση</span>
+              <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>{t("sectionLabel")}</span>
             </div>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter uppercase max-w-2xl leading-[0.9]">
-              Οι <span className="text-[#E63B2E]">Υπηρεσιες</span> Μας.
+              {t("titlePrefix")} <span className="text-[#E63B2E]">{t("titleAccent")}</span> {t("titleSuffix")}
             </h2>
           </div>
 
           <div className="max-w-md font-['Space_Mono'] text-sm md:text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             <p>
-              Η ΑΛΚΑΤΕΡ εξειδικεύεται σε όλο το φάσμα των κατασκευαστικών έργων υποδομής,
-              εστιάζοντας στην ποιότητα, την ασφάλεια και την καινοτομία, με άρτια
-              εκπαιδευμένο προσωπικό και σύγχρονο εξοπλισμό.
+              {t("description")}
             </p>
           </div>
         </motion.div>
@@ -196,7 +196,7 @@ function ServiceCard({ service, index }: { service: { title: string; description
         <div
           className="absolute inset-0 transition-opacity duration-700"
           style={{
-            background: `linear-gradient(135deg, color-mix(in srgb, var(--tint) 35%, transparent), color-mix(in srgb, var(--accent) 10%, transparent))`,
+            background: `linear-gradient(135deg, var(--tint-35), var(--accent-10))`,
             opacity: isActive ? 0 : 1,
           }}
         />

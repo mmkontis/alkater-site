@@ -37,16 +37,17 @@ export function CookieBanner() {
             <div
               className="relative rounded-lg sm:rounded-2xl backdrop-blur-xl px-2.5 py-2.5 sm:px-6 sm:py-5 shadow-2xl transition-colors duration-300"
               style={{
-                backgroundColor: "color-mix(in srgb, var(--bg-primary) 65%, var(--tint, #1B6B9E))",
-                border: "1px solid color-mix(in srgb, var(--tint, #1B6B9E) 30%, transparent)",
+                backgroundColor: "var(--bg-tint-65)",
+                border: "1px solid var(--tint-30)",
               }}
             >
               <button
                 onClick={accept}
+                aria-label="Κλείσιμο"
                 className="absolute top-1.5 right-1.5 sm:top-3 sm:right-3 w-5 h-5 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-colors hover:opacity-70"
                 style={{ color: "var(--text-muted)" }}
               >
-                <X className="w-2.5 h-2.5 sm:w-4 sm:h-4" />
+                <X className="w-2.5 h-2.5 sm:w-4 sm:h-4" aria-hidden="true" />
               </button>
 
               <div className="flex flex-col sm:flex-row sm:items-start sm:gap-4">
@@ -77,7 +78,7 @@ export function CookieBanner() {
                     <button
                       onClick={accept}
                       className="w-full rounded-md sm:rounded-xl px-2 py-1.5 sm:px-5 sm:py-3 text-[9px] sm:text-xs font-['Space_Mono'] font-medium uppercase tracking-wider sm:tracking-widest text-white transition-all hover:scale-[1.03] active:scale-[0.97]"
-                      style={{ backgroundColor: "var(--accent)" }}
+                      style={{ backgroundColor: "var(--accent-bg)" }}
                     >
                       Αποδοχη
                     </button>
@@ -86,7 +87,7 @@ export function CookieBanner() {
                       className="w-full rounded-md sm:rounded-xl px-2 py-1.5 sm:px-5 sm:py-3 text-[9px] sm:text-xs font-['Space_Mono'] uppercase tracking-wider sm:tracking-widest transition-all hover:opacity-70"
                       style={{
                         color: "var(--text-muted)",
-                        border: "1px solid color-mix(in srgb, var(--tint, #1B6B9E) 25%, transparent)",
+                        border: "1px solid var(--tint-25)",
                       }}
                     >
                       Απορριψη
@@ -109,10 +110,10 @@ export function CookieBanner() {
             className="fixed inset-0 z-[250] flex flex-col"
             style={{
               fontFamily: "'Space Grotesk', sans-serif",
-              backgroundColor: "color-mix(in srgb, var(--bg-primary) 90%, var(--tint, #1B6B9E))",
+              backgroundColor: "var(--bg-tint-90)",
             }}
           >
-            <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: "color-mix(in srgb, var(--tint, #1B6B9E) 20%, transparent)" }}>
+            <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: "var(--tint-20)" }}>
               <div className="flex items-center gap-3">
                 <Cookie className="w-5 h-5" style={{ color: "var(--accent)" }} />
                 <h2 className="font-['Space_Grotesk'] font-bold text-lg" style={{ color: "var(--text-primary)" }}>
@@ -121,10 +122,11 @@ export function CookieBanner() {
               </div>
               <button
                 onClick={() => setShowModal(false)}
+                aria-label="Κλείσιμο"
                 className="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-70 transition-opacity"
                 style={{ color: "var(--text-muted)" }}
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
 
@@ -162,11 +164,11 @@ export function CookieBanner() {
               </div>
             </div>
 
-            <div className="px-6 py-6 border-t space-y-3" style={{ borderColor: "color-mix(in srgb, var(--tint, #1B6B9E) 20%, transparent)" }}>
+            <div className="px-6 py-6 border-t space-y-3" style={{ borderColor: "var(--tint-20)" }}>
               <button
                 onClick={accept}
                 className="w-full rounded-xl px-5 py-4 text-sm font-['Space_Mono'] font-medium uppercase tracking-widest text-white transition-all active:scale-[0.97]"
-                style={{ backgroundColor: "var(--accent)" }}
+                style={{ backgroundColor: "var(--accent-bg)" }}
               >
                 Αποδοχη
               </button>
@@ -175,7 +177,7 @@ export function CookieBanner() {
                 className="w-full rounded-xl px-5 py-4 text-sm font-['Space_Mono'] uppercase tracking-widest transition-all active:scale-[0.97]"
                 style={{
                   color: "var(--text-muted)",
-                  border: "1px solid color-mix(in srgb, var(--tint, #1B6B9E) 25%, transparent)",
+                  border: "1px solid var(--tint-25)",
                 }}
               >
                 Απορριψη

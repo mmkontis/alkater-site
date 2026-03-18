@@ -21,10 +21,10 @@ import { getAdjacentProjects, getProjectBySlug } from "@/lib/projects";
 import { ContactSection } from "@/components/landing/ContactSection";
 import { Footer } from "@/components/landing/Footer";
 
-function AlkaterLogoWhite({ className }: { className?: string }) {
+function AlkaterLogoColored({ className }: { className?: string }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 425.197 226.772" className={className}>
-      <g fill="#ffffff">
+      <g fill="#cccccc">
         <path d="M 99.054688 144.394531 L 94.449219 144.394531 L 94.449219 141.734375 L 106.625 141.734375 L 106.625 144.394531 L 101.996094 144.394531 L 101.996094 156.132812 L 99.054688 156.132812 Z" />
         <path d="M 111.835938 141.734375 L 121.523438 141.734375 L 121.523438 144.394531 L 114.78125 144.394531 L 114.78125 147.320312 L 119.734375 147.320312 L 119.734375 149.828125 L 114.78125 149.828125 L 114.78125 153.472656 L 121.785156 153.472656 L 121.785156 156.132812 L 111.835938 156.132812 Z" />
         <path d="M 135.699219 156.132812 L 132.648438 151.355469 L 129.59375 156.132812 L 126.234375 156.132812 L 131.011719 148.804688 L 126.515625 141.734375 L 129.875 141.734375 L 132.648438 146.273438 L 135.394531 141.734375 L 138.734375 141.734375 L 134.304688 148.804688 L 139.039062 156.132812 Z" />
@@ -41,12 +41,12 @@ function AlkaterLogoWhite({ className }: { className?: string }) {
         <path d="M 308.074219 141.734375 L 311.019531 141.734375 L 311.019531 156.132812 L 308.074219 156.132812 Z" />
         <path d="M 323.125 146.96875 L 321.207031 151.835938 L 325.046875 151.835938 Z M 326.070312 154.257812 L 320.179688 154.257812 L 319.375 156.132812 L 316.210938 156.132812 L 322.644531 141.472656 L 323.628906 141.472656 L 330.042969 156.132812 L 326.878906 156.132812 Z" />
       </g>
-      <g fill="#ffffff">
+      <g fill="var(--logo-left, #1B6B9E)">
         <path d="M 91.402344 83.144531 L 84.304688 101.132812 L 98.5 101.132812 Z M 102.292969 110.082031 L 80.515625 110.082031 L 77.53125 117.019531 L 65.839844 117.019531 L 89.628906 62.824219 L 93.257812 62.824219 L 116.96875 117.019531 L 105.277344 117.019531 Z" />
         <path d="M 153.367188 117.019531 L 139.496094 84.679688 L 125.625 117.019531 L 113.929688 117.019531 L 137.71875 62.824219 L 141.347656 62.824219 L 165.0625 117.019531 Z" />
         <path d="M 177.371094 99.304688 L 182.457031 94.089844 L 189.585938 101.519531 L 204.558594 101.519531 L 189.949219 86.601562 L 213.554688 62.820312 L 198.753906 62.820312 L 177.304688 84.105469 L 177.304688 62.820312 L 166.996094 62.820312 L 166.996094 116.53125 C 166.996094 116.667969 166.996094 116.773438 166.980469 117.027344 L 177.132812 107.035156 Z" />
       </g>
-      <g fill="#ffffff">
+      <g fill="var(--logo-right, #E63B2E)">
         <path d="M 250.847656 82.621094 L 233.828125 82.621094 L 233.828125 72.78125 L 278.832031 72.78125 L 278.832031 82.621094 L 261.734375 82.621094 L 261.734375 126.007812 L 250.847656 126.007812 Z" />
         <path d="M 278.832031 72.78125 L 314.640625 72.78125 L 314.640625 82.621094 L 289.71875 82.621094 L 289.71875 93.425781 L 308.027344 93.425781 L 308.027344 102.703125 L 289.71875 102.703125 L 289.71875 116.171875 L 315.609375 116.171875 L 315.609375 126.007812 L 278.832031 126.007812 Z" />
         <path d="M 339.152344 97.703125 C 344.234375 97.703125 347.21875 94.554688 347.21875 89.957031 C 347.21875 85.441406 344.074219 82.378906 339.152344 82.378906 L 330.042969 82.378906 L 330.042969 97.703125 Z M 319.152344 72.78125 L 339.152344 72.78125 C 350.285156 72.78125 358.347656 79.714844 358.347656 89.957031 C 358.347656 100.121094 350.285156 107.21875 339.152344 107.21875 L 330.042969 107.21875 L 330.042969 126.011719 L 319.152344 126.011719 Z" />
@@ -141,8 +141,8 @@ export function ProjectSubpage({ slug }: { slug: string }) {
           <ChevronLeft className="w-5 h-5" />
           Πισω
         </Link>
-        <Link href="/">
-          <AlkaterLogoWhite className="h-24 w-auto" />
+        <Link href="/" aria-label="ΑΛΚΑΤΕΡ - Αρχική">
+          <AlkaterLogoColored className="h-24 w-auto" />
         </Link>
       </div>
 
@@ -339,7 +339,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter uppercase text-[#F5F3EE] leading-[1.1]">
-              Απο Το <span className="text-[#E63B2E]">Εργο.</span>
+              Απο Το <span className="text-[#E63B2E]">Εργο</span>
             </h2>
           </motion.div>
 
@@ -379,7 +379,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
             <div className="flex justify-between items-end mb-16">
               <div>
                 <h2 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase text-white mb-4">
-                  Αλλα <span className="text-[#E63B2E]">Εργα.</span>
+                  Αλλα <span className="text-[#E63B2E]">Εργα</span>
                 </h2>
                 <p className="font-['Space_Mono'] text-[#E8E4DD]/60">Δείτε περισσότερα από τα έργα μας.</p>
               </div>
@@ -433,30 +433,33 @@ export function ProjectSubpage({ slug }: { slug: string }) {
             onClick={() => setLightboxIndex(null)}
           >
             <button
+              aria-label="Κλείσιμο"
               className="absolute top-6 right-6 z-[210] p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
               onClick={() => setLightboxIndex(null)}
             >
-              <X className="w-6 h-6" />
+              <X className="w-6 h-6" aria-hidden="true" />
             </button>
 
             <button
+              aria-label="Προηγούμενη φωτογραφία"
               className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-[210] p-2 md:p-4 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
                 setLightboxIndex((lightboxIndex - 1 + project.gallery.length) % project.gallery.length);
               }}
             >
-              <ChevronLeft className="w-8 h-8" />
+              <ChevronLeft className="w-8 h-8" aria-hidden="true" />
             </button>
 
             <button
+              aria-label="Επόμενη φωτογραφία"
               className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-[210] p-2 md:p-4 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
                 setLightboxIndex((lightboxIndex + 1) % project.gallery.length);
               }}
             >
-              <ChevronRight className="w-8 h-8" />
+              <ChevronRight className="w-8 h-8" aria-hidden="true" />
             </button>
 
             <motion.div
@@ -481,6 +484,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
               {project.gallery.map((img, i) => (
                 <button
                   key={img}
+                  aria-label={`Φωτογραφία ${i + 1}`}
                   onClick={(e) => {
                     e.stopPropagation();
                     setLightboxIndex(i);

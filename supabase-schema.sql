@@ -14,6 +14,8 @@ create table if not exists public.services (
   video_url text,
   video_start_time real default 0,
   sort_order integer not null default 0,
+  name_en text,
+  description_en text,
   created_at timestamptz not null default now()
 );
 
@@ -48,6 +50,8 @@ create table if not exists public.projects (
   sort_order integer not null default 0,
   service_id uuid references public.services(id) on delete set null,
   published boolean not null default false,
+  title_en text,
+  description_en text,
   created_at timestamptz not null default now()
 );
 
@@ -74,6 +78,9 @@ create table if not exists public.blog_posts (
   content text not null default '',
   cover_image text,
   published boolean not null default false,
+  title_en text,
+  excerpt_en text,
+  content_en text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -125,6 +132,36 @@ create policy "Authenticated users can delete contact submissions"
   using (auth.role() = 'authenticated');
 
 -- ═══════════════════════════════════════
+-- HERO SLIDES
+-- ═══════════════════════════════════════
+
+create table if not exists public.hero_slides (
+  id uuid default gen_random_uuid() primary key,
+  heading text not null default '',
+  heading_accent text not null default '',
+  subtitle text not null default '',
+  video_url text,
+  image_url text,
+  sort_order integer not null default 0,
+  published boolean not null default true,
+  heading_en text,
+  heading_accent_en text,
+  subtitle_en text,
+  created_at timestamptz not null default now()
+);
+
+alter table public.hero_slides enable row level security;
+
+create policy "Hero slides are viewable by everyone"
+  on public.hero_slides for select
+  using (true);
+
+create policy "Authenticated users have full access to hero slides"
+  on public.hero_slides for all
+  using (auth.role() = 'authenticated')
+  with check (auth.role() = 'authenticated');
+
+-- ═══════════════════════════════════════
 -- STORAGE BUCKETS
 -- ═══════════════════════════════════════
 
@@ -161,6 +198,59 @@ create policy "Authenticated users can delete media"
     bucket_id = 'media'
     and auth.role() = 'authenticated'
   );
+
+-- ═══════════════════════════════════════
+-- PAGE CONTENT (flexible CMS for static pages)
+-- ═══════════════════════════════════════
+
+create table if not exists public.page_content (
+  id uuid default gen_random_uuid() primary key,
+  page_key text unique not null,
+  content jsonb not null default '{}',
+  content_en jsonb,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.page_content enable row level security;
+
+create policy "Page content is viewable by everyone"
+  on public.page_content for select
+  using (true);
+
+create policy "Authenticated users have full access to page content"
+  on public.page_content for all
+  using (auth.role() = 'authenticated')
+  with check (auth.role() = 'authenticated');
+
+-- ═══════════════════════════════════════
+-- TEAM MEMBERS
+-- ═══════════════════════════════════════
+
+create table if not exists public.team_members (
+  id uuid default gen_random_uuid() primary key,
+  first_name text not null,
+  last_name text not null,
+  email text,
+  job_title text not null default '',
+  bio text not null default '',
+  photo_url text,
+  sort_order integer not null default 0,
+  published boolean not null default true,
+  job_title_en text,
+  bio_en text,
+  created_at timestamptz not null default now()
+);
+
+alter table public.team_members enable row level security;
+
+create policy "Published team members are viewable by everyone"
+  on public.team_members for select
+  using (published = true);
+
+create policy "Authenticated users have full access to team members"
+  on public.team_members for all
+  using (auth.role() = 'authenticated')
+  with check (auth.role() = 'authenticated');
 
 -- ═══════════════════════════════════════
 -- ADMIN USER

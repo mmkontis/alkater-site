@@ -1,14 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
-
-const NAV_LINKS = [
-  { href: "/", label: "Αρχικη" },
-  { href: "/about", label: "Εταιρεια" },
-  { href: "/certifications", label: "Πιστοποιησεις" },
-  { href: "/contact", label: "Επικοινωνια" },
-];
+import { useTranslations } from "next-intl";
 
 function AlkaterLogoFooter({ className }: { className?: string }) {
   return (
@@ -45,15 +40,25 @@ function AlkaterLogoFooter({ className }: { className?: string }) {
 }
 
 export function Footer() {
+  const t = useTranslations("footer");
+  const tn = useTranslations("nav");
+
+  const NAV_LINKS = [
+    { href: "/", label: tn("home") },
+    { href: "/about", label: tn("company") },
+    { href: "/certifications", label: tn("certifications") },
+    { href: "/contact", label: tn("contact") },
+  ];
+
   return (
-    <footer className="relative font-['Space_Grotesk'] overflow-hidden transition-colors duration-500" style={{ backgroundColor: "color-mix(in srgb, var(--bg-surface) 94%, var(--tint))" }}>
+    <footer className="relative font-['Space_Grotesk'] overflow-hidden transition-colors duration-500" style={{ backgroundColor: "var(--surface-tinted)" }}>
       {/* Large watermark logo */}
-      <div className="absolute -right-20 top-1/2 -translate-y-1/2 hidden md:block md:w-[600px] md:h-[600px] pointer-events-none opacity-50">
+      {/* <div className="absolute -right-20 top-1/2 -translate-y-1/2 hidden md:block md:w-[600px] md:h-[600px] pointer-events-none opacity-50">
         <AlkaterLogoFooter className="w-full h-full" />
-      </div>
+      </div> */}
 
       {/* Accent line at top */}
-      <div className="h-[1px] w-full" style={{ background: "linear-gradient(to right, transparent, color-mix(in srgb, var(--tint) 25%, rgba(255,255,255,0.06)), transparent)" }} />
+      <div className="h-[1px] w-full" style={{ background: "linear-gradient(to right, transparent, var(--tint-divider), transparent)" }} />
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         {/* Main footer content */}
@@ -61,12 +66,14 @@ export function Footer() {
 
           {/* Brand column */}
           <div className="md:col-span-5">
-            <Link href="/" className="inline-block mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="65 55 295 80" className="h-20 w-auto opacity-90 hover:opacity-100 transition-opacity duration-300">
-                <g fill="#ffffff">
+            <Link href="/" aria-label="ΑΛΚΑΤΕΡ - Αρχική" className="inline-block mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="65 55 295 80" className="h-20 w-auto opacity-90 hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
+                <g fill="var(--logo-left, #1B6B9E)">
                   <path d="M 91.402344 83.144531 L 84.304688 101.132812 L 98.5 101.132812 Z M 102.292969 110.082031 L 80.515625 110.082031 L 77.53125 117.019531 L 65.839844 117.019531 L 89.628906 62.824219 L 93.257812 62.824219 L 116.96875 117.019531 L 105.277344 117.019531 Z" />
                   <path d="M 153.367188 117.019531 L 139.496094 84.679688 L 125.625 117.019531 L 113.929688 117.019531 L 137.71875 62.824219 L 141.347656 62.824219 L 165.0625 117.019531 Z" />
                   <path d="M 177.371094 99.304688 L 182.457031 94.089844 L 189.585938 101.519531 L 204.558594 101.519531 L 189.949219 86.601562 L 213.554688 62.820312 L 198.753906 62.820312 L 177.304688 84.105469 L 177.304688 62.820312 L 166.996094 62.820312 L 166.996094 116.53125 C 166.996094 116.667969 166.996094 116.773438 166.980469 117.027344 L 177.132812 107.035156 Z" />
+                </g>
+                <g fill="var(--logo-right, #E63B2E)">
                   <path d="M 250.847656 82.621094 L 233.828125 82.621094 L 233.828125 72.78125 L 278.832031 72.78125 L 278.832031 82.621094 L 261.734375 82.621094 L 261.734375 126.007812 L 250.847656 126.007812 Z" />
                   <path d="M 278.832031 72.78125 L 314.640625 72.78125 L 314.640625 82.621094 L 289.71875 82.621094 L 289.71875 93.425781 L 308.027344 93.425781 L 308.027344 102.703125 L 289.71875 102.703125 L 289.71875 116.171875 L 315.609375 116.171875 L 315.609375 126.007812 L 278.832031 126.007812 Z" />
                   <path d="M 339.152344 97.703125 C 344.234375 97.703125 347.21875 94.554688 347.21875 89.957031 C 347.21875 85.441406 344.074219 82.378906 339.152344 82.378906 L 330.042969 82.378906 L 330.042969 97.703125 Z M 319.152344 72.78125 L 339.152344 72.78125 C 350.285156 72.78125 358.347656 79.714844 358.347656 89.957031 C 358.347656 100.121094 350.285156 107.21875 339.152344 107.21875 L 330.042969 107.21875 L 330.042969 126.011719 L 319.152344 126.011719 Z" />
@@ -76,22 +83,24 @@ export function Footer() {
               </svg>
             </Link>
             <p className="font-['Space_Mono'] text-sm leading-relaxed max-w-sm mb-8" style={{ color: "var(--text-muted)" }}>
-              Κατασκευαστική εταιρεία με εξειδίκευση στην οδοποιία, τα δημόσια και ιδιωτικά έργα υποδομής στην Ήπειρο και τη Δυτική Ελλάδα.
+              {t("description")}
             </p>
             <div className="flex gap-3">
               <a
                 href="mailto:alkater2024@outlook.com"
+                aria-label="Email: alkater2024@outlook.com"
                 className="w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300"
-                style={{ borderColor: "var(--border-hover)", color: "var(--text-muted)", backgroundColor: "color-mix(in srgb, var(--link-color) 12%, var(--bg-primary))" }}
+                style={{ borderColor: "var(--border-hover)", color: "var(--text-muted)", backgroundColor: "var(--link-bg-12)" }}
               >
-                <Mail className="w-4 h-4" />
+                <Mail className="w-4 h-4" aria-hidden="true" />
               </a>
               <a
                 href="tel:+302665000000"
+                aria-label="Τηλέφωνο: +30 26650 00000"
                 className="w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300"
-                style={{ borderColor: "var(--border-hover)", color: "var(--text-muted)", backgroundColor: "color-mix(in srgb, var(--link-color) 12%, var(--bg-primary))" }}
+                style={{ borderColor: "var(--border-hover)", color: "var(--text-muted)", backgroundColor: "var(--link-bg-12)" }}
               >
-                <Phone className="w-4 h-4" />
+                <Phone className="w-4 h-4" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -100,9 +109,9 @@ export function Footer() {
           <div className="md:col-span-3">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-6 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }} />
-              <h4 className="font-['Space_Mono'] text-[10px] uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>Πλοηγηση</h4>
+              <p className="font-['Space_Mono'] text-[10px] uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>{t("navigationLabel")}</p>
             </div>
-            <nav className="flex flex-col gap-3">
+            <nav aria-label="Πλοήγηση υποσέλιδου" className="flex flex-col gap-3">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
@@ -121,15 +130,15 @@ export function Footer() {
           <div className="md:col-span-4">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-6 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }} />
-              <h4 className="font-['Space_Mono'] text-[10px] uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>Επικοινωνια</h4>
+              <p className="font-['Space_Mono'] text-[10px] uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>{t("contactLabel")}</p>
             </div>
             <div className="space-y-5">
               <a href="mailto:alkater2024@outlook.com" className="group flex items-start gap-4 transition-colors" style={{ color: "var(--text-muted)" }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ backgroundColor: "color-mix(in srgb, var(--link-color) 30%, var(--bg-primary))" }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ backgroundColor: "var(--link-bg-30)" }}>
                   <Mail className="w-3.5 h-3.5" style={{ color: "var(--text-muted)" }} />
                 </div>
                 <div>
-                  <p className="font-['Space_Mono'] text-[10px] uppercase tracking-widest opacity-50 mb-1">Email</p>
+                  <p className="font-['Space_Mono'] text-[10px] uppercase tracking-widest mb-1" style={{ color: "var(--text-muted)" }}>{t("emailLabel")}</p>
                   <p className="font-['Space_Mono'] text-sm flex items-center gap-1">
                     alkater2024@outlook.com
                     <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -138,11 +147,11 @@ export function Footer() {
               </a>
 
               <a href="tel:+302665000000" className="group flex items-start gap-4 transition-colors" style={{ color: "var(--text-muted)" }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ backgroundColor: "color-mix(in srgb, var(--link-color) 30%, var(--bg-primary))" }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ backgroundColor: "var(--link-bg-30)" }}>
                   <Phone className="w-3.5 h-3.5" style={{ color: "var(--text-muted)" }} />
                 </div>
                 <div>
-                  <p className="font-['Space_Mono'] text-[10px] uppercase tracking-widest opacity-50 mb-1">Τηλεφωνο</p>
+                  <p className="font-['Space_Mono'] text-[10px] uppercase tracking-widest mb-1" style={{ color: "var(--text-muted)" }}>{t("phoneLabel")}</p>
                   <p className="font-['Space_Mono'] text-sm flex items-center gap-1">
                     +30 26650 00000
                     <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -151,24 +160,54 @@ export function Footer() {
               </a>
 
               <div className="flex items-start gap-4" style={{ color: "var(--text-muted)" }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ backgroundColor: "color-mix(in srgb, var(--link-color) 30%, var(--bg-primary))" }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ backgroundColor: "var(--link-bg-30)" }}>
                   <MapPin className="w-3.5 h-3.5" style={{ color: "var(--text-muted)" }} />
                 </div>
                 <div>
-                  <p className="font-['Space_Mono'] text-[10px] uppercase tracking-widest opacity-50 mb-1">Εδρα</p>
-                  <p className="font-['Space_Mono'] text-sm">Ηγουμενίτσα, Θεσπρωτία</p>
+                  <p className="font-['Space_Mono'] text-[10px] uppercase tracking-widest mb-1" style={{ color: "var(--text-muted)" }}>{t("hqLabel")}</p>
+                  <p className="font-['Space_Mono'] text-sm">{t("hqValue")}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
+        {/* ESPA Banner */}
+        <div className="py-10 md:py-14 flex flex-col items-center gap-6" style={{ borderTop: "1px solid var(--border-color)" }}>
+          <div className="flex items-center justify-center gap-8 sm:gap-12 md:gap-16 flex-wrap w-full max-w-md">
+            <Image
+              src="/espa/eu-flag.png"
+              alt={t("euAlt")}
+              width={480}
+              height={216}
+              className="h-24 sm:h-28 md:h-32 w-auto object-contain"
+            />
+            <Image
+              src="/espa/espa-2021-2027.png"
+              alt={t("espaAlt")}
+              width={400}
+              height={216}
+              className="h-24 sm:h-28 md:h-32 w-auto object-contain"
+            />
+            <Image
+              src="/espa/antagonistikotita.jpg"
+              alt={t("competitivenessAlt")}
+              width={480}
+              height={216}
+              className="h-24 sm:h-28 md:h-32 w-auto object-contain"
+            />
+          </div>
+          <p className="font-['Space_Mono'] text-[10px] sm:text-xs text-center leading-snug max-w-2xl" style={{ color: "var(--text-muted)" }}>
+            {t("espaText")}
+          </p>
+        </div>
+
         {/* Bottom bar */}
         <div className="py-6 flex flex-col md:flex-row items-center justify-between gap-4 font-['Space_Mono'] text-[10px] uppercase tracking-[0.15em] text-center md:text-left" style={{ borderTop: "1px solid var(--border-color)", color: "var(--text-muted)" }}>
-          <div className="opacity-60">&copy; {new Date().getFullYear()} ΑΛΚΑΤΕΡ ΚΑΤΑΣΚΕΥΑΣΤΙΚΗ. Με επιφυλαξη παντος δικαιωματος.</div>
+          <div>{t("copyright", { year: new Date().getFullYear() })}</div>
           <div className="flex gap-6">
-            <a href="#" className="opacity-60 hover:opacity-100 hover:text-[#E63B2E] transition-all">Οροι Χρησης</a>
-            <a href="#" className="opacity-60 hover:opacity-100 hover:text-[#E63B2E] transition-all">Απορρητο</a>
+            <a href="#" className="hover:text-[#E63B2E] transition-all">{t("terms")}</a>
+            <a href="#" className="hover:text-[#E63B2E] transition-all">{t("privacy")}</a>
           </div>
         </div>
       </div>

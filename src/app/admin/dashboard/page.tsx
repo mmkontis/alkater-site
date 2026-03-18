@@ -13,7 +13,7 @@ export default async function AdminDashboardPage() {
     redirect("/admin");
   }
 
-  const [{ data: projects }, { data: blogPosts }, { data: contacts }, { data: services }] =
+  const [{ data: projects }, { data: blogPosts }, { data: contacts }, { data: services }, { data: heroSlides }, { data: pageContentRows }, { data: teamMembers }] =
     await Promise.all([
       supabase
         .from("projects")
@@ -31,6 +31,19 @@ export default async function AdminDashboardPage() {
         .from("services")
         .select("*")
         .order("sort_order", { ascending: true }),
+      supabase
+        .from("hero_slides")
+        .select("*")
+        .order("sort_order", { ascending: true }),
+      supabase
+        .from("page_content")
+        .select("*")
+        .eq("page_key", "about")
+        .limit(1),
+      supabase
+        .from("team_members")
+        .select("*")
+        .order("sort_order", { ascending: true }),
     ]);
 
   return (
@@ -40,6 +53,9 @@ export default async function AdminDashboardPage() {
       blogPosts={blogPosts ?? []}
       contacts={contacts ?? []}
       services={services ?? []}
+      heroSlides={heroSlides ?? []}
+      aboutContent={pageContentRows?.[0]?.content ?? null}
+      teamMembers={teamMembers ?? []}
     />
   );
 }

@@ -111,7 +111,7 @@ export default function ServiceDetailClient({
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="group relative aspect-[4/5] overflow-hidden cursor-pointer bg-[#1A1A1A]"
                 >
-                  <Link href={`/proposals/concept-1/projects/${project.slug}`} className="absolute inset-0 z-30" />
+                  <Link href={`/proposals/concept-1/projects/${project.slug}`} aria-label={project.title} className="absolute inset-0 z-30" />
                   <div className="absolute inset-0 z-10 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
 
                   <div className="absolute inset-0 p-6 flex flex-col justify-between z-20 pointer-events-none">
@@ -153,7 +153,7 @@ export default function ServiceDetailClient({
 
           <div className="mt-16 md:mt-24 text-center">
             <a
-              href="mailto:alkater2024@outlook.com?subject=Ενδιαφέρον για υπηρεσία - ${service.name}"
+              href="#contact"
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-full px-8 py-4 text-sm font-['Space_Mono'] uppercase tracking-widest transition-colors duration-300 border border-white/20 text-white"
             >
               <span className="relative z-10 flex items-center gap-2">

@@ -71,6 +71,11 @@ import {
   Milestone,
   Signpost,
   TrafficCone,
+  Info,
+  UsersRound,
+  Plus,
+  Trash2,
+  Film,
   type LucideIcon,
 } from "lucide-react";
 
@@ -185,7 +190,40 @@ interface MediaFile {
   metadata: { size: number; mimetype: string };
 }
 
-type Section = "home" | "services" | "projects" | "blog" | "contacts" | "admins" | "media";
+interface TeamMemberRow {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string | null;
+  job_title: string;
+  bio: string;
+  photo_url: string | null;
+  sort_order: number;
+  published: boolean;
+  created_at: string;
+}
+
+interface AboutContent {
+  hero: { label: string; title: string; title_accent: string; subtitle: string; image: string };
+  stats: { value: string; label: string }[];
+  mission: { label: string; title: string; title_accent: string; paragraphs: string[]; image: string };
+  values: { label: string; title: string; title_accent: string; items: { icon: string; title: string; desc: string }[] };
+  milestones: { label: string; title: string; title_accent: string; items: { year: string; text: string }[] };
+}
+
+interface HeroSlideRow {
+  id: string;
+  heading: string;
+  heading_accent: string;
+  subtitle: string;
+  video_url: string | null;
+  image_url: string | null;
+  sort_order: number;
+  published: boolean;
+  created_at: string;
+}
+
+type Section = "home" | "slides" | "services" | "projects" | "blog" | "contacts" | "admins" | "media" | "about" | "team";
 
 function slugify(text: string): string {
   return text
@@ -214,20 +252,26 @@ function formatDate(iso: string): string {
 
 const sectionIcons: Record<Section, typeof Home> = {
   home: Home,
+  slides: Film,
   services: Layers,
   projects: Building2,
   blog: FileText,
   contacts: Mail,
+  about: Info,
+  team: UsersRound,
   admins: Users,
   media: ImageIcon,
 };
 
 const sectionLabels: Record<Section, string> = {
   home: "Αρχική",
+  slides: "Hero Slides",
   services: "Υπηρεσίες",
   projects: "Έργα",
   blog: "Blog",
   contacts: "Μηνύματα",
+  about: "Σελ. Εταιρείας",
+  team: "Ομάδα",
   admins: "Διαχειριστές",
   media: "Media",
 };
@@ -351,12 +395,18 @@ export default function Dashboard({
   blogPosts: initialBlogPosts,
   contacts: initialContacts,
   services: initialServices,
+  heroSlides: initialHeroSlides,
+  aboutContent: initialAboutContent,
+  teamMembers: initialTeamMembers,
 }: {
   user: User;
   projects: Project[];
   blogPosts: BlogPost[];
   contacts: ContactSubmission[];
   services: Service[];
+  heroSlides: HeroSlideRow[];
+  aboutContent: AboutContent | null;
+  teamMembers: TeamMemberRow[];
 }) {
   const supabase = createClient();
   const [section, setSection] = useState<Section>("home");
@@ -378,6 +428,16 @@ export default function Dashboard({
     sort_order: 0,
   };
   const [serviceForm, setServiceForm] = useState(emptyService);
+
+  // ── Hero Slides state ──
+  const [heroSlides, setHeroSlides] = useState<HeroSlideRow[]>(initialHeroSlides);
+  const [editingSlide, setEditingSlide] = useState<HeroSlideRow | null>(null);
+  const [savingSlide, setSavingSlide] = useState(false);
+  const [slideTab, setSlideTab] = useState<"list" | "form">("list");
+  const emptySlide: Omit<HeroSlideRow, "id" | "created_at"> = {
+    heading: "", heading_accent: "", subtitle: "", video_url: null, image_url: null, sort_order: 0, published: true,
+  };
+  const [slideForm, setSlideForm] = useState(emptySlide);
 
   // ── Projects state ──
   const [projects, setProjects] = useState<Project[]>(initialProjects);
@@ -451,6 +511,21 @@ export default function Dashboard({
   const [mediaLoading, setMediaLoading] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
 
+  // ── About page content state ──
+  const [aboutContent, setAboutContent] = useState<AboutContent | null>(initialAboutContent);
+  const [aboutForm, setAboutForm] = useState<AboutContent | null>(initialAboutContent);
+  const [savingAbout, setSavingAbout] = useState(false);
+
+  // ── Team members state ──
+  const [teamMembers, setTeamMembers] = useState<TeamMemberRow[]>(initialTeamMembers);
+  const [editingMember, setEditingMember] = useState<TeamMemberRow | null>(null);
+  const [savingMember, setSavingMember] = useState(false);
+  const [teamTab, setTeamTab] = useState<"list" | "form">("list");
+  const emptyMember: Omit<TeamMemberRow, "id" | "created_at"> = {
+    first_name: "", last_name: "", email: null, job_title: "", bio: "", photo_url: null, sort_order: 0, published: true,
+  };
+  const [memberForm, setMemberForm] = useState(emptyMember);
+
   const loadMedia = useCallback(async () => {
     setMediaLoading(true);
     const { data, error } = await supabase.storage.from("media").list("", {
@@ -522,6 +597,138 @@ export default function Dashboard({
   }
 
   // ═══════════════════════════════════════
+  // AUTO-TRANSLATE HELPER
+  // ═══════════════════════════════════════
+
+  async function autoTranslateFields(
+    table: string,
+    id: string,
+    texts: Record<string, string>,
+    fieldMap: Record<string, string>
+  ) {
+    try {
+      const res = await fetch("/api/admin/auto-translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "fields", texts }),
+      });
+      if (!res.ok) return;
+      const { translated } = await res.json();
+      if (!translated || Object.keys(translated).length === 0) return;
+      const updateObj: Record<string, string> = {};
+      for (const [srcKey, enCol] of Object.entries(fieldMap)) {
+        if (translated[srcKey]) updateObj[enCol] = translated[srcKey];
+      }
+      if (Object.keys(updateObj).length > 0) {
+        await supabase.from(table).update(updateObj).eq("id", id);
+      }
+    } catch {
+      // silent — translation is best-effort
+    }
+  }
+
+  async function autoTranslateJson(
+    table: string,
+    pageKey: string,
+    json: Record<string, unknown>
+  ) {
+    try {
+      const res = await fetch("/api/admin/auto-translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "json", json }),
+      });
+      if (!res.ok) return;
+      const { translated } = await res.json();
+      if (!translated || Object.keys(translated).length === 0) return;
+      await supabase
+        .from(table)
+        .update({ content_en: translated })
+        .eq("page_key", pageKey);
+    } catch {
+      // silent — translation is best-effort
+    }
+  }
+
+  // ═══════════════════════════════════════
+  // HERO SLIDES ACTIONS
+  // ═══════════════════════════════════════
+
+  async function refreshHeroSlides() {
+    const { data } = await supabase
+      .from("hero_slides")
+      .select("*")
+      .order("sort_order", { ascending: true });
+    if (data) setHeroSlides(data);
+  }
+
+  async function handleSaveSlide() {
+    setSavingSlide(true);
+    if (editingSlide) {
+      const { error } = await supabase
+        .from("hero_slides")
+        .update({
+          heading: slideForm.heading,
+          heading_accent: slideForm.heading_accent,
+          subtitle: slideForm.subtitle,
+          video_url: slideForm.video_url || null,
+          image_url: slideForm.image_url || null,
+          sort_order: slideForm.sort_order,
+          published: slideForm.published,
+        })
+        .eq("id", editingSlide.id);
+      if (!error) {
+        autoTranslateFields("hero_slides", editingSlide.id,
+          { heading: slideForm.heading, heading_accent: slideForm.heading_accent, subtitle: slideForm.subtitle },
+          { heading: "heading_en", heading_accent: "heading_accent_en", subtitle: "subtitle_en" });
+        setEditingSlide(null);
+        setSlideForm(emptySlide);
+        setSlideTab("list");
+        await refreshHeroSlides();
+      }
+    } else {
+      const { error, data } = await supabase.from("hero_slides").insert({
+        heading: slideForm.heading,
+        heading_accent: slideForm.heading_accent,
+        subtitle: slideForm.subtitle,
+        video_url: slideForm.video_url || null,
+        image_url: slideForm.image_url || null,
+        sort_order: slideForm.sort_order,
+        published: slideForm.published,
+      }).select("id").single();
+      if (!error && data) {
+        autoTranslateFields("hero_slides", data.id,
+          { heading: slideForm.heading, heading_accent: slideForm.heading_accent, subtitle: slideForm.subtitle },
+          { heading: "heading_en", heading_accent: "heading_accent_en", subtitle: "subtitle_en" });
+        setSlideForm(emptySlide);
+        setSlideTab("list");
+        await refreshHeroSlides();
+      }
+    }
+    setSavingSlide(false);
+  }
+
+  async function handleDeleteSlide(id: string) {
+    if (!confirm("Σίγουρα θέλετε να διαγράψετε αυτό το slide;")) return;
+    await supabase.from("hero_slides").delete().eq("id", id);
+    await refreshHeroSlides();
+  }
+
+  function startEditSlide(slide: HeroSlideRow) {
+    setEditingSlide(slide);
+    setSlideForm({
+      heading: slide.heading,
+      heading_accent: slide.heading_accent,
+      subtitle: slide.subtitle,
+      video_url: slide.video_url,
+      image_url: slide.image_url,
+      sort_order: slide.sort_order,
+      published: slide.published,
+    });
+    setSlideTab("form");
+  }
+
+  // ═══════════════════════════════════════
   // PROJECT ACTIONS
   // ═══════════════════════════════════════
 
@@ -560,6 +767,9 @@ export default function Dashboard({
         })
         .eq("id", editingService.id);
       if (!error) {
+        autoTranslateFields("services", editingService.id,
+          { name: serviceForm.name, description: serviceForm.description },
+          { name: "name_en", description: "description_en" });
         setEditingService(null);
         setServiceForm(emptyService);
         setServiceTab("list");
@@ -567,7 +777,7 @@ export default function Dashboard({
       }
     } else {
       const slug = await resolveUniqueSlug("services", baseSlug);
-      const { error } = await supabase.from("services").insert({
+      const { error, data } = await supabase.from("services").insert({
         slug,
         name: serviceForm.name,
         description: serviceForm.description,
@@ -576,8 +786,11 @@ export default function Dashboard({
         video_url: serviceForm.video_url || null,
         video_start_time: serviceForm.video_start_time,
         sort_order: serviceForm.sort_order,
-      });
-      if (!error) {
+      }).select("id").single();
+      if (!error && data) {
+        autoTranslateFields("services", data.id,
+          { name: serviceForm.name, description: serviceForm.description },
+          { name: "name_en", description: "description_en" });
         setServiceForm(emptyService);
         setServiceTab("list");
         await refreshServices();
@@ -625,6 +838,9 @@ export default function Dashboard({
         })
         .eq("id", editingProject.id);
       if (!error) {
+        autoTranslateFields("projects", editingProject.id,
+          { title: projectForm.title, description: projectForm.description },
+          { title: "title_en", description: "description_en" });
         setEditingProject(null);
         setProjectForm(emptyProject);
         setProjectTab("list");
@@ -632,7 +848,7 @@ export default function Dashboard({
       }
     } else {
       const slug = await resolveUniqueSlug("projects", baseSlug);
-      const { error } = await supabase.from("projects").insert({
+      const { error, data } = await supabase.from("projects").insert({
         slug,
         title: projectForm.title,
         description: projectForm.description,
@@ -640,8 +856,11 @@ export default function Dashboard({
         image_url: projectForm.image_url,
         published: projectForm.published,
         service_id: projectForm.service_id || null,
-      });
-      if (!error) {
+      }).select("id").single();
+      if (!error && data) {
+        autoTranslateFields("projects", data.id,
+          { title: projectForm.title, description: projectForm.description },
+          { title: "title_en", description: "description_en" });
         setProjectForm(emptyProject);
         setProjectTab("list");
         await refreshProjects();
@@ -724,6 +943,9 @@ export default function Dashboard({
         })
         .eq("id", editingPost.id);
       if (!error) {
+        autoTranslateFields("blog_posts", editingPost.id,
+          { title: blogForm.title, excerpt: blogForm.excerpt, content: blogForm.content },
+          { title: "title_en", excerpt: "excerpt_en", content: "content_en" });
         setEditingPost(null);
         setBlogForm(emptyPost);
         setBlogTab("list");
@@ -731,15 +953,18 @@ export default function Dashboard({
       }
     } else {
       const slug = await resolveUniqueSlug("blog_posts", baseSlug);
-      const { error } = await supabase.from("blog_posts").insert({
+      const { error, data } = await supabase.from("blog_posts").insert({
         title: blogForm.title,
         slug,
         excerpt: blogForm.excerpt,
         content: blogForm.content,
         cover_image: blogForm.cover_image,
         published: blogForm.published,
-      });
-      if (!error) {
+      }).select("id").single();
+      if (!error && data) {
+        autoTranslateFields("blog_posts", data.id,
+          { title: blogForm.title, excerpt: blogForm.excerpt, content: blogForm.content },
+          { title: "title_en", excerpt: "excerpt_en", content: "content_en" });
         setBlogForm(emptyPost);
         setBlogTab("list");
         await refreshBlogPosts();
@@ -927,6 +1152,112 @@ export default function Dashboard({
     return `${base} border-[#111111]/10 text-[#111111]/50 hover:text-[#111111] hover:border-[#111111]/20`;
   };
 
+  // ═══════════════════════════════════════
+  // ABOUT PAGE ACTIONS
+  // ═══════════════════════════════════════
+
+  async function handleSaveAbout() {
+    if (!aboutForm) return;
+    setSavingAbout(true);
+    const { error } = await supabase
+      .from("page_content")
+      .upsert({ page_key: "about", content: aboutForm, updated_at: new Date().toISOString() }, { onConflict: "page_key" });
+    if (!error) {
+      setAboutContent(aboutForm);
+      autoTranslateJson("page_content", "about", aboutForm as unknown as Record<string, unknown>);
+    }
+    setSavingAbout(false);
+  }
+
+  // ═══════════════════════════════════════
+  // TEAM MEMBER ACTIONS
+  // ═══════════════════════════════════════
+
+  async function refreshTeamMembers() {
+    const { data } = await supabase
+      .from("team_members")
+      .select("*")
+      .order("sort_order", { ascending: true });
+    if (data) setTeamMembers(data);
+  }
+
+  async function handleSaveMember() {
+    setSavingMember(true);
+    if (editingMember) {
+      const { error } = await supabase
+        .from("team_members")
+        .update({
+          first_name: memberForm.first_name,
+          last_name: memberForm.last_name,
+          email: memberForm.email || null,
+          job_title: memberForm.job_title,
+          bio: memberForm.bio,
+          photo_url: memberForm.photo_url || null,
+          sort_order: memberForm.sort_order,
+          published: memberForm.published,
+        })
+        .eq("id", editingMember.id);
+      if (!error) {
+        autoTranslateFields("team_members", editingMember.id,
+          { job_title: memberForm.job_title, bio: memberForm.bio },
+          { job_title: "job_title_en", bio: "bio_en" });
+        setEditingMember(null);
+        setMemberForm(emptyMember);
+        setTeamTab("list");
+        await refreshTeamMembers();
+      }
+    } else {
+      const { error, data } = await supabase.from("team_members").insert({
+        first_name: memberForm.first_name,
+        last_name: memberForm.last_name,
+        email: memberForm.email || null,
+        job_title: memberForm.job_title,
+        bio: memberForm.bio,
+        photo_url: memberForm.photo_url || null,
+        sort_order: memberForm.sort_order,
+        published: memberForm.published,
+      }).select("id").single();
+      if (!error && data) {
+        autoTranslateFields("team_members", data.id,
+          { job_title: memberForm.job_title, bio: memberForm.bio },
+          { job_title: "job_title_en", bio: "bio_en" });
+        setMemberForm(emptyMember);
+        setTeamTab("list");
+        await refreshTeamMembers();
+      }
+    }
+    setSavingMember(false);
+  }
+
+  async function handleDeleteMember(id: string) {
+    if (!confirm("Σίγουρα θέλετε να διαγράψετε αυτό το μέλος;")) return;
+    await supabase.from("team_members").delete().eq("id", id);
+    await refreshTeamMembers();
+  }
+
+  function startEditMember(member: TeamMemberRow) {
+    setEditingMember(member);
+    setMemberForm({
+      first_name: member.first_name,
+      last_name: member.last_name,
+      email: member.email,
+      job_title: member.job_title,
+      bio: member.bio,
+      photo_url: member.photo_url,
+      sort_order: member.sort_order,
+      published: member.published,
+    });
+    setTeamTab("form");
+  }
+
+  async function toggleMemberPublished(member: TeamMemberRow) {
+    await supabase
+      .from("team_members")
+      .update({ published: !member.published })
+      .eq("id", member.id);
+    await refreshTeamMembers();
+  }
+
   const unreadCount = contacts.filter((c) => !c.read).length;
 
   return (
@@ -954,7 +1285,7 @@ export default function Dashboard({
           <p className="mb-3 px-3 font-['Space_Mono'] text-[9px] uppercase tracking-widest text-[#111111]/30">
             Διαχείριση
           </p>
-          {(["home", "services", "projects", "blog", "contacts", "admins", "media"] as Section[]).map((s) => {
+          {(["home", "services", "projects", "blog", "contacts", "about", "team", "admins", "media"] as Section[]).map((s) => {
             const isActive = section === s;
             return (
               <button
@@ -1017,10 +1348,13 @@ export default function Dashboard({
             </p>
             <h1 className="font-['Space_Grotesk'] font-bold text-2xl sm:text-3xl md:text-4xl text-[#111111] tracking-tighter uppercase">
               {section === "home" && "Dashboard."}
+              {section === "slides" && "Hero Slides."}
               {section === "services" && "Διαχείριση Υπηρεσιών."}
               {section === "projects" && "Διαχείριση Έργων."}
               {section === "blog" && "Διαχείριση Blog."}
               {section === "contacts" && "Μηνύματα Επικοινωνίας."}
+              {section === "about" && "Σελίδα Εταιρείας."}
+              {section === "team" && "Μέλη Ομάδας."}
               {section === "admins" && "Διαχειριστές."}
               {section === "media" && "Βιβλιοθήκη Media."}
             </h1>
@@ -1030,7 +1364,27 @@ export default function Dashboard({
           {section === "home" && (
             <div className="space-y-6">
               {/* Stats cards */}
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+                <button
+                  onClick={() => setSection("slides")}
+                  className="cursor-pointer rounded-2xl border border-[#111111]/10 bg-white p-5 text-left transition-all hover:border-[#111111]/20 hover:shadow-sm"
+                >
+                  <div className="mb-3 flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#111111]/5">
+                      <Film size={20} className="text-[#111111]/60" />
+                    </div>
+                    <span className="font-['Space_Mono'] text-[9px] uppercase tracking-widest text-[#111111]/40">
+                      Hero Slides
+                    </span>
+                  </div>
+                  <p className="font-['Space_Grotesk'] text-3xl font-bold text-[#111111] tracking-tighter">
+                    {heroSlides.length}
+                  </p>
+                  <p className="mt-1 font-['Space_Mono'] text-[9px] uppercase tracking-widest text-emerald-600">
+                    {heroSlides.filter((s) => s.published).length} ενεργά
+                  </p>
+                </button>
+
                 <button
                   onClick={() => setSection("services")}
                   className="cursor-pointer rounded-2xl border border-[#111111]/10 bg-white p-5 text-left transition-all hover:border-[#111111]/20 hover:shadow-sm"
@@ -1216,6 +1570,239 @@ export default function Dashboard({
             </div>
           )}
 
+          {/* ═══════════ HERO SLIDES SECTION ═══════════ */}
+          {section === "slides" && (
+            <>
+              <div className="mb-6 flex gap-3">
+                <button
+                  onClick={() => {
+                    setSlideTab("list");
+                    setEditingSlide(null);
+                    setSlideForm(emptySlide);
+                  }}
+                  className={`cursor-pointer rounded-xl px-5 py-2.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${
+                    slideTab === "list"
+                      ? "bg-[#111111] text-white"
+                      : "bg-white border border-[#111111]/10 text-[#111111]/50 hover:text-[#111111]"
+                  }`}
+                >
+                  Λίστα
+                </button>
+                <button
+                  onClick={() => {
+                    setSlideTab("form");
+                    setEditingSlide(null);
+                    setSlideForm(emptySlide);
+                  }}
+                  className={`cursor-pointer rounded-xl px-5 py-2.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${
+                    slideTab === "form"
+                      ? "bg-[#111111] text-white"
+                      : "bg-white border border-[#111111]/10 text-[#111111]/50 hover:text-[#111111]"
+                  }`}
+                >
+                  {editingSlide ? "Επεξεργασία" : "+ Νέο Slide"}
+                </button>
+              </div>
+
+              {slideTab === "list" && (
+                <div className="space-y-4">
+                  {heroSlides.length === 0 && (
+                    <div className="rounded-2xl border-2 border-dashed border-[#111111]/10 bg-white py-20 text-center">
+                      <p className="font-['Space_Mono'] text-[10px] text-[#111111]/30 uppercase tracking-widest">
+                        Δεν υπάρχουν slides ακόμα
+                      </p>
+                    </div>
+                  )}
+                  {heroSlides.map((slide) => (
+                    <div
+                      key={slide.id}
+                      className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 rounded-2xl border border-[#111111]/10 bg-white p-4 sm:p-5 transition-all hover:border-[#111111]/20"
+                    >
+                      <div className="relative h-16 w-24 shrink-0 rounded-xl overflow-hidden bg-[#111111]/5">
+                        {slide.video_url ? (
+                          <video src={slide.video_url} muted className="h-full w-full object-cover" />
+                        ) : slide.image_url ? (
+                          <img src={slide.image_url} alt="" className="h-full w-full object-cover" />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center">
+                            <Film className="h-5 w-5 text-[#111111]/20" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3">
+                          <h3 className="font-['Space_Grotesk'] font-bold text-[#111111] truncate tracking-tight">
+                            {slide.heading} <span className="text-[#E63B2E]">{slide.heading_accent}</span>
+                          </h3>
+                          <span className="shrink-0 rounded-full bg-[#F5F3EE] px-2.5 py-0.5 font-['Space_Mono'] text-[9px] uppercase tracking-widest text-[#111111]/40">
+                            #{slide.sort_order}
+                          </span>
+                        </div>
+                        <p className="mt-1 line-clamp-1 text-sm text-[#111111]/50">{slide.subtitle}</p>
+                        <p className="font-['Space_Mono'] text-[9px] uppercase tracking-widest mt-1">
+                          {slide.video_url && <span className="text-[#E63B2E]">Video</span>}
+                          {slide.video_url && slide.image_url && <span className="text-[#111111]/20 mx-1">·</span>}
+                          {slide.image_url && <span className="text-blue-500">Image</span>}
+                          {!slide.video_url && !slide.image_url && <span className="text-[#111111]/20">No media</span>}
+                        </p>
+                      </div>
+                      <div className="flex shrink-0 items-center gap-2 border-t sm:border-t-0 border-[#111111]/5 pt-3 sm:pt-0">
+                        <span className={`rounded-full px-2 py-0.5 font-['Space_Mono'] text-[9px] uppercase tracking-widest ${slide.published ? "bg-emerald-50 text-emerald-600" : "bg-[#F5F3EE] text-[#111111]/30"}`}>
+                          {slide.published ? "Live" : "Draft"}
+                        </span>
+                        <button onClick={() => startEditSlide(slide)} className={btnSmall("accent")}>Edit</button>
+                        <button onClick={() => handleDeleteSlide(slide.id)} className={btnSmall("danger")}>Del</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {slideTab === "form" && (
+                <div className="rounded-2xl border border-[#111111]/10 bg-white p-4 sm:p-8">
+                  <h2 className="mb-6 font-['Space_Grotesk'] font-bold text-2xl text-[#111111] tracking-tighter uppercase">
+                    {editingSlide ? "Επεξεργασία Slide" : "Νέο Slide"}
+                  </h2>
+                  <div className="flex flex-col gap-5">
+                    <div>
+                      <label className={labelClass}>Τίτλος (Heading)</label>
+                      <input
+                        type="text"
+                        value={slideForm.heading}
+                        onChange={(e) => setSlideForm({ ...slideForm, heading: e.target.value })}
+                        className={inputClass}
+                        placeholder="π.χ. ΚΑΤΑΣΚΕΥΕΣ"
+                      />
+                    </div>
+                    <div>
+                      <label className={labelClass}>Τίτλος Accent</label>
+                      <input
+                        type="text"
+                        value={slideForm.heading_accent}
+                        onChange={(e) => setSlideForm({ ...slideForm, heading_accent: e.target.value })}
+                        className={inputClass}
+                        placeholder="π.χ. ΥΨΗΛΗΣ ΠΟΙΟΤΗΤΑΣ"
+                      />
+                      <p className="mt-1 font-['Space_Mono'] text-[9px] text-[#111111]/30 uppercase tracking-widest">
+                        Εμφανίζεται με κόκκινο χρώμα
+                      </p>
+                    </div>
+                    <div>
+                      <label className={labelClass}>Υπότιτλος (Subtitle)</label>
+                      <textarea
+                        value={slideForm.subtitle}
+                        onChange={(e) => setSlideForm({ ...slideForm, subtitle: e.target.value })}
+                        rows={2}
+                        className={inputClass}
+                        placeholder="Σύντομο κείμενο κάτω από τον τίτλο..."
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className={labelClass}>Σειρά Ταξινόμησης</label>
+                        <input
+                          type="number"
+                          value={slideForm.sort_order}
+                          onChange={(e) => setSlideForm({ ...slideForm, sort_order: parseInt(e.target.value) || 0 })}
+                          className={inputClass}
+                          placeholder="0"
+                        />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Κατάσταση</label>
+                        <div className="flex items-center gap-3 pt-2">
+                          <button
+                            type="button"
+                            onClick={() => setSlideForm({ ...slideForm, published: !slideForm.published })}
+                            className={`relative inline-flex h-7 w-12 cursor-pointer items-center rounded-full transition-colors ${slideForm.published ? "bg-emerald-500" : "bg-[#111111]/15"}`}
+                          >
+                            <span
+                              className={`inline-block h-5 w-5 rounded-full bg-white shadow-sm transition-transform ${slideForm.published ? "translate-x-6" : "translate-x-1"}`}
+                            />
+                          </button>
+                          <span className="font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/50">
+                            {slideForm.published ? "Δημοσιευμένο" : "Πρόχειρο"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-[#111111]/5 pt-5">
+                      <p className="mb-4 font-['Space_Grotesk'] font-bold text-sm text-[#111111] tracking-tight uppercase">
+                        Background Media
+                      </p>
+                      <p className="mb-4 font-['Space_Mono'] text-[9px] text-[#111111]/40 uppercase tracking-widest">
+                        Προσθέστε video ή εικόνα. Αν υπάρχει video, θα χρησιμοποιηθεί αυτό.
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className={labelClass}>Video URL</label>
+                      <input
+                        type="text"
+                        value={slideForm.video_url ?? ""}
+                        onChange={(e) => setSlideForm({ ...slideForm, video_url: e.target.value || null })}
+                        className={inputClass}
+                        placeholder="π.χ. /Videos/construction/01_cement_truck.mp4"
+                      />
+                    </div>
+                    <div>
+                      <label className={labelClass}>Εικόνα Background</label>
+                      <ImageUpload
+                        value={slideForm.image_url}
+                        onChange={(url) => setSlideForm({ ...slideForm, image_url: url })}
+                        folder="hero"
+                      />
+                    </div>
+
+                    {(slideForm.video_url || slideForm.image_url) && (
+                      <div className="rounded-xl border border-[#111111]/10 bg-[#F5F3EE] p-4">
+                        <p className="mb-2 font-['Space_Mono'] text-[9px] text-[#111111]/40 uppercase tracking-widest">
+                          Προεπισκόπηση
+                        </p>
+                        <div className="relative h-40 w-full overflow-hidden rounded-lg bg-black">
+                          {slideForm.video_url ? (
+                            <video src={slideForm.video_url} muted autoPlay loop playsInline className="h-full w-full object-cover" />
+                          ) : slideForm.image_url ? (
+                            <img src={slideForm.image_url} alt="Preview" className="h-full w-full object-cover" />
+                          ) : null}
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <div className="text-center text-white">
+                              <p className="font-['Space_Grotesk'] font-bold text-xl tracking-tighter uppercase">
+                                {slideForm.heading} <span className="text-[#E63B2E]">{slideForm.heading_accent}</span>
+                              </p>
+                              <p className="font-['Space_Mono'] text-[10px] mt-1 opacity-70">{slideForm.subtitle}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex gap-3 pt-3">
+                      <button
+                        onClick={handleSaveSlide}
+                        disabled={savingSlide || !slideForm.heading}
+                        className={btnPrimary}
+                      >
+                        {savingSlide ? "Αποθήκευση..." : editingSlide ? "Ενημέρωση" : "Δημιουργία"}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSlideTab("list");
+                          setEditingSlide(null);
+                          setSlideForm(emptySlide);
+                        }}
+                        className={btnSecondary}
+                      >
+                        Ακύρωση
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+
           {/* ═══════════ SERVICES SECTION ═══════════ */}
           {section === "services" && (
             <>
@@ -1346,10 +1933,14 @@ export default function Dashboard({
                           onChange={(e) =>
                             setServiceForm({ ...serviceForm, slug: e.target.value })
                           }
+                          onBlur={() => checkSlugConflict("services", serviceForm.slug, editingService?.id)}
                           className={inputClass}
                           placeholder="asfaltostroseis"
                         />
                       </div>
+                      {slugConflict.services && (
+                        <p className="mt-1.5 font-['Space_Mono'] text-[10px] text-amber-600">{slugConflict.services}</p>
+                      )}
                     </div>
                     <div>
                       <label className={labelClass}>Περιγραφή</label>
@@ -1591,10 +2182,14 @@ export default function Dashboard({
                           onChange={(e) =>
                             setProjectForm({ ...projectForm, slug: e.target.value })
                           }
+                          onBlur={() => checkSlugConflict("projects", projectForm.slug, editingProject?.id)}
                           className={inputClass}
                           placeholder="kataskevi-odopoiias-larisa"
                         />
                       </div>
+                      {slugConflict.projects && (
+                        <p className="mt-1.5 font-['Space_Mono'] text-[10px] text-amber-600">{slugConflict.projects}</p>
+                      )}
                     </div>
                     <div>
                       <label className={labelClass}>Κατηγορία</label>
@@ -2270,6 +2865,248 @@ export default function Dashboard({
             </>
           )}
 
+          {/* ═══════════ ABOUT PAGE SECTION ═══════════ */}
+          {section === "about" && aboutForm && (
+            <div className="space-y-8">
+              {/* Hero */}
+              <div className="rounded-2xl border border-[#111111]/10 bg-white p-6">
+                <h2 className="mb-4 font-['Space_Grotesk'] text-lg font-bold text-[#111111] uppercase tracking-tight">Hero</h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Label</label>
+                    <input value={aboutForm.hero.label} onChange={(e) => setAboutForm({ ...aboutForm, hero: { ...aboutForm.hero, label: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Τίτλος</label>
+                    <input value={aboutForm.hero.title} onChange={(e) => setAboutForm({ ...aboutForm, hero: { ...aboutForm.hero, title: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Accent λέξη</label>
+                    <input value={aboutForm.hero.title_accent} onChange={(e) => setAboutForm({ ...aboutForm, hero: { ...aboutForm.hero, title_accent: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Εικόνα URL</label>
+                    <input value={aboutForm.hero.image} onChange={(e) => setAboutForm({ ...aboutForm, hero: { ...aboutForm.hero, image: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Υπότιτλος</label>
+                    <textarea value={aboutForm.hero.subtitle} onChange={(e) => setAboutForm({ ...aboutForm, hero: { ...aboutForm.hero, subtitle: e.target.value } })} rows={3} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="rounded-2xl border border-[#111111]/10 bg-white p-6">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="font-['Space_Grotesk'] text-lg font-bold text-[#111111] uppercase tracking-tight">Στατιστικά</h2>
+                  <button onClick={() => setAboutForm({ ...aboutForm, stats: [...aboutForm.stats, { value: "", label: "" }] })} className="flex cursor-pointer items-center gap-1 rounded-lg border border-[#111111]/10 px-3 py-1.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/60 transition-all hover:border-[#111111]/20 hover:text-[#111111]"><Plus size={12} /> Προσθήκη</button>
+                </div>
+                <div className="space-y-3">
+                  {aboutForm.stats.map((stat, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <input value={stat.value} onChange={(e) => { const s = [...aboutForm.stats]; s[i] = { ...s[i], value: e.target.value }; setAboutForm({ ...aboutForm, stats: s }); }} placeholder="π.χ. 25+" className="w-28 rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-2.5 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                      <input value={stat.label} onChange={(e) => { const s = [...aboutForm.stats]; s[i] = { ...s[i], label: e.target.value }; setAboutForm({ ...aboutForm, stats: s }); }} placeholder="Label" className="flex-1 rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-2.5 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                      <button onClick={() => setAboutForm({ ...aboutForm, stats: aboutForm.stats.filter((_, j) => j !== i) })} className="cursor-pointer rounded-lg p-2 text-[#111111]/30 transition-colors hover:bg-[#E63B2E]/10 hover:text-[#E63B2E]"><Trash2 size={14} /></button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mission */}
+              <div className="rounded-2xl border border-[#111111]/10 bg-white p-6">
+                <h2 className="mb-4 font-['Space_Grotesk'] text-lg font-bold text-[#111111] uppercase tracking-tight">Αποστολή</h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Label</label>
+                    <input value={aboutForm.mission.label} onChange={(e) => setAboutForm({ ...aboutForm, mission: { ...aboutForm.mission, label: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Τίτλος</label>
+                    <input value={aboutForm.mission.title} onChange={(e) => setAboutForm({ ...aboutForm, mission: { ...aboutForm.mission, title: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Accent λέξη</label>
+                    <input value={aboutForm.mission.title_accent} onChange={(e) => setAboutForm({ ...aboutForm, mission: { ...aboutForm.mission, title_accent: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Εικόνα URL</label>
+                    <input value={aboutForm.mission.image} onChange={(e) => setAboutForm({ ...aboutForm, mission: { ...aboutForm.mission, image: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Παράγραφοι</label>
+                    {aboutForm.mission.paragraphs.map((p, i) => (
+                      <div key={i} className="mb-2 flex gap-2">
+                        <textarea value={p} onChange={(e) => { const ps = [...aboutForm.mission.paragraphs]; ps[i] = e.target.value; setAboutForm({ ...aboutForm, mission: { ...aboutForm.mission, paragraphs: ps } }); }} rows={3} className="flex-1 rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                        <button onClick={() => setAboutForm({ ...aboutForm, mission: { ...aboutForm.mission, paragraphs: aboutForm.mission.paragraphs.filter((_, j) => j !== i) } })} className="cursor-pointer self-start rounded-lg p-2 text-[#111111]/30 transition-colors hover:bg-[#E63B2E]/10 hover:text-[#E63B2E]"><Trash2 size={14} /></button>
+                      </div>
+                    ))}
+                    <button onClick={() => setAboutForm({ ...aboutForm, mission: { ...aboutForm.mission, paragraphs: [...aboutForm.mission.paragraphs, ""] } })} className="flex cursor-pointer items-center gap-1 rounded-lg border border-[#111111]/10 px-3 py-1.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/60 transition-all hover:border-[#111111]/20 hover:text-[#111111]"><Plus size={12} /> Παράγραφος</button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Values */}
+              <div className="rounded-2xl border border-[#111111]/10 bg-white p-6">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="font-['Space_Grotesk'] text-lg font-bold text-[#111111] uppercase tracking-tight">Αξίες</h2>
+                  <button onClick={() => setAboutForm({ ...aboutForm, values: { ...aboutForm.values, items: [...aboutForm.values.items, { icon: "Target", title: "", desc: "" }] } })} className="flex cursor-pointer items-center gap-1 rounded-lg border border-[#111111]/10 px-3 py-1.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/60 transition-all hover:border-[#111111]/20 hover:text-[#111111]"><Plus size={12} /> Προσθήκη</button>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Label</label>
+                    <input value={aboutForm.values.label} onChange={(e) => setAboutForm({ ...aboutForm, values: { ...aboutForm.values, label: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Τίτλος</label>
+                    <input value={aboutForm.values.title} onChange={(e) => setAboutForm({ ...aboutForm, values: { ...aboutForm.values, title: e.target.value } })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                  </div>
+                </div>
+                <div className="mt-4 space-y-3">
+                  {aboutForm.values.items.map((v, i) => (
+                    <div key={i} className="flex items-start gap-3 rounded-xl border border-[#111111]/5 bg-[#F5F3EE]/30 p-4">
+                      <div className="flex-1 grid gap-3 sm:grid-cols-3">
+                        <input value={v.icon} onChange={(e) => { const items = [...aboutForm.values.items]; items[i] = { ...items[i], icon: e.target.value }; setAboutForm({ ...aboutForm, values: { ...aboutForm.values, items } }); }} placeholder="Icon (Target/Eye/Heart)" className="rounded-xl border border-[#111111]/10 bg-white px-3 py-2.5 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                        <input value={v.title} onChange={(e) => { const items = [...aboutForm.values.items]; items[i] = { ...items[i], title: e.target.value }; setAboutForm({ ...aboutForm, values: { ...aboutForm.values, items } }); }} placeholder="Τίτλος" className="rounded-xl border border-[#111111]/10 bg-white px-3 py-2.5 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                        <input value={v.desc} onChange={(e) => { const items = [...aboutForm.values.items]; items[i] = { ...items[i], desc: e.target.value }; setAboutForm({ ...aboutForm, values: { ...aboutForm.values, items } }); }} placeholder="Περιγραφή" className="rounded-xl border border-[#111111]/10 bg-white px-3 py-2.5 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                      </div>
+                      <button onClick={() => setAboutForm({ ...aboutForm, values: { ...aboutForm.values, items: aboutForm.values.items.filter((_, j) => j !== i) } })} className="cursor-pointer rounded-lg p-2 text-[#111111]/30 transition-colors hover:bg-[#E63B2E]/10 hover:text-[#E63B2E]"><Trash2 size={14} /></button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Milestones */}
+              <div className="rounded-2xl border border-[#111111]/10 bg-white p-6">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="font-['Space_Grotesk'] text-lg font-bold text-[#111111] uppercase tracking-tight">Χρονολόγιο</h2>
+                  <button onClick={() => setAboutForm({ ...aboutForm, milestones: { ...aboutForm.milestones, items: [...aboutForm.milestones.items, { year: "", text: "" }] } })} className="flex cursor-pointer items-center gap-1 rounded-lg border border-[#111111]/10 px-3 py-1.5 font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/60 transition-all hover:border-[#111111]/20 hover:text-[#111111]"><Plus size={12} /> Προσθήκη</button>
+                </div>
+                <div className="space-y-3">
+                  {aboutForm.milestones.items.map((m, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <input value={m.year} onChange={(e) => { const items = [...aboutForm.milestones.items]; items[i] = { ...items[i], year: e.target.value }; setAboutForm({ ...aboutForm, milestones: { ...aboutForm.milestones, items } }); }} placeholder="Έτος" className="w-24 rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-2.5 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                      <input value={m.text} onChange={(e) => { const items = [...aboutForm.milestones.items]; items[i] = { ...items[i], text: e.target.value }; setAboutForm({ ...aboutForm, milestones: { ...aboutForm.milestones, items } }); }} placeholder="Περιγραφή" className="flex-1 rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-2.5 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                      <button onClick={() => setAboutForm({ ...aboutForm, milestones: { ...aboutForm.milestones, items: aboutForm.milestones.items.filter((_, j) => j !== i) } })} className="cursor-pointer rounded-lg p-2 text-[#111111]/30 transition-colors hover:bg-[#E63B2E]/10 hover:text-[#E63B2E]"><Trash2 size={14} /></button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Save Button */}
+              <div className="flex justify-end">
+                <button
+                  onClick={handleSaveAbout}
+                  disabled={savingAbout}
+                  className="cursor-pointer rounded-xl bg-[#111111] px-8 py-3 font-['Space_Mono'] text-xs uppercase tracking-widest text-white transition-all hover:bg-[#E63B2E] disabled:opacity-50"
+                >
+                  {savingAbout ? "Αποθήκευση..." : "Αποθήκευση Αλλαγών"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ═══════════ TEAM MEMBERS SECTION ═══════════ */}
+          {section === "team" && (
+            <>
+              <div className="mb-6 flex items-center justify-between">
+                <div className="flex gap-2">
+                  <button onClick={() => { setTeamTab("list"); setEditingMember(null); setMemberForm(emptyMember); }} className={`cursor-pointer rounded-xl px-4 py-2 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${teamTab === "list" ? "bg-[#111111] text-white" : "border border-[#111111]/10 text-[#111111]/50 hover:text-[#111111]"}`}>Λίστα ({teamMembers.length})</button>
+                  <button onClick={() => { setTeamTab("form"); setEditingMember(null); setMemberForm(emptyMember); }} className={`cursor-pointer rounded-xl px-4 py-2 font-['Space_Mono'] text-[10px] uppercase tracking-widest transition-all ${teamTab === "form" ? "bg-[#111111] text-white" : "border border-[#111111]/10 text-[#111111]/50 hover:text-[#111111]"}`}>+ Νέο Μέλος</button>
+                </div>
+              </div>
+
+              {teamTab === "list" && (
+                <div className="space-y-3">
+                  {teamMembers.length === 0 && (
+                    <div className="rounded-2xl border border-dashed border-[#111111]/10 py-16 text-center">
+                      <UsersRound size={48} className="mx-auto mb-4 text-[#111111]/10" />
+                      <p className="font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/30">Δεν υπάρχουν μέλη ομάδας</p>
+                    </div>
+                  )}
+                  {teamMembers.map((m) => (
+                    <div key={m.id} className="flex items-center gap-4 rounded-2xl border border-[#111111]/10 bg-white p-4 transition-all hover:border-[#111111]/20">
+                      {m.photo_url ? (
+                        <img src={m.photo_url} alt="" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
+                      ) : (
+                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#F5F3EE]">
+                          <UsersRound size={24} className="text-[#111111]/20" />
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate font-['Space_Grotesk'] text-sm font-bold text-[#111111]">{m.first_name} {m.last_name}</p>
+                        <p className="truncate font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">{m.job_title}</p>
+                      </div>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <button onClick={() => toggleMemberPublished(m)} className={`cursor-pointer rounded-lg px-3 py-1.5 font-['Space_Mono'] text-[9px] uppercase tracking-widest transition-all ${m.published ? "bg-green-50 text-green-600" : "bg-[#F5F3EE] text-[#111111]/30"}`}>{m.published ? "Ενεργό" : "Κρυφό"}</button>
+                        <button onClick={() => startEditMember(m)} className="cursor-pointer rounded-lg border border-[#111111]/10 px-3 py-1.5 font-['Space_Mono'] text-[9px] uppercase tracking-widest text-[#111111]/50 transition-all hover:border-[#111111]/20 hover:text-[#111111]">Edit</button>
+                        <button onClick={() => handleDeleteMember(m.id)} className="cursor-pointer rounded-lg border border-[#E63B2E]/20 px-3 py-1.5 font-['Space_Mono'] text-[9px] uppercase tracking-widest text-[#E63B2E]/60 transition-all hover:bg-[#E63B2E]/5 hover:text-[#E63B2E]">Del</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {teamTab === "form" && (
+                <div className="rounded-2xl border border-[#111111]/10 bg-white p-6">
+                  <h2 className="mb-6 font-['Space_Grotesk'] text-lg font-bold text-[#111111] uppercase tracking-tight">
+                    {editingMember ? "Επεξεργασία Μέλους" : "Νέο Μέλος Ομάδας"}
+                  </h2>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Όνομα *</label>
+                      <input value={memberForm.first_name} onChange={(e) => setMemberForm({ ...memberForm, first_name: e.target.value })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                    </div>
+                    <div>
+                      <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Επίθετο *</label>
+                      <input value={memberForm.last_name} onChange={(e) => setMemberForm({ ...memberForm, last_name: e.target.value })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                    </div>
+                    <div>
+                      <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Email</label>
+                      <input type="email" value={memberForm.email ?? ""} onChange={(e) => setMemberForm({ ...memberForm, email: e.target.value || null })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                    </div>
+                    <div>
+                      <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Θέση Εργασίας *</label>
+                      <input value={memberForm.job_title} onChange={(e) => setMemberForm({ ...memberForm, job_title: e.target.value })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                    </div>
+                    <div>
+                      <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Φωτογραφία URL</label>
+                      <ImageUpload value={memberForm.photo_url} onChange={(url) => setMemberForm({ ...memberForm, photo_url: url })} folder="team" />
+                    </div>
+                    <div>
+                      <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Σειρά Εμφάνισης</label>
+                      <input type="number" value={memberForm.sort_order} onChange={(e) => setMemberForm({ ...memberForm, sort_order: Number(e.target.value) })} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="mb-1 block font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/40">Βιογραφικό</label>
+                      <textarea value={memberForm.bio} onChange={(e) => setMemberForm({ ...memberForm, bio: e.target.value })} rows={4} className="w-full rounded-xl border border-[#111111]/10 bg-[#F5F3EE]/50 px-4 py-3 font-['Space_Grotesk'] text-sm text-[#111111] outline-none focus:ring-2 focus:ring-[#E63B2E]/20" />
+                    </div>
+                    <div className="sm:col-span-2 flex items-center gap-3">
+                      <label className="flex cursor-pointer items-center gap-2">
+                        <input type="checkbox" checked={memberForm.published} onChange={(e) => setMemberForm({ ...memberForm, published: e.target.checked })} className="h-4 w-4 rounded border-[#111111]/20 accent-[#E63B2E]" />
+                        <span className="font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#111111]/60">Δημοσιευμένο</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div className="mt-6 flex gap-3">
+                    <button
+                      onClick={handleSaveMember}
+                      disabled={savingMember || !memberForm.first_name || !memberForm.last_name}
+                      className="cursor-pointer rounded-xl bg-[#111111] px-8 py-3 font-['Space_Mono'] text-xs uppercase tracking-widest text-white transition-all hover:bg-[#E63B2E] disabled:opacity-50"
+                    >
+                      {savingMember ? "Αποθήκευση..." : editingMember ? "Ενημέρωση" : "Δημιουργία"}
+                    </button>
+                    <button
+                      onClick={() => { setTeamTab("list"); setEditingMember(null); setMemberForm(emptyMember); }}
+                      className="cursor-pointer rounded-xl border border-[#111111]/10 px-6 py-3 font-['Space_Mono'] text-xs uppercase tracking-widest text-[#111111]/50 transition-all hover:text-[#111111]"
+                    >
+                      Ακύρωση
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+
           {/* ═══════════ ADMINS SECTION ═══════════ */}
           {section === "admins" && (
             <>
@@ -2552,7 +3389,7 @@ export default function Dashboard({
 
       {/* Bottom Navigation — mobile only */}
       <nav className="fixed bottom-0 inset-x-0 z-50 flex md:hidden border-t border-[#111111]/10 bg-white/95 backdrop-blur-lg">
-        {(["home", "services", "projects", "blog", "contacts", "admins", "media"] as Section[]).map((s) => {
+        {(["home", "services", "projects", "blog", "contacts", "about", "team", "admins", "media"] as Section[]).map((s) => {
           const isActive = section === s;
           const Icon = sectionIcons[s];
           return (

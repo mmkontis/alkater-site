@@ -4,13 +4,14 @@ import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { useTheme } from "./ThemeContext";
+import { useTranslations } from "next-intl";
 
 const logoColorModes = [
   // Row 1: Red accent variants
   { id: "default", blue: "#ffffff", red: "#ffffff", gray: "#ffffff", swatch: ["#333333", "#E63B2E"], accent: "#E63B2E", tint: "transparent", logoLeft: "#ffffff", logoRight: "#ffffff" },
   { id: "white", blue: "#1B6B9E", red: "#E63B2E", gray: "#cccccc", swatch: ["#1B6B9E", "#E63B2E"], accent: "#E63B2E", tint: "#1B6B9E", logoLeft: "#1B6B9E", logoRight: "#E63B2E" },
   { id: "fresh", blue: "#1B6B9E", red: "#E63B2E", gray: "#cccccc", swatch: ["#1B6B9E", "#E63B2E"], accent: "#E63B2E", tint: "#1B6B9E", logoLeft: "#1B6B9E", logoRight: "#E63B2E" },
-  { id: "original", blue: "#063D64", red: "#A21B21", gray: "#918F90", swatch: ["#063D64", "#A21B21"], accent: "#A21B21", tint: "#063D64", logoLeft: "#063D64", logoRight: "#A21B21" },
+  { id: "original", blue: "#063D64", red: "#F04438", gray: "#918F90", swatch: ["#063D64", "#F04438"], accent: "#F04438", tint: "#063D64", logoLeft: "#063D64", logoRight: "#F04438" },
   { id: "proposal", blue: "#111111", red: "#E63B2E", gray: "#918F90", swatch: ["#111111", "#E63B2E"], accent: "#E63B2E", tint: "#111111", logoLeft: "var(--text-primary)", logoRight: "#E63B2E" },
   { id: "classic", blue: "#ffffff", red: "#E63B2E", gray: "#ffffff", swatch: ["#E63B2E"], accent: "#E63B2E", tint: "transparent", logoLeft: "var(--text-primary)", logoRight: "#E63B2E" },
   // Row 2: Blue accent variants
@@ -22,12 +23,6 @@ const logoColorModes = [
 
 import type { HeroSlide } from "@/lib/queries";
 export type { HeroSlide };
-
-const DEFAULT_SLIDES: HeroSlide[] = [
-  { id: "1", heading: "ΧΤΙΖΟΥΜΕ", heading_accent: "ΤΟ ΑΥΡΙΟ.", subtitle: "Τεχνική αρτιότητα, εμπειρία δεκαετιών και δέσμευση στην ποιότητα — αυτές είναι οι αξίες που οικοδομούν κάθε μας έργο.", video_url: "/Videos/construction/01_cement_truck_trench_ext_v1.mp4", sort_order: 0 },
-  { id: "2", heading: "ΠΟΙΟΤΗΤΑ", heading_accent: "ΣΕ ΚΑΘΕ ΕΡΓΟ.", subtitle: "Από μικρές επισκευές μέχρι μεγάλα έργα υποδομής, η ποιότητα είναι πάντα η προτεραιότητά μας.", video_url: "/Videos/construction/13_downloaded_v2.mp4", sort_order: 1 },
-  { id: "3", heading: "ΕΜΠΕΙΡΙΑ", heading_accent: "ΔΕΚΑΕΤΙΩΝ.", subtitle: "Με πάνω από δεκαετίες εμπειρίας στον κατασκευαστικό κλάδο, φέρνουμε αξιοπιστία σε κάθε βήμα.", video_url: "/Videos/construction/08_road_line_painting_initial_v2.mp4", sort_order: 2 },
-];
 
 function AlkaterLogo({ blue, red, gray, className }: { blue: string; red: string; gray: string; className?: string }) {
   return (
@@ -66,11 +61,19 @@ function AlkaterLogo({ blue, red, gray, className }: { blue: string; red: string
 }
 
 export function HeroSection({ slides: slidesProp }: { slides?: HeroSlide[] }) {
+  const t = useTranslations("hero");
+
+  const DEFAULT_SLIDES: HeroSlide[] = [
+    { id: "1", heading: t("slide1Heading"), heading_accent: t("slide1Accent"), subtitle: t("slide1Subtitle"), video_url: "/Videos/construction/01_cement_truck_trench_ext_v1.mp4", image_url: null, sort_order: 0, published: true },
+    { id: "2", heading: t("slide2Heading"), heading_accent: t("slide2Accent"), subtitle: t("slide2Subtitle"), video_url: "/Videos/construction/13_downloaded_v2.mp4", image_url: null, sort_order: 1, published: true },
+    { id: "3", heading: t("slide3Heading"), heading_accent: t("slide3Accent"), subtitle: t("slide3Subtitle"), video_url: "/Videos/construction/08_road_line_painting_initial_v2.mp4", image_url: null, sort_order: 2, published: true },
+  ];
+
   const slides = slidesProp?.length ? slidesProp : DEFAULT_SLIDES;
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [mounted, setMounted] = useState(false);
-  const [logoMode] = useState(0);
+  const [logoMode] = useState(3);
   const [activeSlide, setActiveSlide] = useState(0);
   useTheme();
 
@@ -81,11 +84,19 @@ export function HeroSection({ slides: slidesProp }: { slides?: HeroSlide[] }) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-advance based on video duration
+  // Auto-advance: use video duration for video slides, 6s for image slides
   useEffect(() => {
     if (slides.length <= 1) return;
 
+    const currentSlide = slides[activeSlide];
+    const isImage = !currentSlide.video_url && currentSlide.image_url;
+
     const scheduleNext = () => {
+      if (isImage) {
+        return setTimeout(() => {
+          setActiveSlide((prev) => (prev + 1) % slides.length);
+        }, 6000);
+      }
       const video = videoRefs.current[activeSlide];
       const duration = video?.duration && isFinite(video.duration) ? video.duration * 1000 : 6000;
       return setTimeout(() => {
@@ -95,7 +106,7 @@ export function HeroSection({ slides: slidesProp }: { slides?: HeroSlide[] }) {
 
     const timer = scheduleNext();
     return () => clearTimeout(timer);
-  }, [activeSlide, slides.length]);
+  }, [activeSlide, slides, slides.length]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -112,14 +123,14 @@ export function HeroSection({ slides: slidesProp }: { slides?: HeroSlide[] }) {
     <section
       ref={containerRef}
       className="relative z-10 flex min-h-screen flex-col items-center justify-center selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']"
-      style={{ backgroundColor: "color-mix(in srgb, var(--bg-primary) 85%, var(--tint))" }}
+      style={{ backgroundColor: "var(--bg-tint-85)" }}
     >
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
       `}} />
 
       {/* Noise Overlay */}
-      <div className="pointer-events-none fixed inset-0 z-50 opacity-5 mix-blend-overlay">
+      <div className="pointer-events-none fixed inset-0 z-50 opacity-5 mix-blend-overlay" aria-hidden="true">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
           <filter id="noiseFilterHero">
             <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
@@ -128,26 +139,45 @@ export function HeroSection({ slides: slidesProp }: { slides?: HeroSlide[] }) {
         </svg>
       </div>
 
-      {/* Video backgrounds */}
+      {/* Video / Image backgrounds */}
       <motion.div
         style={mounted ? { scale, y, opacity } : {}}
         className="absolute inset-0 z-0 h-full w-full overflow-hidden"
       >
-        {slides.map((s, i) => (
-          <video
-            key={s.id}
-            ref={(el) => { videoRefs.current[i] = el; }}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
-            style={{ opacity: mounted && activeSlide === i ? 1 : 0 }}
-          >
-            <source src={s.video_url} type="video/mp4" />
-          </video>
-        ))}
-        <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--tint) 20%, rgba(0,0,0,0.45)), color-mix(in srgb, var(--overlay-bg) 70%, transparent))" }} />
+        {slides.map((s, i) => {
+          const isActive = mounted && activeSlide === i;
+          if (s.video_url) {
+            return (
+              <video
+                key={s.id}
+                ref={(el) => { videoRefs.current[i] = el; }}
+                autoPlay
+                loop
+                muted
+                playsInline
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
+                style={{ opacity: isActive ? 1 : 0 }}
+              >
+                <source src={s.video_url} type="video/mp4" />
+              </video>
+            );
+          }
+          if (s.image_url) {
+            return (
+              <div
+                key={s.id}
+                className="absolute inset-0 h-full w-full bg-cover bg-center transition-opacity duration-1000"
+                style={{
+                  opacity: isActive ? 1 : 0,
+                  backgroundImage: `url(${s.image_url})`,
+                }}
+              />
+            );
+          }
+          return null;
+        })}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--hero-overlay-tint), var(--overlay-70))" }} />
       </motion.div>
 
       {/* Content */}
@@ -229,7 +259,7 @@ export function HeroSection({ slides: slidesProp }: { slides?: HeroSlide[] }) {
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           className="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border"
-          style={{ borderColor: "color-mix(in srgb, var(--accent) 30%, transparent)", backgroundColor: "color-mix(in srgb, var(--tint) 15%, rgba(0,0,0,0.3))" }}
+          style={{ borderColor: "var(--accent-30)", backgroundColor: "var(--tint-15)" }}
         >
           <ArrowDown className="w-5 h-5" style={{ color: "var(--accent)", opacity: 0.7 }} />
         </motion.div>
