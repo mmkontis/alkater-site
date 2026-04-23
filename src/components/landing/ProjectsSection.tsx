@@ -58,7 +58,7 @@ export function ProjectsSection({ projects: projectsProp }: { projects?: Project
             <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase mx-auto max-w-3xl leading-[1.1]" style={{ color: "var(--text-primary)" }}>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase mx-auto max-w-3xl leading-[1.1]" style={{ color: "var(--text-primary)" }}>
             {t("titleMain")} <span className="text-[#E63B2E]">{t("titleAccent")}</span>
           </h2>
           <p className="font-['Space_Mono'] text-sm md:text-base mt-6 max-w-2xl mx-auto" style={{ color: "var(--text-muted)" }}>

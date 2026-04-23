@@ -11,7 +11,7 @@ const logoColorModes = [
   { id: "default", blue: "#ffffff", red: "#ffffff", gray: "#ffffff", swatch: ["#333333", "#E63B2E"], accent: "#E63B2E", tint: "transparent", logoLeft: "#ffffff", logoRight: "#ffffff" },
   { id: "white", blue: "#1B6B9E", red: "#E63B2E", gray: "#cccccc", swatch: ["#1B6B9E", "#E63B2E"], accent: "#E63B2E", tint: "#1B6B9E", logoLeft: "#1B6B9E", logoRight: "#E63B2E" },
   { id: "fresh", blue: "#1B6B9E", red: "#E63B2E", gray: "#cccccc", swatch: ["#1B6B9E", "#E63B2E"], accent: "#E63B2E", tint: "#1B6B9E", logoLeft: "#1B6B9E", logoRight: "#E63B2E" },
-  { id: "original", blue: "#063D64", red: "#F04438", gray: "#918F90", swatch: ["#063D64", "#F04438"], accent: "#F04438", tint: "#063D64", logoLeft: "#063D64", logoRight: "#F04438" },
+  { id: "original", blue: "#1F7FBF", red: "#F04438", gray: "#918F90", swatch: ["#1F7FBF", "#F04438"], accent: "#F04438", tint: "#1F7FBF", logoLeft: "#1F7FBF", logoRight: "#F04438" },
   { id: "proposal", blue: "#111111", red: "#E63B2E", gray: "#918F90", swatch: ["#111111", "#E63B2E"], accent: "#E63B2E", tint: "#111111", logoLeft: "var(--text-primary)", logoRight: "#E63B2E" },
   { id: "classic", blue: "#ffffff", red: "#E63B2E", gray: "#ffffff", swatch: ["#E63B2E"], accent: "#E63B2E", tint: "transparent", logoLeft: "var(--text-primary)", logoRight: "#E63B2E" },
   // Row 2: Blue accent variants
@@ -186,7 +186,7 @@ export function HeroSection({ slides: slidesProp }: { slides?: HeroSlide[] }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-8 w-full max-w-md"
+          className="mb-8 w-full max-w-[16rem] sm:max-w-xs"
         >
           <AlkaterLogo
             blue={currentColors.blue}

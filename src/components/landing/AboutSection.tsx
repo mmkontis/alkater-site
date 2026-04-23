@@ -1,16 +1,26 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { useLocale } from "next-intl";
+import { FOUNDING_YEAR } from "@/lib/about-data";
 
-const STATS = [
-  { label: "Έτη Εμπειρίας", value: 30, suffix: "+" },
-  { label: "Ολοκληρωμένα Έργα", value: 500, suffix: "+" },
-  { label: "Περιοχές Κάλυψης", value: 15, suffix: "" },
-  { label: "Εξειδικευμένο Προσωπικό", value: 45, suffix: "+" },
-];
+type ParsedStat = { value: number; suffix: string; label: string };
 
-export function AboutSection() {
+function parseStat(raw: { value: string; label: string }): ParsedStat {
+  const match = raw.value.match(/^(\d+(?:[.,]\d+)?)(.*)$/);
+  const numeric = match ? parseFloat(match[1].replace(",", ".")) : 0;
+  const suffix = match ? match[2].trim() : raw.value;
+  return { value: numeric, suffix, label: raw.label };
+}
+
+export function AboutSection({ stats }: { stats?: { value: string; label: string }[] }) {
+  const locale = useLocale();
+  const isEn = locale === "en";
+  const STATS = useMemo<ParsedStat[]>(
+    () => (stats ?? []).map(parseStat),
+    [stats]
+  );
   const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -51,25 +61,53 @@ export function AboutSection() {
           >
             <div className="flex items-center gap-4 mb-6">
               <span className="w-12 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
-              <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>Η Εταιρεια</span>
+              <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>
+                {isEn ? `About Us · Since ${FOUNDING_YEAR}` : `Η Εταιρεια · Από το ${FOUNDING_YEAR}`}
+              </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase mb-8 leading-[1.1]" style={{ color: "var(--text-primary)" }}>
-              Κατασκευαζοντας <br/>
-              <span className="text-[#E63B2E]">Δρομους</span> &<br/>
-              <span style={{ color: "var(--text-primary)" }}>Υποδομες</span>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase mb-8 leading-[1.1]" style={{ color: "var(--text-primary)" }}>
+              {isEn ? (
+                <>
+                  Building <br />
+                  <span className="text-[#E63B2E]">Roads</span> &<br />
+                  <span style={{ color: "var(--text-primary)" }}>Infrastructure</span>
+                </>
+              ) : (
+                <>
+                  Κατασκευαζοντας <br />
+                  <span className="text-[#E63B2E]">Δρομους</span> &<br />
+                  <span style={{ color: "var(--text-primary)" }}>Υποδομες</span>
+                </>
+              )}
             </h2>
 
             <div className="font-['Space_Mono'] text-base md:text-lg leading-relaxed mb-10 space-y-6 max-w-xl" style={{ color: "var(--text-secondary)" }}>
-              <p>
-                Με πολυετή εμπειρία στον κατασκευαστικό τομέα, η ΑΛΚΑΤΕΡ εγγυάται την αρτιότητα και
-                αντοχή των έργων της. Η εξειδίκευσή μας εστιάζεται στα δημόσια και ιδιωτικά έργα
-                υποδομής, με έμφαση στην οδοποιία.
-              </p>
-              <p className="text-sm">
-                Βασιζόμαστε σε σύγχρονο ιδιόκτητο εξοπλισμό, πιστοποιημένα υλικά και εξειδικευμένο
-                προσωπικό για την παράδοση έργων που ανταποκρίνονται στις πιο αυστηρές προδιαγραφές.
-              </p>
+              {isEn ? (
+                <>
+                  <p>
+                    With decades of experience in construction, ALKATER guarantees the precision and
+                    durability of every project. We specialise in public and private infrastructure
+                    works, with a focus on road construction.
+                  </p>
+                  <p className="text-sm">
+                    We rely on modern in-house equipment, certified materials and a specialised team
+                    to deliver projects that meet the strictest standards.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>
+                    Με πολυετή εμπειρία στον κατασκευαστικό τομέα, η ΑΛΚΑΤΕΡ εγγυάται την αρτιότητα και
+                    αντοχή των έργων της. Η εξειδίκευσή μας εστιάζεται στα δημόσια και ιδιωτικά έργα
+                    υποδομής, με έμφαση στην οδοποιία.
+                  </p>
+                  <p className="text-sm">
+                    Βασιζόμαστε σε σύγχρονο ιδιόκτητο εξοπλισμό, πιστοποιημένα υλικά και εξειδικευμένο
+                    προσωπικό για την παράδοση έργων που ανταποκρίνονται στις πιο αυστηρές προδιαγραφές.
+                  </p>
+                </>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-8 md:gap-12 mt-12 pt-12" style={{ borderTop: "1px solid var(--border-hover)" }}>
@@ -116,15 +154,19 @@ function Counter({ stat, index }: { stat: { label: string; value: number; suffix
 
   useEffect(() => {
     if (isInView) {
+      const end = Math.max(0, Math.round(stat.value));
+      if (end === 0) {
+        setCount(0);
+        return;
+      }
       let start = 0;
-      const end = stat.value;
       const duration = 2000;
-      const incrementTime = (duration / end);
+      const incrementTime = duration / end;
 
       const timer = setInterval(() => {
         start += 1;
         setCount(start);
-        if (start === end) clearInterval(timer);
+        if (start >= end) clearInterval(timer);
       }, incrementTime);
 
       return () => clearInterval(timer);

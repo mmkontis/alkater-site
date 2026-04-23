@@ -32,7 +32,7 @@ export function CertificationsSection() {
           </div>
 
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase leading-[1.1]" style={{ color: "var(--text-primary)" }}>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase leading-[1.1]" style={{ color: "var(--text-primary)" }}>
               {t("titleMain")}<br />
               <span className="text-[#E63B2E]">{t("titleAccent")}</span>
             </h2>

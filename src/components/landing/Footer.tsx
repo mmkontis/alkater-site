@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -170,36 +169,6 @@ export function Footer() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* ESPA Banner */}
-        <div className="py-10 md:py-14 flex flex-col items-center gap-6" style={{ borderTop: "1px solid var(--border-color)" }}>
-          <div className="flex items-center justify-center gap-8 sm:gap-12 md:gap-16 flex-wrap w-full max-w-md">
-            <Image
-              src="/espa/eu-flag.png"
-              alt={t("euAlt")}
-              width={480}
-              height={216}
-              className="h-24 sm:h-28 md:h-32 w-auto object-contain"
-            />
-            <Image
-              src="/espa/espa-2021-2027.png"
-              alt={t("espaAlt")}
-              width={400}
-              height={216}
-              className="h-24 sm:h-28 md:h-32 w-auto object-contain"
-            />
-            <Image
-              src="/espa/antagonistikotita.jpg"
-              alt={t("competitivenessAlt")}
-              width={480}
-              height={216}
-              className="h-24 sm:h-28 md:h-32 w-auto object-contain"
-            />
-          </div>
-          <p className="font-['Space_Mono'] text-[10px] sm:text-xs text-center leading-snug max-w-2xl" style={{ color: "var(--text-muted)" }}>
-            {t("espaText")}
-          </p>
         </div>
 
         {/* Bottom bar */}

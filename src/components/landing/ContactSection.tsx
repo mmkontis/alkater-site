@@ -85,7 +85,7 @@ export function ContactSection() {
                 <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>{t("sectionLabel")}</span>
               </div>
 
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase mb-8 leading-[1.1]" style={{ color: "var(--text-primary)" }}>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase mb-8 leading-[1.1]" style={{ color: "var(--text-primary)" }}>
                 {t("titleMain")} <br/>
                 <span className="text-[#E63B2E]">{t("titleAccent")}</span>
               </h2>

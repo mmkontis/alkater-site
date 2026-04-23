@@ -55,14 +55,14 @@ export default function EquipmentPageClient() {
     <InnerPageLayout>
       <PageHero
         label="Εξοπλισμος"
-        title={<>Τα Μηχανηματα<br /><span className="text-[#E63B2E]">Μας.</span></>}
+        title={<>Τα Μηχανηματα<br /><span className="text-[#E63B2E]">Μας</span></>}
         subtitle="Ο σύγχρονος μηχανολογικός εξοπλισμός της ΑΛΚΑΤΕΡ αποτελεί εγγύηση ποιότητας και αξιοπιστίας σε κάθε έργο. Συνεχής ανανέωση και συντήρηση του στόλου μας."
         image="/HighRes/image-1772752827339.png"
       />
 
       <section className="py-24 md:py-32 border-t border-white/5">
         <div className="container mx-auto px-6 max-w-7xl">
-          <SectionHeading label="Στολος" title={<>Κατηγοριες <span className="text-[#E63B2E]">Εξοπλισμου.</span></>} />
+          <SectionHeading label="Στολος" title={<>Κατηγοριες <span className="text-[#E63B2E]">Εξοπλισμου</span></>} />
 
           <div className="space-y-16">
             {EQUIPMENT_CATEGORIES.map((cat, i) => (

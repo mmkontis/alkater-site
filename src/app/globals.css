@@ -42,6 +42,13 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
+/* Space Mono ships Latin-only glyphs. For Greek codepoints, fall through
+   to Space Grotesk so Greek body text renders consistently instead of
+   triggering an inconsistent per-character system fallback. */
+[class*="Space_Mono"] {
+  font-family: "Space Mono", "Space Grotesk", var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;

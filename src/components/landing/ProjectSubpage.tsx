@@ -142,7 +142,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
           Πισω
         </Link>
         <Link href="/" aria-label="ΑΛΚΑΤΕΡ - Αρχική">
-          <AlkaterLogoColored className="h-24 w-auto" />
+          <AlkaterLogoColored className="h-12 sm:h-16 md:h-20 w-auto" />
         </Link>
       </div>
 

@@ -51,16 +51,16 @@ export function CookieBanner() {
               </button>
 
               <div className="flex flex-col sm:flex-row sm:items-start sm:gap-4">
-                <Cookie className="hidden sm:block w-5 h-5 shrink-0 mt-1" style={{ color: "white" }} />
+                <Cookie className="hidden sm:block w-5 h-5 shrink-0 mt-1" style={{ color: "var(--link-color)" }} />
 
                 <div className="flex-1 min-w-0">
                   <p className="font-['Space_Grotesk'] font-semibold text-[10px] sm:text-sm leading-tight mb-0 sm:mb-1 flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
-                    <Cookie className="w-3 h-3 sm:hidden shrink-0" style={{ color: "white" }} />
+                    <Cookie className="w-3 h-3 sm:hidden shrink-0" style={{ color: "var(--link-color)" }} />
                     Χρησιμοποιούμε cookies
                   </p>
 
                   {/* Desktop: full text */}
-                  <p className="hidden sm:block font-['Space_Mono'] text-xs leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>
+                  <p className="hidden sm:block font-['Space_Grotesk'] text-sm leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>
                     Χρησιμοποιούμε cookies για να βελτιώσουμε την εμπειρία σας στον ιστότοπό μας.
                   </p>
 
@@ -68,7 +68,7 @@ export function CookieBanner() {
                   <button
                     onClick={() => setShowModal(true)}
                     className="sm:hidden flex items-center gap-1 font-['Space_Mono'] text-[9px] mb-1.5 hover:opacity-80 transition-opacity"
-                    style={{ color: "var(--accent)" }}
+                    style={{ color: "var(--link-color)" }}
                   >
                     Μαθετε περισσοτερα
                     <ExternalLink className="w-2.5 h-2.5" />
@@ -115,7 +115,7 @@ export function CookieBanner() {
           >
             <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: "var(--tint-20)" }}>
               <div className="flex items-center gap-3">
-                <Cookie className="w-5 h-5" style={{ color: "var(--accent)" }} />
+                <Cookie className="w-5 h-5" style={{ color: "var(--link-color)" }} />
                 <h2 className="font-['Space_Grotesk'] font-bold text-lg" style={{ color: "var(--text-primary)" }}>
                   Cookies
                 </h2>
@@ -135,7 +135,7 @@ export function CookieBanner() {
                 <h3 className="font-['Space_Grotesk'] font-semibold text-base mb-3" style={{ color: "var(--text-primary)" }}>
                   Τι ειναι τα cookies;
                 </h3>
-                <p className="font-['Space_Mono'] text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                <p className="font-['Space_Grotesk'] text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                   Τα cookies είναι μικρά αρχεία κειμένου που αποθηκεύονται στη συσκευή σας
                   όταν επισκέπτεστε έναν ιστότοπο. Μας βοηθούν να κατανοήσουμε πώς
                   χρησιμοποιείτε τον ιστότοπό μας.
@@ -146,7 +146,7 @@ export function CookieBanner() {
                 <h3 className="font-['Space_Grotesk'] font-semibold text-base mb-3" style={{ color: "var(--text-primary)" }}>
                   Πως τα χρησιμοποιουμε;
                 </h3>
-                <p className="font-['Space_Mono'] text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                <p className="font-['Space_Grotesk'] text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                   Χρησιμοποιούμε cookies για να βελτιώσουμε την εμπειρία σας στον ιστότοπό μας,
                   να αναλύσουμε την επισκεψιμότητα και να προσαρμόσουμε το περιεχόμενο
                   στις ανάγκες σας.
@@ -157,7 +157,7 @@ export function CookieBanner() {
                 <h3 className="font-['Space_Grotesk'] font-semibold text-base mb-3" style={{ color: "var(--text-primary)" }}>
                   Οι επιλογες σας
                 </h3>
-                <p className="font-['Space_Mono'] text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                <p className="font-['Space_Grotesk'] text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                   Μπορείτε να αποδεχτείτε ή να απορρίψετε τα cookies. Η απόρριψη μπορεί
                   να επηρεάσει ορισμένες λειτουργίες του ιστοτόπου.
                 </p>

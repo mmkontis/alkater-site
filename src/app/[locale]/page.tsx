@@ -10,8 +10,9 @@ import { Footer } from "@/components/landing/Footer";
 import { CookieBanner } from "@/components/landing/CookieBanner";
 import { ThemeProvider } from "@/components/landing/ThemeContext";
 import { NavMenu } from "@/components/landing/NavMenu";
+import { EspaBanner } from "@/components/landing/EspaBanner";
 
-import { getHeroSlides, getProjects, getBlogPosts, getServices } from "@/lib/queries";
+import { getHeroSlides, getProjects, getBlogPosts, getServices, getPageContent } from "@/lib/queries";
 import { setRequestLocale } from "next-intl/server";
 import { getAlternates, organizationJsonLd, localBusinessJsonLd, webSiteJsonLd } from "@/lib/seo";
 
@@ -25,12 +26,20 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [slides, projects, blogPosts, services] = await Promise.all([
+  const [slides, projects, blogPosts, services, aboutContent] = await Promise.all([
     getHeroSlides(locale),
     getProjects(locale),
     getBlogPosts(locale),
     getServices(locale),
+    getPageContent("about", locale),
   ]);
+
+  const aboutStats = aboutContent?.stats ?? [
+    { value: "10+", label: locale === "en" ? "Years of Experience" : "Χρόνια Εμπειρίας" },
+    { value: "5+", label: locale === "en" ? "Completed Projects" : "Ολοκληρωμένα Έργα" },
+    { value: "500+", label: locale === "en" ? "Kilometres of Road Network" : "Χιλιόμετρα Οδικού Δικτύου" },
+    { value: "15+", label: locale === "en" ? "Specialised Staff" : "Εξειδικευμένο Προσωπικό" },
+  ];
 
   return (
     <ThemeProvider>
@@ -57,10 +66,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </svg>
         </div>
 
+        <EspaBanner />
         <NavMenu />
         <HeroSection slides={slides} />
         <ServicesSection services={services} />
-        <AboutSection />
+        <AboutSection stats={aboutStats} />
         {/* <ProjectsSection projects={projects} /> */}
         <CertificationsSection />
         <ContactSection />

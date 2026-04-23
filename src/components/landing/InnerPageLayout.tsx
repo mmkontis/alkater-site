@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, Menu, X } from "lucide-react";
 import { Footer } from "./Footer";
+import { EspaBanner } from "./EspaBanner";
 
 import { ThemeProvider } from "./ThemeContext";
 import { usePathname } from "next/navigation";
@@ -49,7 +50,15 @@ function AlkaterLogoColored({ className }: { className?: string }) {
 export function InnerPageLayout({ children }: { children: React.ReactNode }) {
   const t = useTranslations("nav");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const NAV_LINKS = [
     { href: "/", label: t("home") },
@@ -76,52 +85,74 @@ export function InnerPageLayout({ children }: { children: React.ReactNode }) {
         </svg>
       </div>
 
-      {/* Top bar */}
-      <div className="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center mix-blend-difference text-white">
-        <Link href="/" className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors">
-          <ChevronLeft className="w-5 h-5" />
-          {t("back")}
-        </Link>
-        <Link href="/" aria-label="ΑΛΚΑΤΕΡ - Αρχική">
-          <AlkaterLogoColored className="h-16 sm:h-20 w-auto" />
-        </Link>
-        <div className="flex items-center gap-4">
-          <LanguageSwitcher />
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? "Κλείσιμο μενού" : "Άνοιγμα μενού"}
-            className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors"
-          >
-            {menuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
-            {t("menu")}
-          </button>
+      {/* Funding bar — co-financing acknowledgement (EU / ESPA) */}
+      <EspaBanner />
+
+      {/* Sticky top bar: transparent over hero, blurred surface after scrolling */}
+      <div
+        className={`sticky top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "backdrop-blur-2xl border-b shadow-lg"
+            : "bg-transparent border-b border-transparent"
+        }`}
+        style={
+          scrolled
+            ? { backgroundColor: "var(--nav-bg)", borderColor: "var(--accent-border-20)" }
+            : undefined
+        }
+      >
+        <div
+          className={`w-full p-4 md:p-6 flex justify-between items-center transition-colors duration-300 ${
+            scrolled ? "text-[color:var(--text-primary)]" : "mix-blend-difference text-white"
+          }`}
+        >
+          <Link href="/" className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors">
+            <ChevronLeft className="w-5 h-5" />
+            {t("back")}
+          </Link>
+          <Link href="/" aria-label="ΑΛΚΑΤΕΡ - Αρχική">
+            <AlkaterLogoColored className={`w-auto transition-all duration-300 ${scrolled ? "h-9 sm:h-10 md:h-12" : "h-12 sm:h-16 md:h-20"}`} />
+          </Link>
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? "Κλείσιμο μενού" : "Άνοιγμα μενού"}
+              className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors"
+            >
+              {menuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
+              {t("menu")}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile/Desktop Nav Overlay */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-[90] backdrop-blur-xl flex items-center justify-center" style={{ backgroundColor: "var(--bg-tint-95)" }}>
-          <nav className="flex flex-col items-center gap-4">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`text-3xl md:text-5xl font-bold uppercase tracking-tighter transition-colors duration-200 ${
-                  pathname === link.href
-                    ? "text-[#E63B2E]"
-                    : "text-[#F5F3EE] hover:text-[#E63B2E]"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <LanguageSwitcher className="mt-6" />
-          </nav>
-        </div>
-      )}
+      <div className="relative">
+        {/* Mobile/Desktop Nav Overlay */}
+        {menuOpen && (
+          <div className="fixed inset-0 z-[90] backdrop-blur-xl flex items-center justify-center" style={{ backgroundColor: "var(--bg-tint-95)" }}>
+            <nav className="flex flex-col items-center gap-4">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`text-3xl md:text-5xl font-bold uppercase tracking-tighter transition-colors duration-200 ${
+                    pathname === link.href
+                      ? "text-[#E63B2E]"
+                      : "text-[#F5F3EE] hover:text-[#E63B2E]"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <LanguageSwitcher className="mt-6" />
+            </nav>
+          </div>
+        )}
 
-      {children}
+        {children}
+      </div>
       <Footer />
     </main>
     </ThemeProvider>

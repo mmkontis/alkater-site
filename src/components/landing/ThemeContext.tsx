@@ -11,7 +11,7 @@ export interface ColorScheme {
   logoRight: string; // color for the right part of the logo (ΑΤΕΡ)
 }
 
-const DEFAULT_SCHEME: ColorScheme = { accent: "#F04438", tint: "#063D64", logoLeft: "#063D64", logoRight: "#F04438" };
+const DEFAULT_SCHEME: ColorScheme = { accent: "#F04438", tint: "#1F7FBF", logoLeft: "#1F7FBF", logoRight: "#F04438" };
 
 // Pre-compute color-mix() in JS so the CSS output is plain hex/rgba
 // (WAVE and some tools crash on CSS color-mix())

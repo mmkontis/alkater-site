@@ -20,7 +20,7 @@ export function BlogSection({ posts: postsProp }: { posts?: BlogPost[] }) {
     },
   ];
 
-  const posts = postsProp?.length ? postsProp : FALLBACK_POSTS;
+  const posts = (postsProp?.length ? postsProp : FALLBACK_POSTS).slice(0, 3);
   return (
     <section id="blog" className="py-24 md:py-32 relative border-t overflow-hidden" style={{ borderColor: "var(--border-color)", backgroundColor: "var(--bg-tint-88)" }}>
       <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 20% 100%, var(--tint-12), transparent)" }} />
@@ -65,19 +65,19 @@ export function BlogSection({ posts: postsProp }: { posts?: BlogPost[] }) {
                   </div>
                 )}
                 <div className="p-6 flex flex-col flex-1">
-                  <div className="flex items-center gap-2 mb-3" style={{ color: "var(--text-muted)" }}>
+                  <div className="flex items-center gap-2 mb-3" style={{ color: "var(--link-color)" }}>
                     <Calendar className="w-3.5 h-3.5" />
-                    <span className="font-['Space_Mono'] text-xs">
+                    <span className="font-['Space_Mono'] text-xs uppercase tracking-widest">
                       {new Date(post.created_at).toLocaleDateString("el-GR", { day: "numeric", month: "long", year: "numeric" })}
                     </span>
                   </div>
                   <h3 className="text-xl font-bold uppercase tracking-tight mb-3 transition-colors" style={{ color: "var(--text-primary)" }}>
                     {post.title}
                   </h3>
-                  <p className="font-['Space_Mono'] text-sm leading-relaxed mb-4 flex-1" style={{ color: "var(--text-muted)" }}>
+                  <p className="font-['Space_Grotesk'] text-sm leading-relaxed mb-4 flex-1" style={{ color: "var(--text-muted)" }}>
                     {post.excerpt}
                   </p>
-                  <span className="inline-flex items-center gap-2 font-['Space_Mono'] text-xs uppercase tracking-widest transition-colors" style={{ color: "var(--link-color)" }}>
+                  <span className="inline-flex items-center gap-2 font-['Space_Mono'] text-xs uppercase tracking-widest transition-colors group-hover:opacity-80" style={{ color: "var(--link-color)" }}>
                     {t("readMore")}
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </span>

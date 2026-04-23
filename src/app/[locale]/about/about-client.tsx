@@ -122,7 +122,7 @@ export default function AboutPageClient({ content: c, teamMembers }: { content: 
           <section className="py-24 md:py-32 relative overflow-hidden">
             <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 60% at 20% 60%, var(--tint-8), transparent)" }} />
             <div className="container mx-auto px-6 max-w-7xl relative z-10">
-              <SectionHeading label="Ομαδα" title={<>Η Ομάδα <span className="text-[#E63B2E]">Μας.</span></>} />
+              <SectionHeading label="Ομαδα" title={<>Η Ομάδα <span className="text-[#E63B2E]">Μας</span></>} />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {teamMembers.map((m, i) => (
                   <motion.div

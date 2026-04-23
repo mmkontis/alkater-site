@@ -30,13 +30,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       publishedTime: post.created_at,
       locale: locale === "el" ? "el_GR" : "en_US",
       siteName: getSiteName(locale),
-      images: post.cover_image ? [{ url: post.cover_image, width: 1200, height: 630, alt: post.title }] : [],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt,
-      images: post.cover_image ? [post.cover_image] : [],
     },
   };
 }

@@ -24,7 +24,7 @@ export default function BlogArticleContent({
     <InnerPageLayout>
       <PageHero
         label="Αρθρο"
-        title={<>Σημασια Συντηρησης<br /><span className="text-[#E63B2E]">Οδικων Δικτυων.</span></>}
+        title={<>Σημασια Συντηρησης<br /><span className="text-[#E63B2E]">Οδικων Δικτυων</span></>}
         subtitle={excerpt ?? "Γιατί η τακτική συντήρηση των οδικών δικτύων αποτελεί επένδυση στην ασφάλεια, την οικονομία και τη βιωσιμότητα των υποδομών."}
         image={coverImage}
       />
