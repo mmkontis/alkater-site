@@ -1,0 +1,354 @@
+{
+  "baseUrl": "http://localhost:3333",
+  "axeVersion": "4.11.1",
+  "startedAt": "2026-05-26T22:13:20.196Z",
+  "finishedAt": "2026-05-26T22:16:07.347Z",
+  "totalViolations": 0,
+  "pages": [
+    {
+      "name": "EL /",
+      "url": "http://localhost:3333",
+      "violations": []
+    },
+    {
+      "name": "EL /about",
+      "url": "http://localhost:3333/about",
+      "violations": []
+    },
+    {
+      "name": "EL /blog/erga-ypodomes-thesprotia",
+      "url": "http://localhost:3333/blog/erga-ypodomes-thesprotia",
+      "violations": []
+    },
+    {
+      "name": "EL /blog/nees-texnikes-asfaltostrosis",
+      "url": "http://localhost:3333/blog/nees-texnikes-asfaltostrosis",
+      "violations": []
+    },
+    {
+      "name": "EL /blog/simassia-sintirissis-odikon-diktyon",
+      "url": "http://localhost:3333/blog/simassia-sintirissis-odikon-diktyon",
+      "violations": []
+    },
+    {
+      "name": "EL /blog/xrimatodotisi-espa",
+      "url": "http://localhost:3333/blog/xrimatodotisi-espa",
+      "violations": []
+    },
+    {
+      "name": "EL /careers",
+      "url": "http://localhost:3333/careers",
+      "violations": []
+    },
+    {
+      "name": "EL /certifications",
+      "url": "http://localhost:3333/certifications",
+      "violations": []
+    },
+    {
+      "name": "EL /contact",
+      "url": "http://localhost:3333/contact",
+      "violations": []
+    },
+    {
+      "name": "DE /de",
+      "url": "http://localhost:3333/de",
+      "violations": []
+    },
+    {
+      "name": "DE /de/about",
+      "url": "http://localhost:3333/de/about",
+      "violations": []
+    },
+    {
+      "name": "DE /de/blog/erga-ypodomes-thesprotia",
+      "url": "http://localhost:3333/de/blog/erga-ypodomes-thesprotia",
+      "violations": []
+    },
+    {
+      "name": "DE /de/blog/nees-texnikes-asfaltostrosis",
+      "url": "http://localhost:3333/de/blog/nees-texnikes-asfaltostrosis",
+      "violations": []
+    },
+    {
+      "name": "DE /de/blog/simassia-sintirissis-odikon-diktyon",
+      "url": "http://localhost:3333/de/blog/simassia-sintirissis-odikon-diktyon",
+      "violations": []
+    },
+    {
+      "name": "DE /de/blog/xrimatodotisi-espa",
+      "url": "http://localhost:3333/de/blog/xrimatodotisi-espa",
+      "violations": []
+    },
+    {
+      "name": "DE /de/careers",
+      "url": "http://localhost:3333/de/careers",
+      "violations": []
+    },
+    {
+      "name": "DE /de/certifications",
+      "url": "http://localhost:3333/de/certifications",
+      "violations": []
+    },
+    {
+      "name": "DE /de/contact",
+      "url": "http://localhost:3333/de/contact",
+      "violations": []
+    },
+    {
+      "name": "DE /de/equipment",
+      "url": "http://localhost:3333/de/equipment",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/anakataskevi-odikou-diktyou",
+      "url": "http://localhost:3333/de/projects/anakataskevi-odikou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/asfaltostrosi-ethnikis-odou",
+      "url": "http://localhost:3333/de/projects/asfaltostrosi-ethnikis-odou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/diagrammisi-eparxiakou-diktyou",
+      "url": "http://localhost:3333/de/projects/diagrammisi-eparxiakou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/diagrammisi-limaniou",
+      "url": "http://localhost:3333/de/projects/diagrammisi-limaniou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/erga-ypodomis-ochetoi",
+      "url": "http://localhost:3333/de/projects/erga-ypodomis-ochetoi",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/toichio-antistirixis",
+      "url": "http://localhost:3333/de/projects/toichio-antistirixis",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/asfaltostroseis",
+      "url": "http://localhost:3333/de/services/asfaltostroseis",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/chomatourgika-ypodomes",
+      "url": "http://localhost:3333/de/services/chomatourgika-ypodomes",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/diagrammiseis-odon",
+      "url": "http://localhost:3333/de/services/diagrammiseis-odon",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/dimosia-erga",
+      "url": "http://localhost:3333/de/services/dimosia-erga",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/poiotikos-elegchos",
+      "url": "http://localhost:3333/de/services/poiotikos-elegchos",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/technikes-meletes",
+      "url": "http://localhost:3333/de/services/technikes-meletes",
+      "violations": []
+    },
+    {
+      "name": "DE /de/team",
+      "url": "http://localhost:3333/de/team",
+      "violations": []
+    },
+    {
+      "name": "EN /en",
+      "url": "http://localhost:3333/en",
+      "violations": []
+    },
+    {
+      "name": "EN /en/about",
+      "url": "http://localhost:3333/en/about",
+      "violations": []
+    },
+    {
+      "name": "EN /en/blog/erga-ypodomes-thesprotia",
+      "url": "http://localhost:3333/en/blog/erga-ypodomes-thesprotia",
+      "violations": []
+    },
+    {
+      "name": "EN /en/blog/nees-texnikes-asfaltostrosis",
+      "url": "http://localhost:3333/en/blog/nees-texnikes-asfaltostrosis",
+      "violations": []
+    },
+    {
+      "name": "EN /en/blog/simassia-sintirissis-odikon-diktyon",
+      "url": "http://localhost:3333/en/blog/simassia-sintirissis-odikon-diktyon",
+      "violations": []
+    },
+    {
+      "name": "EN /en/blog/xrimatodotisi-espa",
+      "url": "http://localhost:3333/en/blog/xrimatodotisi-espa",
+      "violations": []
+    },
+    {
+      "name": "EN /en/careers",
+      "url": "http://localhost:3333/en/careers",
+      "violations": []
+    },
+    {
+      "name": "EN /en/certifications",
+      "url": "http://localhost:3333/en/certifications",
+      "violations": []
+    },
+    {
+      "name": "EN /en/contact",
+      "url": "http://localhost:3333/en/contact",
+      "violations": []
+    },
+    {
+      "name": "EN /en/equipment",
+      "url": "http://localhost:3333/en/equipment",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/anakataskevi-odikou-diktyou",
+      "url": "http://localhost:3333/en/projects/anakataskevi-odikou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/asfaltostrosi-ethnikis-odou",
+      "url": "http://localhost:3333/en/projects/asfaltostrosi-ethnikis-odou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/diagrammisi-eparxiakou-diktyou",
+      "url": "http://localhost:3333/en/projects/diagrammisi-eparxiakou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/diagrammisi-limaniou",
+      "url": "http://localhost:3333/en/projects/diagrammisi-limaniou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/erga-ypodomis-ochetoi",
+      "url": "http://localhost:3333/en/projects/erga-ypodomis-ochetoi",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/toichio-antistirixis",
+      "url": "http://localhost:3333/en/projects/toichio-antistirixis",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/asfaltostroseis",
+      "url": "http://localhost:3333/en/services/asfaltostroseis",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/chomatourgika-ypodomes",
+      "url": "http://localhost:3333/en/services/chomatourgika-ypodomes",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/diagrammiseis-odon",
+      "url": "http://localhost:3333/en/services/diagrammiseis-odon",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/dimosia-erga",
+      "url": "http://localhost:3333/en/services/dimosia-erga",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/poiotikos-elegchos",
+      "url": "http://localhost:3333/en/services/poiotikos-elegchos",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/technikes-meletes",
+      "url": "http://localhost:3333/en/services/technikes-meletes",
+      "violations": []
+    },
+    {
+      "name": "EN /en/team",
+      "url": "http://localhost:3333/en/team",
+      "violations": []
+    },
+    {
+      "name": "EL /equipment",
+      "url": "http://localhost:3333/equipment",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/anakataskevi-odikou-diktyou",
+      "url": "http://localhost:3333/projects/anakataskevi-odikou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/asfaltostrosi-ethnikis-odou",
+      "url": "http://localhost:3333/projects/asfaltostrosi-ethnikis-odou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/diagrammisi-eparxiakou-diktyou",
+      "url": "http://localhost:3333/projects/diagrammisi-eparxiakou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/diagrammisi-limaniou",
+      "url": "http://localhost:3333/projects/diagrammisi-limaniou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/erga-ypodomis-ochetoi",
+      "url": "http://localhost:3333/projects/erga-ypodomis-ochetoi",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/toichio-antistirixis",
+      "url": "http://localhost:3333/projects/toichio-antistirixis",
+      "violations": []
+    },
+    {
+      "name": "EL /services/asfaltostroseis",
+      "url": "http://localhost:3333/services/asfaltostroseis",
+      "violations": []
+    },
+    {
+      "name": "EL /services/chomatourgika-ypodomes",
+      "url": "http://localhost:3333/services/chomatourgika-ypodomes",
+      "violations": []
+    },
+    {
+      "name": "EL /services/diagrammiseis-odon",
+      "url": "http://localhost:3333/services/diagrammiseis-odon",
+      "violations": []
+    },
+    {
+      "name": "EL /services/dimosia-erga",
+      "url": "http://localhost:3333/services/dimosia-erga",
+      "violations": []
+    },
+    {
+      "name": "EL /services/poiotikos-elegchos",
+      "url": "http://localhost:3333/services/poiotikos-elegchos",
+      "violations": []
+    },
+    {
+      "name": "EL /services/technikes-meletes",
+      "url": "http://localhost:3333/services/technikes-meletes",
+      "violations": []
+    },
+    {
+      "name": "EL /team",
+      "url": "http://localhost:3333/team",
+      "violations": []
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Accessibility Audit Report — WCAG 2.1 AA</title>
+<style>
+  :root { font-family: Arial, Helvetica, sans-serif; color: #111; line-height: 1.5; }
+  body { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+  h1 { margin-bottom: 0.25rem; }
+  .meta { color: #555; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0 2rem; }
+  .summary div { border: 1px solid #ddd; border-radius: 6px; padding: 0.75rem 1rem; }
+  .summary strong { display: block; font-size: 1.5rem; }
+  .pass-color { color: #0a7d2c; }
+  .fail-color { color: #b00020; }
+  table.toc { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+  table.toc th, table.toc td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: left; font-size: 0.9rem; }
+  table.toc th { background: #f5f5f5; }
+  section.page { border: 1px solid #ddd; border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1rem; page-break-inside: avoid; }
+  section.page.pass { background: #f0faf2; border-color: #b6e0c0; }
+  section.page.fail { background: #fdf2f3; border-color: #f0bcc1; }
+  section.page h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+  .url { font-family: ui-monospace, Menlo, monospace; font-size: 0.85rem; color: #444; margin: 0 0 0.5rem; word-break: break-all; }
+  .violation { margin: 0.75rem 0; padding: 0.5rem 0.75rem; background: #fff; border-left: 3px solid #b00020; }
+  .violation h4 { margin: 0 0 0.25rem; font-size: 0.95rem; }
+  .violation code { font-size: 0.8rem; background: #f5f5f5; padding: 0.1rem 0.25rem; border-radius: 3px; }
+  .violation ul { margin: 0.25rem 0 0 1rem; padding: 0; }
+  .result { margin: 0; color: #0a7d2c; font-weight: bold; }
+  .error { margin: 0; color: #b00020; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; color: #666; font-size: 0.8rem; }
+  @media print {
+    body { max-width: none; margin: 0; padding: 1rem; }
+    section.page { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<h1>Accessibility Audit Report</h1>
+<p class="meta">
+  Standard: <strong>WCAG 2.1 Level AA</strong> (W3C)<br />
+  Tool: <strong>axe-core 4.11.1</strong> via Playwright (W3C-listed evaluation tool)<br />
+  Tags evaluated: wcag2a, wcag2aa, wcag21a, wcag21aa<br />
+  Site under test: <strong>http://localhost:3333</strong><br />
+  Started: 26/05/2026, 15:33:11 · Finished: 26/05/2026, 15:36:08<br />
+  Report ID: <code>2026-05-26T22:33:11.651Z</code>
+</p>
+
+<section class="summary">
+  <div><span>Pages audited</span><strong>72</strong></div>
+  <div><span>Passed</span><strong class="pass-color">72</strong></div>
+  <div><span>Failed</span><strong class="pass-color">0</strong></div>
+  <div><span>Total violations</span><strong class="pass-color">0</strong></div>
+</section>
+
+<h2>Pages tested</h2>
+<table class="toc">
+  <thead><tr><th>#</th><th>Page</th><th>URL</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>EL /</td><td><code>http://localhost:3333</code></td><td>✅ 0</td></tr>
+<tr><td>2</td><td>EL /about</td><td><code>http://localhost:3333/about</code></td><td>✅ 0</td></tr>
+<tr><td>3</td><td>EL /blog/erga-ypodomes-thesprotia</td><td><code>http://localhost:3333/blog/erga-ypodomes-thesprotia</code></td><td>✅ 0</td></tr>
+<tr><td>4</td><td>EL /blog/nees-texnikes-asfaltostrosis</td><td><code>http://localhost:3333/blog/nees-texnikes-asfaltostrosis</code></td><td>✅ 0</td></tr>
+<tr><td>5</td><td>EL /blog/simassia-sintirissis-odikon-diktyon</td><td><code>http://localhost:3333/blog/simassia-sintirissis-odikon-diktyon</code></td><td>✅ 0</td></tr>
+<tr><td>6</td><td>EL /blog/xrimatodotisi-espa</td><td><code>http://localhost:3333/blog/xrimatodotisi-espa</code></td><td>✅ 0</td></tr>
+<tr><td>7</td><td>EL /careers</td><td><code>http://localhost:3333/careers</code></td><td>✅ 0</td></tr>
+<tr><td>8</td><td>EL /certifications</td><td><code>http://localhost:3333/certifications</code></td><td>✅ 0</td></tr>
+<tr><td>9</td><td>EL /contact</td><td><code>http://localhost:3333/contact</code></td><td>✅ 0</td></tr>
+<tr><td>10</td><td>DE /de</td><td><code>http://localhost:3333/de</code></td><td>✅ 0</td></tr>
+<tr><td>11</td><td>DE /de/about</td><td><code>http://localhost:3333/de/about</code></td><td>✅ 0</td></tr>
+<tr><td>12</td><td>DE /de/blog/erga-ypodomes-thesprotia</td><td><code>http://localhost:3333/de/blog/erga-ypodomes-thesprotia</code></td><td>✅ 0</td></tr>
+<tr><td>13</td><td>DE /de/blog/nees-texnikes-asfaltostrosis</td><td><code>http://localhost:3333/de/blog/nees-texnikes-asfaltostrosis</code></td><td>✅ 0</td></tr>
+<tr><td>14</td><td>DE /de/blog/simassia-sintirissis-odikon-diktyon</td><td><code>http://localhost:3333/de/blog/simassia-sintirissis-odikon-diktyon</code></td><td>✅ 0</td></tr>
+<tr><td>15</td><td>DE /de/blog/xrimatodotisi-espa</td><td><code>http://localhost:3333/de/blog/xrimatodotisi-espa</code></td><td>✅ 0</td></tr>
+<tr><td>16</td><td>DE /de/careers</td><td><code>http://localhost:3333/de/careers</code></td><td>✅ 0</td></tr>
+<tr><td>17</td><td>DE /de/certifications</td><td><code>http://localhost:3333/de/certifications</code></td><td>✅ 0</td></tr>
+<tr><td>18</td><td>DE /de/contact</td><td><code>http://localhost:3333/de/contact</code></td><td>✅ 0</td></tr>
+<tr><td>19</td><td>DE /de/equipment</td><td><code>http://localhost:3333/de/equipment</code></td><td>✅ 0</td></tr>
+<tr><td>20</td><td>DE /de/espa</td><td><code>http://localhost:3333/de/espa</code></td><td>✅ 0</td></tr>
+<tr><td>21</td><td>DE /de/projects/anakataskevi-odikou-diktyou</td><td><code>http://localhost:3333/de/projects/anakataskevi-odikou-diktyou</code></td><td>✅ 0</td></tr>
+<tr><td>22</td><td>DE /de/projects/asfaltostrosi-ethnikis-odou</td><td><code>http://localhost:3333/de/projects/asfaltostrosi-ethnikis-odou</code></td><td>✅ 0</td></tr>
+<tr><td>23</td><td>DE /de/projects/diagrammisi-eparxiakou-diktyou</td><td><code>http://localhost:3333/de/projects/diagrammisi-eparxiakou-diktyou</code></td><td>✅ 0</td></tr>
+<tr><td>24</td><td>DE /de/projects/diagrammisi-limaniou</td><td><code>http://localhost:3333/de/projects/diagrammisi-limaniou</code></td><td>✅ 0</td></tr>
+<tr><td>25</td><td>DE /de/projects/erga-ypodomis-ochetoi</td><td><code>http://localhost:3333/de/projects/erga-ypodomis-ochetoi</code></td><td>✅ 0</td></tr>
+<tr><td>26</td><td>DE /de/projects/toichio-antistirixis</td><td><code>http://localhost:3333/de/projects/toichio-antistirixis</code></td><td>✅ 0</td></tr>
+<tr><td>27</td><td>DE /de/services/asfaltostroseis</td><td><code>http://localhost:3333/de/services/asfaltostroseis</code></td><td>✅ 0</td></tr>
+<tr><td>28</td><td>DE /de/services/chomatourgika-ypodomes</td><td><code>http://localhost:3333/de/services/chomatourgika-ypodomes</code></td><td>✅ 0</td></tr>
+<tr><td>29</td><td>DE /de/services/diagrammiseis-odon</td><td><code>http://localhost:3333/de/services/diagrammiseis-odon</code></td><td>✅ 0</td></tr>
+<tr><td>30</td><td>DE /de/services/dimosia-erga</td><td><code>http://localhost:3333/de/services/dimosia-erga</code></td><td>✅ 0</td></tr>
+<tr><td>31</td><td>DE /de/services/poiotikos-elegchos</td><td><code>http://localhost:3333/de/services/poiotikos-elegchos</code></td><td>✅ 0</td></tr>
+<tr><td>32</td><td>DE /de/services/technikes-meletes</td><td><code>http://localhost:3333/de/services/technikes-meletes</code></td><td>✅ 0</td></tr>
+<tr><td>33</td><td>DE /de/team</td><td><code>http://localhost:3333/de/team</code></td><td>✅ 0</td></tr>
+<tr><td>34</td><td>EN /en</td><td><code>http://localhost:3333/en</code></td><td>✅ 0</td></tr>
+<tr><td>35</td><td>EN /en/about</td><td><code>http://localhost:3333/en/about</code></td><td>✅ 0</td></tr>
+<tr><td>36</td><td>EN /en/blog/erga-ypodomes-thesprotia</td><td><code>http://localhost:3333/en/blog/erga-ypodomes-thesprotia</code></td><td>✅ 0</td></tr>
+<tr><td>37</td><td>EN /en/blog/nees-texnikes-asfaltostrosis</td><td><code>http://localhost:3333/en/blog/nees-texnikes-asfaltostrosis</code></td><td>✅ 0</td></tr>
+<tr><td>38</td><td>EN /en/blog/simassia-sintirissis-odikon-diktyon</td><td><code>http://localhost:3333/en/blog/simassia-sintirissis-odikon-diktyon</code></td><td>✅ 0</td></tr>
+<tr><td>39</td><td>EN /en/blog/xrimatodotisi-espa</td><td><code>http://localhost:3333/en/blog/xrimatodotisi-espa</code></td><td>✅ 0</td></tr>
+<tr><td>40</td><td>EN /en/careers</td><td><code>http://localhost:3333/en/careers</code></td><td>✅ 0</td></tr>
+<tr><td>41</td><td>EN /en/certifications</td><td><code>http://localhost:3333/en/certifications</code></td><td>✅ 0</td></tr>
+<tr><td>42</td><td>EN /en/contact</td><td><code>http://localhost:3333/en/contact</code></td><td>✅ 0</td></tr>
+<tr><td>43</td><td>EN /en/equipment</td><td><code>http://localhost:3333/en/equipment</code></td><td>✅ 0</td></tr>
+<tr><td>44</td><td>EN /en/espa</td><td><code>http://localhost:3333/en/espa</code></td><td>✅ 0</td></tr>
+<tr><td>45</td><td>EN /en/projects/anakataskevi-odikou-diktyou</td><td><code>http://localhost:3333/en/projects/anakataskevi-odikou-diktyou</code></td><td>✅ 0</td></tr>
+<tr><td>46</td><td>EN /en/projects/asfaltostrosi-ethnikis-odou</td><td><code>http://localhost:3333/en/projects/asfaltostrosi-ethnikis-odou</code></td><td>✅ 0</td></tr>
+<tr><td>47</td><td>EN /en/projects/diagrammisi-eparxiakou-diktyou</td><td><code>http://localhost:3333/en/projects/diagrammisi-eparxiakou-diktyou</code></td><td>✅ 0</td></tr>
+<tr><td>48</td><td>EN /en/projects/diagrammisi-limaniou</td><td><code>http://localhost:3333/en/projects/diagrammisi-limaniou</code></td><td>✅ 0</td></tr>
+<tr><td>49</td><td>EN /en/projects/erga-ypodomis-ochetoi</td><td><code>http://localhost:3333/en/projects/erga-ypodomis-ochetoi</code></td><td>✅ 0</td></tr>
+<tr><td>50</td><td>EN /en/projects/toichio-antistirixis</td><td><code>http://localhost:3333/en/projects/toichio-antistirixis</code></td><td>✅ 0</td></tr>
+<tr><td>51</td><td>EN /en/services/asfaltostroseis</td><td><code>http://localhost:3333/en/services/asfaltostroseis</code></td><td>✅ 0</td></tr>
+<tr><td>52</td><td>EN /en/services/chomatourgika-ypodomes</td><td><code>http://localhost:3333/en/services/chomatourgika-ypodomes</code></td><td>✅ 0</td></tr>
+<tr><td>53</td><td>EN /en/services/diagrammiseis-odon</td><td><code>http://localhost:3333/en/services/diagrammiseis-odon</code></td><td>✅ 0</td></tr>
+<tr><td>54</td><td>EN /en/services/dimosia-erga</td><td><code>http://localhost:3333/en/services/dimosia-erga</code></td><td>✅ 0</td></tr>
+<tr><td>55</td><td>EN /en/services/poiotikos-elegchos</td><td><code>http://localhost:3333/en/services/poiotikos-elegchos</code></td><td>✅ 0</td></tr>
+<tr><td>56</td><td>EN /en/services/technikes-meletes</td><td><code>http://localhost:3333/en/services/technikes-meletes</code></td><td>✅ 0</td></tr>
+<tr><td>57</td><td>EN /en/team</td><td><code>http://localhost:3333/en/team</code></td><td>✅ 0</td></tr>
+<tr><td>58</td><td>EL /equipment</td><td><code>http://localhost:3333/equipment</code></td><td>✅ 0</td></tr>
+<tr><td>59</td><td>EL /espa</td><td><code>http://localhost:3333/espa</code></td><td>✅ 0</td></tr>
+<tr><td>60</td><td>EL /projects/anakataskevi-odikou-diktyou</td><td><code>http://localhost:3333/projects/anakataskevi-odikou-diktyou</code></td><td>✅ 0</td></tr>
+<tr><td>61</td><td>EL /projects/asfaltostrosi-ethnikis-odou</td><td><code>http://localhost:3333/projects/asfaltostrosi-ethnikis-odou</code></td><td>✅ 0</td></tr>
+<tr><td>62</td><td>EL /projects/diagrammisi-eparxiakou-diktyou</td><td><code>http://localhost:3333/projects/diagrammisi-eparxiakou-diktyou</code></td><td>✅ 0</td></tr>
+<tr><td>63</td><td>EL /projects/diagrammisi-limaniou</td><td><code>http://localhost:3333/projects/diagrammisi-limaniou</code></td><td>✅ 0</td></tr>
+<tr><td>64</td><td>EL /projects/erga-ypodomis-ochetoi</td><td><code>http://localhost:3333/projects/erga-ypodomis-ochetoi</code></td><td>✅ 0</td></tr>
+<tr><td>65</td><td>EL /projects/toichio-antistirixis</td><td><code>http://localhost:3333/projects/toichio-antistirixis</code></td><td>✅ 0</td></tr>
+<tr><td>66</td><td>EL /services/asfaltostroseis</td><td><code>http://localhost:3333/services/asfaltostroseis</code></td><td>✅ 0</td></tr>
+<tr><td>67</td><td>EL /services/chomatourgika-ypodomes</td><td><code>http://localhost:3333/services/chomatourgika-ypodomes</code></td><td>✅ 0</td></tr>
+<tr><td>68</td><td>EL /services/diagrammiseis-odon</td><td><code>http://localhost:3333/services/diagrammiseis-odon</code></td><td>✅ 0</td></tr>
+<tr><td>69</td><td>EL /services/dimosia-erga</td><td><code>http://localhost:3333/services/dimosia-erga</code></td><td>✅ 0</td></tr>
+<tr><td>70</td><td>EL /services/poiotikos-elegchos</td><td><code>http://localhost:3333/services/poiotikos-elegchos</code></td><td>✅ 0</td></tr>
+<tr><td>71</td><td>EL /services/technikes-meletes</td><td><code>http://localhost:3333/services/technikes-meletes</code></td><td>✅ 0</td></tr>
+<tr><td>72</td><td>EL /team</td><td><code>http://localhost:3333/team</code></td><td>✅ 0</td></tr>
+  </tbody>
+</table>
+
+<h2>Detailed results</h2>
+<section class="page pass"><h3>✅ EL /</h3><p class="url">http://localhost:3333</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /about</h3><p class="url">http://localhost:3333/about</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /blog/erga-ypodomes-thesprotia</h3><p class="url">http://localhost:3333/blog/erga-ypodomes-thesprotia</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /blog/nees-texnikes-asfaltostrosis</h3><p class="url">http://localhost:3333/blog/nees-texnikes-asfaltostrosis</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /blog/simassia-sintirissis-odikon-diktyon</h3><p class="url">http://localhost:3333/blog/simassia-sintirissis-odikon-diktyon</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /blog/xrimatodotisi-espa</h3><p class="url">http://localhost:3333/blog/xrimatodotisi-espa</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /careers</h3><p class="url">http://localhost:3333/careers</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /certifications</h3><p class="url">http://localhost:3333/certifications</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /contact</h3><p class="url">http://localhost:3333/contact</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de</h3><p class="url">http://localhost:3333/de</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/about</h3><p class="url">http://localhost:3333/de/about</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/blog/erga-ypodomes-thesprotia</h3><p class="url">http://localhost:3333/de/blog/erga-ypodomes-thesprotia</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/blog/nees-texnikes-asfaltostrosis</h3><p class="url">http://localhost:3333/de/blog/nees-texnikes-asfaltostrosis</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/blog/simassia-sintirissis-odikon-diktyon</h3><p class="url">http://localhost:3333/de/blog/simassia-sintirissis-odikon-diktyon</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/blog/xrimatodotisi-espa</h3><p class="url">http://localhost:3333/de/blog/xrimatodotisi-espa</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/careers</h3><p class="url">http://localhost:3333/de/careers</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/certifications</h3><p class="url">http://localhost:3333/de/certifications</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/contact</h3><p class="url">http://localhost:3333/de/contact</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/equipment</h3><p class="url">http://localhost:3333/de/equipment</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/espa</h3><p class="url">http://localhost:3333/de/espa</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/projects/anakataskevi-odikou-diktyou</h3><p class="url">http://localhost:3333/de/projects/anakataskevi-odikou-diktyou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/projects/asfaltostrosi-ethnikis-odou</h3><p class="url">http://localhost:3333/de/projects/asfaltostrosi-ethnikis-odou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/projects/diagrammisi-eparxiakou-diktyou</h3><p class="url">http://localhost:3333/de/projects/diagrammisi-eparxiakou-diktyou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/projects/diagrammisi-limaniou</h3><p class="url">http://localhost:3333/de/projects/diagrammisi-limaniou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/projects/erga-ypodomis-ochetoi</h3><p class="url">http://localhost:3333/de/projects/erga-ypodomis-ochetoi</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/projects/toichio-antistirixis</h3><p class="url">http://localhost:3333/de/projects/toichio-antistirixis</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/services/asfaltostroseis</h3><p class="url">http://localhost:3333/de/services/asfaltostroseis</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/services/chomatourgika-ypodomes</h3><p class="url">http://localhost:3333/de/services/chomatourgika-ypodomes</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/services/diagrammiseis-odon</h3><p class="url">http://localhost:3333/de/services/diagrammiseis-odon</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/services/dimosia-erga</h3><p class="url">http://localhost:3333/de/services/dimosia-erga</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/services/poiotikos-elegchos</h3><p class="url">http://localhost:3333/de/services/poiotikos-elegchos</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/services/technikes-meletes</h3><p class="url">http://localhost:3333/de/services/technikes-meletes</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ DE /de/team</h3><p class="url">http://localhost:3333/de/team</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en</h3><p class="url">http://localhost:3333/en</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/about</h3><p class="url">http://localhost:3333/en/about</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/blog/erga-ypodomes-thesprotia</h3><p class="url">http://localhost:3333/en/blog/erga-ypodomes-thesprotia</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/blog/nees-texnikes-asfaltostrosis</h3><p class="url">http://localhost:3333/en/blog/nees-texnikes-asfaltostrosis</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/blog/simassia-sintirissis-odikon-diktyon</h3><p class="url">http://localhost:3333/en/blog/simassia-sintirissis-odikon-diktyon</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/blog/xrimatodotisi-espa</h3><p class="url">http://localhost:3333/en/blog/xrimatodotisi-espa</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/careers</h3><p class="url">http://localhost:3333/en/careers</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/certifications</h3><p class="url">http://localhost:3333/en/certifications</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/contact</h3><p class="url">http://localhost:3333/en/contact</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/equipment</h3><p class="url">http://localhost:3333/en/equipment</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/espa</h3><p class="url">http://localhost:3333/en/espa</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/projects/anakataskevi-odikou-diktyou</h3><p class="url">http://localhost:3333/en/projects/anakataskevi-odikou-diktyou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/projects/asfaltostrosi-ethnikis-odou</h3><p class="url">http://localhost:3333/en/projects/asfaltostrosi-ethnikis-odou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/projects/diagrammisi-eparxiakou-diktyou</h3><p class="url">http://localhost:3333/en/projects/diagrammisi-eparxiakou-diktyou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/projects/diagrammisi-limaniou</h3><p class="url">http://localhost:3333/en/projects/diagrammisi-limaniou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/projects/erga-ypodomis-ochetoi</h3><p class="url">http://localhost:3333/en/projects/erga-ypodomis-ochetoi</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/projects/toichio-antistirixis</h3><p class="url">http://localhost:3333/en/projects/toichio-antistirixis</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/services/asfaltostroseis</h3><p class="url">http://localhost:3333/en/services/asfaltostroseis</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/services/chomatourgika-ypodomes</h3><p class="url">http://localhost:3333/en/services/chomatourgika-ypodomes</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/services/diagrammiseis-odon</h3><p class="url">http://localhost:3333/en/services/diagrammiseis-odon</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/services/dimosia-erga</h3><p class="url">http://localhost:3333/en/services/dimosia-erga</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/services/poiotikos-elegchos</h3><p class="url">http://localhost:3333/en/services/poiotikos-elegchos</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/services/technikes-meletes</h3><p class="url">http://localhost:3333/en/services/technikes-meletes</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EN /en/team</h3><p class="url">http://localhost:3333/en/team</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /equipment</h3><p class="url">http://localhost:3333/equipment</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /espa</h3><p class="url">http://localhost:3333/espa</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /projects/anakataskevi-odikou-diktyou</h3><p class="url">http://localhost:3333/projects/anakataskevi-odikou-diktyou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /projects/asfaltostrosi-ethnikis-odou</h3><p class="url">http://localhost:3333/projects/asfaltostrosi-ethnikis-odou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /projects/diagrammisi-eparxiakou-diktyou</h3><p class="url">http://localhost:3333/projects/diagrammisi-eparxiakou-diktyou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /projects/diagrammisi-limaniou</h3><p class="url">http://localhost:3333/projects/diagrammisi-limaniou</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /projects/erga-ypodomis-ochetoi</h3><p class="url">http://localhost:3333/projects/erga-ypodomis-ochetoi</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /projects/toichio-antistirixis</h3><p class="url">http://localhost:3333/projects/toichio-antistirixis</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /services/asfaltostroseis</h3><p class="url">http://localhost:3333/services/asfaltostroseis</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /services/chomatourgika-ypodomes</h3><p class="url">http://localhost:3333/services/chomatourgika-ypodomes</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /services/diagrammiseis-odon</h3><p class="url">http://localhost:3333/services/diagrammiseis-odon</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /services/dimosia-erga</h3><p class="url">http://localhost:3333/services/dimosia-erga</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /services/poiotikos-elegchos</h3><p class="url">http://localhost:3333/services/poiotikos-elegchos</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /services/technikes-meletes</h3><p class="url">http://localhost:3333/services/technikes-meletes</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+<section class="page pass"><h3>✅ EL /team</h3><p class="url">http://localhost:3333/team</p><p class="result">0 violations (WCAG 2.1 AA)</p></section>
+
+<footer>
+  Generated by <code>scripts/a11y-audit-local.mjs</code>. axe-core is listed in the W3C WAI evaluation-tool registry
+  (<a href="https://www.w3.org/WAI/test-evaluate/tools/list/">w3.org/WAI/test-evaluate/tools/list/</a>) and tests against
+  the WCAG 2.1 success criteria at level A and AA.
+</footer>
+</body>
+</html>

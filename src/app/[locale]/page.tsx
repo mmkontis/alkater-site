@@ -12,9 +12,10 @@ import { ThemeProvider } from "@/components/landing/ThemeContext";
 import { NavMenu } from "@/components/landing/NavMenu";
 import { EspaBanner } from "@/components/landing/EspaBanner";
 
-import { getHeroSlides, getProjects, getBlogPosts, getServices, getPageContent } from "@/lib/queries";
+import { getHeroSlides, getProjects, getBlogPosts, getServices } from "@/lib/queries";
 import { setRequestLocale } from "next-intl/server";
 import { getAlternates, organizationJsonLd, localBusinessJsonLd, webSiteJsonLd } from "@/lib/seo";
+import { getAboutStats, localizedStatLabel } from "@/lib/about-data";
 
 export const revalidate = 3600;
 
@@ -26,20 +27,19 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [slides, projects, blogPosts, services, aboutContent] = await Promise.all([
+  const [slides, projects, blogPosts, services] = await Promise.all([
     getHeroSlides(locale),
     getProjects(locale),
     getBlogPosts(locale),
     getServices(locale),
-    getPageContent("about", locale),
   ]);
 
-  const aboutStats = aboutContent?.stats ?? [
-    { value: "10+", label: locale === "en" ? "Years of Experience" : "Χρόνια Εμπειρίας" },
-    { value: "5+", label: locale === "en" ? "Completed Projects" : "Ολοκληρωμένα Έργα" },
-    { value: "500+", label: locale === "en" ? "Kilometres of Road Network" : "Χιλιόμετρα Οδικού Δικτύου" },
-    { value: "15+", label: locale === "en" ? "Specialised Staff" : "Εξειδικευμένο Προσωπικό" },
-  ];
+  // Use the dynamic single-source-of-truth from `@/lib/about-data` so home + /about
+  // always show the same numbers (years auto-update from FOUNDING_YEAR).
+  const aboutStats = getAboutStats().map((s) => ({
+    value: `${s.value}${s.suffix}`,
+    label: localizedStatLabel(s, locale),
+  }));
 
   return (
     <ThemeProvider>
@@ -51,7 +51,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           webSiteJsonLd(locale),
         ]) }}
       />
-      <main className="min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white overflow-x-hidden" style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}>
+      <div className="min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white overflow-x-hidden" style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:rounded focus:shadow-lg">
+          Μετάβαση στο περιεχόμενο
+        </a>
         <style dangerouslySetInnerHTML={{__html: `
           html { scroll-behavior: smooth; }
           @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
@@ -66,18 +69,22 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </svg>
         </div>
 
-        <EspaBanner />
-        <NavMenu />
-        <HeroSection slides={slides} />
-        <ServicesSection services={services} />
-        <AboutSection stats={aboutStats} />
-        {/* <ProjectsSection projects={projects} /> */}
-        <CertificationsSection />
-        <ContactSection />
-        <BlogSection posts={blogPosts} />
+        <header>
+          <EspaBanner />
+          <NavMenu />
+        </header>
+        <main id="main-content">
+          <HeroSection slides={slides} />
+          <ServicesSection services={services} />
+          <AboutSection stats={aboutStats} />
+          {/* <ProjectsSection projects={projects} /> */}
+          <CertificationsSection />
+          <ContactSection />
+          <BlogSection posts={blogPosts} />
+        </main>
         <Footer />
         <CookieBanner />
-      </main>
+      </div>
     </ThemeProvider>
   );
 }

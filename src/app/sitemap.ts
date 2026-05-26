@@ -12,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/team", priority: 0.6, changeFrequency: "monthly" as const },
     { path: "/equipment", priority: 0.6, changeFrequency: "monthly" as const },
     { path: "/careers", priority: 0.5, changeFrequency: "monthly" as const },
+    { path: "/espa", priority: 0.4, changeFrequency: "yearly" as const },
   ];
 
   const staticEntries: MetadataRoute.Sitemap = staticPages.flatMap((page) => [
@@ -24,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         languages: {
           el: `${BASE_URL}${page.path}`,
           en: `${BASE_URL}/en${page.path}`,
+          de: `${BASE_URL}/de${page.path}`,
         },
       },
     },
@@ -41,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         languages: {
           el: `${BASE_URL}/services/${s.slug}`,
           en: `${BASE_URL}/en/services/${s.slug}`,
+          de: `${BASE_URL}/de/services/${s.slug}`,
         },
       },
     }));
@@ -58,6 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         languages: {
           el: `${BASE_URL}/blog/${p.slug}`,
           en: `${BASE_URL}/en/blog/${p.slug}`,
+          de: `${BASE_URL}/de/blog/${p.slug}`,
         },
       },
     }));
@@ -75,6 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         languages: {
           el: `${BASE_URL}/projects/${p.slug}`,
           en: `${BASE_URL}/en/projects/${p.slug}`,
+          de: `${BASE_URL}/de/projects/${p.slug}`,
         },
       },
     }));

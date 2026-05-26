@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
+const TARGET_LANGUAGE_NAME: Record<string, string> = {
+  en: "English",
+  de: "German",
+};
+
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const {
@@ -20,19 +25,25 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { mode, texts, json } = body as {
+  const { mode, texts, json, target } = body as {
     mode: "fields" | "json";
     texts?: Record<string, string>;
     json?: Record<string, unknown>;
+    target?: "en" | "de";
   };
 
+  const targetLang = TARGET_LANGUAGE_NAME[target ?? "en"];
+  if (!targetLang) {
+    return NextResponse.json({ error: "Unsupported target language" }, { status: 400 });
+  }
+
   if (mode === "fields" && texts) {
-    const translated = await translateFields(texts, apiKey);
+    const translated = await translateFields(texts, targetLang, apiKey);
     return NextResponse.json({ translated });
   }
 
   if (mode === "json" && json) {
-    const translated = await translateJson(json, apiKey);
+    const translated = await translateJson(json, targetLang, apiKey);
     return NextResponse.json({ translated });
   }
 
@@ -61,9 +72,10 @@ async function callGemini(prompt: string, apiKey: string): Promise<string> {
 
 async function translateFields(
   texts: Record<string, string>,
+  targetLang: string,
   apiKey: string
 ): Promise<Record<string, string>> {
-  const prompt = `Translate the following Greek text fields to English. Return a JSON object with the same keys but English values. Keep proper names, company name "ΑΛΚΑΤΕΡ" as "ALKATER", and technical terms accurate. Do not add any extra keys.
+  const prompt = `Translate the following Greek text fields to ${targetLang}. Return a JSON object with the same keys but ${targetLang} values. Keep proper names, company name "ΑΛΚΑΤΕΡ" as "ALKATER", and technical terms accurate. Do not add any extra keys.
 
 Input:
 ${JSON.stringify(texts, null, 2)}`;
@@ -78,9 +90,10 @@ ${JSON.stringify(texts, null, 2)}`;
 
 async function translateJson(
   json: Record<string, unknown>,
+  targetLang: string,
   apiKey: string
 ): Promise<Record<string, unknown>> {
-  const prompt = `Translate all Greek text values in this JSON structure to English. Keep the exact same structure and keys. Only translate string values that contain Greek text. Keep proper names, company name "ΑΛΚΑΤΕΡ" as "ALKATER", numbers, URLs, icon names unchanged. Return valid JSON with the same structure.
+  const prompt = `Translate all Greek text values in this JSON structure to ${targetLang}. Keep the exact same structure and keys. Only translate string values that contain Greek text. Keep proper names, company name "ΑΛΚΑΤΕΡ" as "ALKATER", numbers, URLs, icon names unchanged. Return valid JSON with the same structure.
 
 Input:
 ${JSON.stringify(json, null, 2)}`;

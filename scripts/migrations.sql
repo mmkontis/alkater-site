@@ -79,3 +79,30 @@ ALTER TABLE page_content ADD COLUMN IF NOT EXISTS content_en JSONB;
 -- Team members
 ALTER TABLE team_members ADD COLUMN IF NOT EXISTS job_title_en TEXT;
 ALTER TABLE team_members ADD COLUMN IF NOT EXISTS bio_en TEXT;
+
+-- ── 4. German translation columns (ESPA compliance: 3rd language) ──
+
+-- Services
+ALTER TABLE services ADD COLUMN IF NOT EXISTS name_de TEXT;
+ALTER TABLE services ADD COLUMN IF NOT EXISTS description_de TEXT;
+
+-- Projects
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS title_de TEXT;
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS description_de TEXT;
+
+-- Blog posts
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS title_de TEXT;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS excerpt_de TEXT;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS content_de TEXT;
+
+-- Hero slides
+ALTER TABLE hero_slides ADD COLUMN IF NOT EXISTS heading_de TEXT;
+ALTER TABLE hero_slides ADD COLUMN IF NOT EXISTS heading_accent_de TEXT;
+ALTER TABLE hero_slides ADD COLUMN IF NOT EXISTS subtitle_de TEXT;
+
+-- Page content
+ALTER TABLE page_content ADD COLUMN IF NOT EXISTS content_de JSONB;
+
+-- Team members
+ALTER TABLE team_members ADD COLUMN IF NOT EXISTS job_title_de TEXT;
+ALTER TABLE team_members ADD COLUMN IF NOT EXISTS bio_de TEXT;

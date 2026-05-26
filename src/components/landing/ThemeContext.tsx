@@ -148,6 +148,14 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     "--logo-right": scheme.logoRight,
     "--tint-subtle": hasTint ? mixSrgb(scheme.tint, 8, "transparent") : "transparent",
     "--link-color": linkColor,
+    // WCAG-safe text variant of --link-color. Mixed with text-primary (light text in
+    // dark mode, dark text in light mode) so contrast against bg-primary stays ≥4.5
+    // for normal-sized text. Use this for SMALL text accents (eyebrows, dates, "read
+    // more" links). Keep --link-color for decoration (lines, borders, icon fills,
+    // large headings ≥24px) where the brand hue should remain pure.
+    "--link-text": mixSrgb(linkColor, 65, colors.textPrimary),
+    // WCAG-safe text variant of --accent (red). Same logic as --link-text.
+    "--accent-text": mixSrgb(scheme.accent, 75, colors.textPrimary),
     // Tint opacity variants (tint mixed with transparent)
     "--tint-6": mixSrgb(scheme.tint, 6, "transparent"),
     "--tint-8": mixSrgb(scheme.tint, 8, "transparent"),

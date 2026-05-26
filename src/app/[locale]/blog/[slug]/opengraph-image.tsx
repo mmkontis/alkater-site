@@ -13,22 +13,28 @@ export default async function OpengraphImage({
 }) {
   const { slug, locale } = await params;
   const post = await getBlogPostBySlug(slug, locale).catch(() => null);
-  const isEn = locale === "en";
 
-  const eyebrow = isEn ? "Article" : "Αρθρο";
-  const title = post?.title ?? (isEn ? "Construction Insights" : "Άρθρο της ΑΛΚΑΤΕΡ");
-  const subtitle =
-    post?.excerpt ??
-    (isEn
-      ? "Practical insights from the road and infrastructure construction industry."
-      : "Πρακτικές αναλύσεις από τον κλάδο της οδοποιίας και των τεχνικών έργων.");
+  const eyebrow = locale === "de" ? "Artikel" : locale === "en" ? "Article" : "Αρθρο";
+  const fallbackTitle =
+    locale === "de" ? "ALKATER Artikel" : locale === "en" ? "Construction Insights" : "Άρθρο της ΑΛΚΑΤΕΡ";
+  const fallbackSubtitle =
+    locale === "de"
+      ? "Praktische Einblicke aus dem Straßen- und Tiefbau."
+      : locale === "en"
+        ? "Practical insights from the road and infrastructure construction industry."
+        : "Πρακτικές αναλύσεις από τον κλάδο της οδοποιίας και των τεχνικών έργων.";
+
+  const title = post?.title ?? fallbackTitle;
+  const subtitle = post?.excerpt ?? fallbackSubtitle;
+
+  const dateLocale = locale === "de" ? "de-DE" : locale === "en" ? "en-GB" : "el-GR";
 
   const badges: string[] = [];
   if (post?.created_at) {
     const date = new Date(post.created_at);
     if (!isNaN(date.getTime())) {
       badges.push(
-        date.toLocaleDateString(isEn ? "en-GB" : "el-GR", {
+        date.toLocaleDateString(dateLocale, {
           day: "numeric",
           month: "short",
           year: "numeric",
@@ -36,7 +42,7 @@ export default async function OpengraphImage({
       );
     }
   }
-  badges.push(isEn ? "ALKATER Blog" : "ΑΛΚΑΤΕΡ Blog");
+  badges.push(locale === "el" ? "ΑΛΚΑΤΕΡ Blog" : "ALKATER Blog");
 
   return renderBrandOg({
     locale,

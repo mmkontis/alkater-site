@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ProjectSubpage } from "@/components/landing/ProjectSubpage";
 import { ThemeProvider } from "@/components/landing/ThemeContext";
 import { PROJECTS } from "@/lib/projects";
-import { getAlternates, getAbsoluteUrl, breadcrumbJsonLd, getSiteName } from "@/lib/seo";
+import { getAlternates, getAbsoluteUrl, breadcrumbJsonLd, getSiteName, getOgLocale, pickByLocale } from "@/lib/seo";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
   const { slug, locale } = await params;
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: project.description.slice(0, 160),
       type: "website",
       url,
-      locale: locale === "el" ? "el_GR" : "en_US",
+      locale: getOgLocale(locale),
       siteName: getSiteName(locale),
       images: [{ url: project.image, width: 1200, height: 630, alt: project.title }],
     },
@@ -36,8 +36,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const { slug, locale } = await params;
   const project = PROJECTS.find((p) => p.slug === slug);
 
-  const homeLabel = locale === "el" ? "Αρχική" : "Home";
-  const projectsLabel = locale === "el" ? "Έργα" : "Projects";
+  const homeLabel = pickByLocale(locale, "Αρχική", "Home", "Startseite");
+  const projectsLabel = pickByLocale(locale, "Έργα", "Projects", "Projekte");
 
   return (
     <ThemeProvider>

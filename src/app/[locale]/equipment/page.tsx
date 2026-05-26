@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { getAlternates, getSiteName } from "@/lib/seo";
+import { getAlternates, getOgLocale, getSiteName, pickByLocale } from "@/lib/seo";
 import EquipmentPageClient from "./equipment-client";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const title = locale === "el" ? "Εξοπλισμός" : "Equipment";
-  const description =
-    locale === "el"
-      ? "Ο σύγχρονος εξοπλισμός της ΑΛΚΑΤΕΡ για τεχνικά έργα και ασφαλτοστρώσεις."
-      : "ALKATER's modern equipment for construction and asphalting projects.";
+  const title = pickByLocale(locale, "Εξοπλισμός", "Equipment", "Ausrüstung");
+  const description = pickByLocale(
+    locale,
+    "Ο σύγχρονος εξοπλισμός της ΑΛΚΑΤΕΡ για τεχνικά έργα και ασφαλτοστρώσεις.",
+    "ALKATER's modern equipment for construction and asphalting projects.",
+    "Die moderne Ausrüstung von ALKATER für Bau- und Asphaltierungsprojekte.",
+  );
   return {
     title,
     description,
@@ -16,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     openGraph: {
       title,
       description,
-      locale: locale === "el" ? "el_GR" : "en_US",
+      locale: getOgLocale(locale),
       siteName: getSiteName(locale),
     },
   };

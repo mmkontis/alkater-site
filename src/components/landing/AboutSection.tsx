@@ -14,9 +14,48 @@ function parseStat(raw: { value: string; label: string }): ParsedStat {
   return { value: numeric, suffix, label: raw.label };
 }
 
+type CopyKey = "el" | "en" | "de";
+const ABOUT_COPY: Record<CopyKey, {
+  eyebrow: string;
+  headingTop: string;
+  headingAccent: string;
+  headingAmp: string;
+  headingBottom: string;
+  p1: string;
+  p2: string;
+}> = {
+  el: {
+    eyebrow: `Η Εταιρεια · Από το ${FOUNDING_YEAR}`,
+    headingTop: "Κατασκευαζοντας",
+    headingAccent: "Δρομους",
+    headingAmp: "&",
+    headingBottom: "Υποδομες",
+    p1: "Με πολυετή εμπειρία στον κατασκευαστικό τομέα, η ΑΛΚΑΤΕΡ εγγυάται την αρτιότητα και αντοχή των έργων της. Η εξειδίκευσή μας εστιάζεται στα δημόσια και ιδιωτικά έργα υποδομής, με έμφαση στην οδοποιία.",
+    p2: "Βασιζόμαστε σε σύγχρονο ιδιόκτητο εξοπλισμό, πιστοποιημένα υλικά και εξειδικευμένο προσωπικό για την παράδοση έργων που ανταποκρίνονται στις πιο αυστηρές προδιαγραφές.",
+  },
+  en: {
+    eyebrow: `About Us · Since ${FOUNDING_YEAR}`,
+    headingTop: "Building",
+    headingAccent: "Roads",
+    headingAmp: "&",
+    headingBottom: "Infrastructure",
+    p1: "With decades of experience in construction, ALKATER guarantees the precision and durability of every project. We specialise in public and private infrastructure works, with a focus on road construction.",
+    p2: "We rely on modern in-house equipment, certified materials and a specialised team to deliver projects that meet the strictest standards.",
+  },
+  de: {
+    eyebrow: `Über uns · Seit ${FOUNDING_YEAR}`,
+    headingTop: "Wir bauen",
+    headingAccent: "Straßen",
+    headingAmp: "&",
+    headingBottom: "Infrastruktur",
+    p1: "Mit jahrzehntelanger Erfahrung im Bauwesen garantiert ALKATER die Präzision und Langlebigkeit jedes Projekts. Wir sind auf öffentliche und private Infrastrukturprojekte spezialisiert, mit Schwerpunkt auf dem Straßenbau.",
+    p2: "Wir setzen auf moderne firmeneigene Ausrüstung, zertifizierte Materialien und ein spezialisiertes Team, um Projekte zu liefern, die den strengsten Standards entsprechen.",
+  },
+};
+
 export function AboutSection({ stats }: { stats?: { value: string; label: string }[] }) {
   const locale = useLocale();
-  const isEn = locale === "en";
+  const copy = ABOUT_COPY[(locale as CopyKey) in ABOUT_COPY ? (locale as CopyKey) : "el"];
   const STATS = useMemo<ParsedStat[]>(
     () => (stats ?? []).map(parseStat),
     [stats]
@@ -62,52 +101,19 @@ export function AboutSection({ stats }: { stats?: { value: string; label: string
             <div className="flex items-center gap-4 mb-6">
               <span className="w-12 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }}></span>
               <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--text-muted)" }}>
-                {isEn ? `About Us · Since ${FOUNDING_YEAR}` : `Η Εταιρεια · Από το ${FOUNDING_YEAR}`}
+                {copy.eyebrow}
               </span>
             </div>
 
             <h2 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase mb-8 leading-[1.1]" style={{ color: "var(--text-primary)" }}>
-              {isEn ? (
-                <>
-                  Building <br />
-                  <span className="text-[#E63B2E]">Roads</span> &<br />
-                  <span style={{ color: "var(--text-primary)" }}>Infrastructure</span>
-                </>
-              ) : (
-                <>
-                  Κατασκευαζοντας <br />
-                  <span className="text-[#E63B2E]">Δρομους</span> &<br />
-                  <span style={{ color: "var(--text-primary)" }}>Υποδομες</span>
-                </>
-              )}
+              {copy.headingTop} <br />
+              <span className="text-[#E63B2E]">{copy.headingAccent}</span> {copy.headingAmp}<br />
+              <span style={{ color: "var(--text-primary)" }}>{copy.headingBottom}</span>
             </h2>
 
             <div className="font-['Space_Mono'] text-base md:text-lg leading-relaxed mb-10 space-y-6 max-w-xl" style={{ color: "var(--text-secondary)" }}>
-              {isEn ? (
-                <>
-                  <p>
-                    With decades of experience in construction, ALKATER guarantees the precision and
-                    durability of every project. We specialise in public and private infrastructure
-                    works, with a focus on road construction.
-                  </p>
-                  <p className="text-sm">
-                    We rely on modern in-house equipment, certified materials and a specialised team
-                    to deliver projects that meet the strictest standards.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p>
-                    Με πολυετή εμπειρία στον κατασκευαστικό τομέα, η ΑΛΚΑΤΕΡ εγγυάται την αρτιότητα και
-                    αντοχή των έργων της. Η εξειδίκευσή μας εστιάζεται στα δημόσια και ιδιωτικά έργα
-                    υποδομής, με έμφαση στην οδοποιία.
-                  </p>
-                  <p className="text-sm">
-                    Βασιζόμαστε σε σύγχρονο ιδιόκτητο εξοπλισμό, πιστοποιημένα υλικά και εξειδικευμένο
-                    προσωπικό για την παράδοση έργων που ανταποκρίνονται στις πιο αυστηρές προδιαγραφές.
-                  </p>
-                </>
-              )}
+              <p>{copy.p1}</p>
+              <p className="text-sm">{copy.p2}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-8 md:gap-12 mt-12 pt-12" style={{ borderTop: "1px solid var(--border-hover)" }}>

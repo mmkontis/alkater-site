@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import { getPageContent, getTeamMembers, type AboutPageContent, type TeamMember } from "@/lib/queries";
 import { getTranslations, getLocale } from "next-intl/server";
-import { getAlternates, getSiteName, organizationJsonLd, breadcrumbJsonLd, getAbsoluteUrl } from "@/lib/seo";
+import { getAlternates, getOgLocale, getSiteName, organizationJsonLd, breadcrumbJsonLd, getAbsoluteUrl, pickByLocale } from "@/lib/seo";
 import AboutPageClient from "./about-client";
 
 export const revalidate = 3600;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const title = locale === "el" ? "Η Εταιρεία" : "About Us";
-  const description =
-    locale === "el"
-      ? "Γνωρίστε την ΑΛΚΑΤΕΡ - τεχνική εταιρεία με εξειδίκευση στην οδοποιία και τα τεχνικά έργα υποδομών."
-      : "Discover ALKATER - a construction company specializing in road works and infrastructure projects.";
+  const title = pickByLocale(locale, "Η Εταιρεία", "About Us", "Über uns");
+  const description = pickByLocale(
+    locale,
+    "Γνωρίστε την ΑΛΚΑΤΕΡ - τεχνική εταιρεία με εξειδίκευση στην οδοποιία και τα τεχνικά έργα υποδομών.",
+    "Discover ALKATER - a construction company specializing in road works and infrastructure projects.",
+    "Lernen Sie ALKATER kennen - ein Bauunternehmen mit Spezialisierung auf Straßenbau und Infrastrukturprojekte.",
+  );
   return {
     title,
     description,
@@ -20,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     openGraph: {
       title,
       description,
-      locale: locale === "el" ? "el_GR" : "en_US",
+      locale: getOgLocale(locale),
       siteName: getSiteName(locale),
     },
   };
@@ -84,8 +86,8 @@ export default async function AboutPage() {
     getTeamMembers(locale),
   ]);
 
-  const homeLabel = locale === "el" ? "Αρχική" : "Home";
-  const aboutLabel = locale === "el" ? "Η Εταιρεία" : "About Us";
+  const homeLabel = pickByLocale(locale, "Αρχική", "Home", "Startseite");
+  const aboutLabel = pickByLocale(locale, "Η Εταιρεία", "About Us", "Über uns");
 
   return (
     <>

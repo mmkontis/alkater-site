@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import {
   ArrowLeft,
   ArrowRight,
@@ -66,6 +67,8 @@ function resolveProjectSlug(slug: string) {
 }
 
 export function ProjectSubpage({ slug }: { slug: string }) {
+  const a = useTranslations("a11y");
+  const tp = useTranslations("projectPage");
   const resolvedSlug = resolveProjectSlug(slug);
   const project = getProjectBySlug(resolvedSlug);
   const { prev, next } = getAdjacentProjects(resolvedSlug);
@@ -103,12 +106,12 @@ export function ProjectSubpage({ slug }: { slug: string }) {
       <main className="bg-[#111111] min-h-screen flex items-center justify-center font-['Space_Grotesk']">
         <div className="text-center">
           <h1 className="text-6xl font-bold text-[#F5F3EE] mb-4">404</h1>
-          <p className="text-[#E8E4DD]/60 font-['Space_Mono'] mb-8">Το έργο δεν βρέθηκε.</p>
+          <p className="text-[#E8E4DD]/60 font-['Space_Mono'] mb-8">{tp("notFound")}</p>
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-[#E63B2E] font-['Space_Mono'] text-sm uppercase tracking-widest hover:gap-4 transition-all"
           >
-            <ArrowLeft className="w-4 h-4" /> Επιστροφη
+            <ArrowLeft className="w-4 h-4" /> {tp("back")}
           </Link>
         </div>
       </main>
@@ -141,7 +144,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
           <ChevronLeft className="w-5 h-5" />
           Πισω
         </Link>
-        <Link href="/" aria-label="ΑΛΚΑΤΕΡ - Αρχική">
+        <Link href="/" aria-label={a("logoHome")}>
           <AlkaterLogoColored className="h-12 sm:h-16 md:h-20 w-auto" />
         </Link>
       </div>
@@ -219,12 +222,12 @@ export function ProjectSubpage({ slug }: { slug: string }) {
               <div className="flex items-center gap-4 mb-6">
                 <span className="w-8 h-[2px] bg-[#E63B2E]" />
                 <span className="font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E63B2E]">
-                  Εργο
+                  {tp("eyebrow")}
                 </span>
               </div>
 
               <h2 className="text-3xl md:text-4xl font-bold uppercase mb-6 text-white">
-                Περιγραφη & Ποιοτητα
+                {tp("descriptionTitle")}
               </h2>
 
               <div className="prose prose-invert prose-lg font-['Space_Mono'] text-[#E8E4DD]/70 max-w-none mb-12">
@@ -239,7 +242,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
                 className="mb-16"
               >
                 <h3 className="text-xl md:text-2xl font-bold uppercase tracking-tight text-[#F5F3EE] mb-8">
-                  Αντικειμενο Εργου
+                  {tp("scopeTitle")}
                 </h3>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {project.scope.map((item, i) => (
@@ -263,7 +266,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
               <div className="sticky top-28 space-y-6">
                 <div className="bg-[#1A1A1A] border border-white/5 p-6 md:p-8 space-y-6">
                   <h3 className="text-lg font-bold uppercase tracking-tight text-[#F5F3EE] mb-2">
-                    Στοιχεια Εργου
+                    {tp("detailsTitle")}
                   </h3>
 
                   <div className="space-y-5">
@@ -272,7 +275,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
                         <User className="w-4 h-4 text-[#E63B2E]" />
                       </div>
                       <div>
-                        <p className="font-['Space_Mono'] text-[#E8E4DD]/50 text-xs uppercase tracking-widest mb-1">Φορεας</p>
+                        <p className="font-['Space_Mono'] text-[#E8E4DD]/50 text-xs uppercase tracking-widest mb-1">{tp("clientLabel")}</p>
                         <p className="text-[#F5F3EE] text-sm">{project.client}</p>
                       </div>
                     </div>
@@ -282,7 +285,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
                         <MapPin className="w-4 h-4 text-[#E63B2E]" />
                       </div>
                       <div>
-                        <p className="font-['Space_Mono'] text-[#E8E4DD]/50 text-xs uppercase tracking-widest mb-1">Τοποθεσια</p>
+                        <p className="font-['Space_Mono'] text-[#E8E4DD]/50 text-xs uppercase tracking-widest mb-1">{tp("locationLabel")}</p>
                         <p className="text-[#F5F3EE] text-sm">{project.location}</p>
                       </div>
                     </div>
@@ -292,7 +295,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
                         <Calendar className="w-4 h-4 text-[#E63B2E]" />
                       </div>
                       <div>
-                        <p className="font-['Space_Mono'] text-[#E8E4DD]/50 text-xs uppercase tracking-widest mb-1">Ετος</p>
+                        <p className="font-['Space_Mono'] text-[#E8E4DD]/50 text-xs uppercase tracking-widest mb-1">{tp("yearLabel")}</p>
                         <p className="text-[#F5F3EE] text-sm">{project.year}</p>
                       </div>
                     </div>
@@ -302,7 +305,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
                         <Clock className="w-4 h-4 text-[#E63B2E]" />
                       </div>
                       <div>
-                        <p className="font-['Space_Mono'] text-[#E8E4DD]/50 text-xs uppercase tracking-widest mb-1">Διαρκεια</p>
+                        <p className="font-['Space_Mono'] text-[#E8E4DD]/50 text-xs uppercase tracking-widest mb-1">{tp("durationLabel")}</p>
                         <p className="text-[#F5F3EE] text-sm">{project.duration}</p>
                       </div>
                     </div>
@@ -313,7 +316,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
                   href="#contact"
                   className="group relative w-full inline-flex items-center justify-center overflow-hidden bg-[#E63B2E] px-8 py-4 text-sm font-['Space_Mono'] uppercase tracking-widest text-white hover:scale-[1.02] transition-all duration-300"
                 >
-                  <span className="relative z-10">Ζητηστε Προσφορα</span>
+                  <span className="relative z-10">{tp("cta")}</span>
                   <span className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0 mix-blend-difference" />
                 </a>
               </div>
@@ -335,11 +338,11 @@ export function ProjectSubpage({ slug }: { slug: string }) {
             <div className="flex items-center gap-4 mb-6">
               <span className="w-8 h-[2px] bg-[#E63B2E]" />
               <span className="font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E63B2E]">
-                Φωτογραφιες
+                {tp("galleryEyebrow")}
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter uppercase text-[#F5F3EE] leading-[1.1]">
-              Απο Το <span className="text-[#E63B2E]">Εργο</span>
+              {tp("galleryTitle")} <span className="text-[#E63B2E]">{tp("galleryTitleAccent")}</span>
             </h2>
           </motion.div>
 
@@ -379,15 +382,15 @@ export function ProjectSubpage({ slug }: { slug: string }) {
             <div className="flex justify-between items-end mb-16">
               <div>
                 <h2 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase text-white mb-4">
-                  Αλλα <span className="text-[#E63B2E]">Εργα</span>
+                  {tp("otherTitle")} <span className="text-[#E63B2E]">{tp("otherTitleAccent")}</span>
                 </h2>
-                <p className="font-['Space_Mono'] text-[#E8E4DD]/60">Δείτε περισσότερα από τα έργα μας.</p>
+                <p className="font-['Space_Mono'] text-[#E8E4DD]/60">{tp("otherSubtitle")}</p>
               </div>
               <Link
                 href="/"
                 className="hidden md:flex items-center gap-2 font-['Space_Mono'] text-sm uppercase tracking-widest text-[#E8E4DD]/60 hover:text-white transition-colors"
               >
-                Ολα τα εργα <ArrowRight className="w-4 h-4" />
+                {tp("viewAll")} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
@@ -433,7 +436,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
             onClick={() => setLightboxIndex(null)}
           >
             <button
-              aria-label="Κλείσιμο"
+              aria-label={a("close")}
               className="absolute top-6 right-6 z-[210] p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
               onClick={() => setLightboxIndex(null)}
             >
@@ -441,7 +444,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
             </button>
 
             <button
-              aria-label="Προηγούμενη φωτογραφία"
+              aria-label={a("prevPhoto")}
               className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-[210] p-2 md:p-4 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
@@ -452,7 +455,7 @@ export function ProjectSubpage({ slug }: { slug: string }) {
             </button>
 
             <button
-              aria-label="Επόμενη φωτογραφία"
+              aria-label={a("nextPhoto")}
               className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-[210] p-2 md:p-4 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
               onClick={(e) => {
                 e.stopPropagation();

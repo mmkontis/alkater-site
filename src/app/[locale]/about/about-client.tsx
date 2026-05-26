@@ -1,10 +1,13 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
+import { useLocale } from "next-intl";
 import { InnerPageLayout, PageHero, SectionHeading } from "@/components/landing/InnerPageLayout";
 import { Target, Eye, Heart, type LucideIcon } from "lucide-react";
 import Image from "next/image";
 import type { AboutPageContent, TeamMember } from "@/lib/queries";
+import { getAboutStats, localizedStatLabel } from "@/lib/about-data";
 
 const ICON_MAP: Record<string, LucideIcon> = { Target, Eye, Heart };
 
@@ -26,6 +29,19 @@ function AccentTitle({ title, accent }: { title: string; accent: string }) {
 }
 
 export default function AboutPageClient({ content: c, teamMembers }: { content: AboutPageContent; teamMembers: TeamMember[] }) {
+  const locale = useLocale();
+
+  // Single source of truth: dynamic stats from `@/lib/about-data` (years auto-update from FOUNDING_YEAR).
+  // Falls back to whatever the CMS sent only when about-data has no entry — keeps About + Home in sync.
+  const stats = useMemo(
+    () =>
+      getAboutStats().map((s) => ({
+        value: `${s.value}${s.suffix}`,
+        label: localizedStatLabel(s, locale),
+      })),
+    [locale]
+  );
+
   return (
     <InnerPageLayout>
       <PageHero
@@ -41,7 +57,7 @@ export default function AboutPageClient({ content: c, teamMembers }: { content: 
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 100% at 50% 100%, var(--tint-8), transparent)" }} />
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <div className="grid grid-cols-2 lg:grid-cols-4" style={{ columnGap: 0 }}>
-            {c.stats.map((stat, i) => (
+            {stats.map((stat, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -142,7 +158,7 @@ export default function AboutPageClient({ content: c, teamMembers }: { content: 
                     )}
                     <div className="p-6">
                       <h3 className="text-xl font-bold uppercase mb-1">{m.first_name} {m.last_name}</h3>
-                      <p className="font-['Space_Mono'] text-xs uppercase tracking-widest mb-4" style={{ color: "var(--link-color, var(--accent))" }}>{m.job_title}</p>
+                      <p className="font-['Space_Mono'] text-xs uppercase tracking-widest mb-4" style={{ color: "var(--link-text, var(--accent))" }}>{m.job_title}</p>
                       {m.bio && <p className="font-['Space_Mono'] text-[#E8E4DD]/60 text-sm leading-relaxed">{m.bio}</p>}
                     </div>
                   </motion.div>

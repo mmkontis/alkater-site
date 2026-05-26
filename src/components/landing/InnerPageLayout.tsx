@@ -49,6 +49,7 @@ function AlkaterLogoColored({ className }: { className?: string }) {
 
 export function InnerPageLayout({ children }: { children: React.ReactNode }) {
   const t = useTranslations("nav");
+  const a = useTranslations("a11y");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -70,13 +71,16 @@ export function InnerPageLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeProvider>
-    <main className="min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']" style={{ backgroundColor: "var(--bg-tint-97)", color: "var(--text-primary)" }}>
+    <div className="min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']" style={{ backgroundColor: "var(--bg-tint-97)", color: "var(--text-primary)" }}>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:rounded focus:shadow-lg">
+        Μετάβαση στο περιεχόμενο
+      </a>
       <style dangerouslySetInnerHTML={{__html: `
         html { scroll-behavior: smooth; }
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
       `}} />
 
-      <div className="pointer-events-none fixed inset-0 z-[100] opacity-[0.03] mix-blend-overlay">
+      <div className="pointer-events-none fixed inset-0 z-[100] opacity-[0.03] mix-blend-overlay" aria-hidden="true">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
           <filter id="innerNoiseFilter">
             <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
@@ -85,53 +89,55 @@ export function InnerPageLayout({ children }: { children: React.ReactNode }) {
         </svg>
       </div>
 
-      {/* Funding bar — co-financing acknowledgement (EU / ESPA) */}
-      <EspaBanner />
+      <header>
+        {/* Funding bar — co-financing acknowledgement (EU / ESPA) */}
+        <EspaBanner />
 
-      {/* Sticky top bar: transparent over hero, blurred surface after scrolling */}
-      <div
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "backdrop-blur-2xl border-b shadow-lg"
-            : "bg-transparent border-b border-transparent"
-        }`}
-        style={
-          scrolled
-            ? { backgroundColor: "var(--nav-bg)", borderColor: "var(--accent-border-20)" }
-            : undefined
-        }
-      >
+        {/* Sticky top bar: transparent over hero, blurred surface after scrolling */}
         <div
-          className={`w-full p-4 md:p-6 flex justify-between items-center transition-colors duration-300 ${
-            scrolled ? "text-[color:var(--text-primary)]" : "mix-blend-difference text-white"
+          className={`sticky top-0 z-50 transition-all duration-300 ${
+            scrolled
+              ? "backdrop-blur-2xl border-b shadow-lg"
+              : "bg-transparent border-b border-transparent"
           }`}
+          style={
+            scrolled
+              ? { backgroundColor: "var(--nav-bg)", borderColor: "var(--accent-border-20)" }
+              : undefined
+          }
         >
-          <Link href="/" className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors">
-            <ChevronLeft className="w-5 h-5" />
-            {t("back")}
-          </Link>
-          <Link href="/" aria-label="ΑΛΚΑΤΕΡ - Αρχική">
-            <AlkaterLogoColored className={`w-auto transition-all duration-300 ${scrolled ? "h-9 sm:h-10 md:h-12" : "h-12 sm:h-16 md:h-20"}`} />
-          </Link>
-          <div className="flex items-center gap-4">
-            <LanguageSwitcher />
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label={menuOpen ? "Κλείσιμο μενού" : "Άνοιγμα μενού"}
-              className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors"
-            >
-              {menuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
-              {t("menu")}
-            </button>
+          <div
+            className={`w-full p-4 md:p-6 flex justify-between items-center transition-colors duration-300 ${
+              scrolled ? "text-[color:var(--text-primary)]" : "mix-blend-difference text-white"
+            }`}
+          >
+            <Link href="/" className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors">
+              <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+              {t("back")}
+            </Link>
+            <Link href="/" aria-label={a("logoHome")}>
+              <AlkaterLogoColored className={`w-auto transition-all duration-300 ${scrolled ? "h-9 sm:h-10 md:h-12" : "h-12 sm:h-16 md:h-20"}`} />
+            </Link>
+            <div className="flex items-center gap-4">
+              <LanguageSwitcher />
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label={menuOpen ? a("closeMenu") : a("openMenu")}
+                aria-expanded={menuOpen}
+                aria-controls="inner-nav-overlay"
+                className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm hover:text-[#E63B2E] transition-colors"
+              >
+                {menuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
+                {t("menu")}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="relative">
         {/* Mobile/Desktop Nav Overlay */}
         {menuOpen && (
-          <div className="fixed inset-0 z-[90] backdrop-blur-xl flex items-center justify-center" style={{ backgroundColor: "var(--bg-tint-95)" }}>
-            <nav className="flex flex-col items-center gap-4">
+          <div id="inner-nav-overlay" className="fixed inset-0 z-[90] backdrop-blur-xl flex items-center justify-center" style={{ backgroundColor: "var(--bg-tint-95)" }}>
+            <nav aria-label={a("mainNav")} className="flex flex-col items-center gap-4">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
@@ -150,11 +156,13 @@ export function InnerPageLayout({ children }: { children: React.ReactNode }) {
             </nav>
           </div>
         )}
+      </header>
 
+      <main id="main-content" className="relative">
         {children}
-      </div>
+      </main>
       <Footer />
-    </main>
+    </div>
     </ThemeProvider>
   );
 }

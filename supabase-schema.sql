@@ -16,6 +16,8 @@ create table if not exists public.services (
   sort_order integer not null default 0,
   name_en text,
   description_en text,
+  name_de text,
+  description_de text,
   created_at timestamptz not null default now()
 );
 
@@ -52,6 +54,8 @@ create table if not exists public.projects (
   published boolean not null default false,
   title_en text,
   description_en text,
+  title_de text,
+  description_de text,
   created_at timestamptz not null default now()
 );
 
@@ -81,6 +85,9 @@ create table if not exists public.blog_posts (
   title_en text,
   excerpt_en text,
   content_en text,
+  title_de text,
+  excerpt_de text,
+  content_de text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -147,6 +154,9 @@ create table if not exists public.hero_slides (
   heading_en text,
   heading_accent_en text,
   subtitle_en text,
+  heading_de text,
+  heading_accent_de text,
+  subtitle_de text,
   created_at timestamptz not null default now()
 );
 
@@ -208,6 +218,7 @@ create table if not exists public.page_content (
   page_key text unique not null,
   content jsonb not null default '{}',
   content_en jsonb,
+  content_de jsonb,
   updated_at timestamptz not null default now()
 );
 
@@ -238,6 +249,8 @@ create table if not exists public.team_members (
   published boolean not null default true,
   job_title_en text,
   bio_en text,
+  job_title_de text,
+  bio_de text,
   created_at timestamptz not null default now()
 );
 

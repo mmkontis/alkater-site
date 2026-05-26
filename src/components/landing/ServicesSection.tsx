@@ -53,7 +53,7 @@ export function ServicesSection({ services }: { services: Service[] }) {
         >
           <span
             className="font-['Space_Mono'] text-xs font-semibold uppercase tracking-[0.25em]"
-            style={{ color: "var(--link-color)" }}
+            style={{ color: "var(--link-text)" }}
           >
             {t("sectionLabel")}
           </span>

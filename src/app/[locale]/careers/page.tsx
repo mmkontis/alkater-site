@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { getAlternates, getSiteName } from "@/lib/seo";
+import { getAlternates, getOgLocale, getSiteName, pickByLocale } from "@/lib/seo";
 import CareersPageClient from "./careers-client";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const title = locale === "el" ? "Καριέρα" : "Careers";
-  const description =
-    locale === "el"
-      ? "Ευκαιρίες καριέρας στην ΑΛΚΑΤΕΡ. Γίνε μέρος της ομάδας μας."
-      : "Career opportunities at ALKATER. Join our team.";
+  const title = pickByLocale(locale, "Καριέρα", "Careers", "Karriere");
+  const description = pickByLocale(
+    locale,
+    "Ευκαιρίες καριέρας στην ΑΛΚΑΤΕΡ. Γίνε μέρος της ομάδας μας.",
+    "Career opportunities at ALKATER. Join our team.",
+    "Karrieremöglichkeiten bei ALKATER. Werden Sie Teil unseres Teams.",
+  );
   return {
     title,
     description,
@@ -16,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     openGraph: {
       title,
       description,
-      locale: locale === "el" ? "el_GR" : "en_US",
+      locale: getOgLocale(locale),
       siteName: getSiteName(locale),
     },
   };

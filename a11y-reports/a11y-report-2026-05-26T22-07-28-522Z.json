@@ -1,0 +1,512 @@
+{
+  "baseUrl": "http://localhost:3333",
+  "axeVersion": "4.11.1",
+  "startedAt": "2026-05-26T22:07:28.522Z",
+  "finishedAt": "2026-05-26T22:10:14.109Z",
+  "totalViolations": 1,
+  "pages": [
+    {
+      "name": "EL /",
+      "url": "http://localhost:3333",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#767e81",
+                    "bgColor": "#142c3a",
+                    "contrastRatio": 3.49,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative rounded-lg sm:rounded-2xl backdrop-blur-xl px-2.5 py-2.5 sm:px-6 sm:py-5 shadow-2xl transition-colors duration-300\" style=\"background-color: var(--bg-tint-65); border: 1px solid var(--tint-30);\">",
+                      "target": [
+                        ".sm\\:rounded-2xl"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.49 (foreground color: #767e81, background color: #142c3a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"font-['Space_Grotesk'] font-semibold text-[10px] sm:text-sm leading-tight mb-0 sm:mb-1 flex items-center gap-1.5\" style=\"color: var(--text-primary);\">",
+              "target": [
+                ".sm\\:text-sm"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.49 (foreground color: #767e81, background color: #142c3a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#5e666a",
+                    "bgColor": "#142c3a",
+                    "contrastRatio": 2.47,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative rounded-lg sm:rounded-2xl backdrop-blur-xl px-2.5 py-2.5 sm:px-6 sm:py-5 shadow-2xl transition-colors duration-300\" style=\"background-color: var(--bg-tint-65); border: 1px solid var(--tint-30);\">",
+                      "target": [
+                        ".sm\\:rounded-2xl"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.47 (foreground color: #5e666a, background color: #142c3a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"hidden sm:block font-['Space_Grotesk'] text-sm leading-relaxed mb-4\" style=\"color: var(--text-secondary);\">Χρησιμοποιούμε cookies για να βελτιώσουμε την εμπειρία σας στον ιστότοπό μας.</p>",
+              "target": [
+                ".sm\\:block.mb-4.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.47 (foreground color: #5e666a, background color: #142c3a, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7b8388",
+                    "bgColor": "#642d2d",
+                    "contrastRatio": 2.78,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button class=\"w-full rounded-md sm:rounded-xl px-2 py-1.5 sm:px-5 sm:py-3 text-[9px] sm:text-xs font-['Space_Mono'] font-medium uppercase tracking-wider sm:tracking-widest text-white transition-all hover:scale-[1.03] active:scale-[0.97]\" style=\"background-color: var(--accent-bg);\">Αποδοχη</button>",
+                      "target": [
+                        ".font-medium"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.78 (foreground color: #7b8388, background color: #642d2d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"w-full rounded-md sm:rounded-xl px-2 py-1.5 sm:px-5 sm:py-3 text-[9px] sm:text-xs font-['Space_Mono'] font-medium uppercase tracking-wider sm:tracking-widest text-white transition-all hover:scale-[1.03] active:scale-[0.97]\" style=\"background-color: var(--accent-bg);\">Αποδοχη</button>",
+              "target": [
+                ".font-medium"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.78 (foreground color: #7b8388, background color: #642d2d, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#5e666a",
+                    "bgColor": "#142c3a",
+                    "contrastRatio": 2.47,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative rounded-lg sm:rounded-2xl backdrop-blur-xl px-2.5 py-2.5 sm:px-6 sm:py-5 shadow-2xl transition-colors duration-300\" style=\"background-color: var(--bg-tint-65); border: 1px solid var(--tint-30);\">",
+                      "target": [
+                        ".sm\\:rounded-2xl"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.47 (foreground color: #5e666a, background color: #142c3a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"w-full rounded-md sm:rounded-xl px-2 py-1.5 sm:px-5 sm:py-3 text-[9px] sm:text-xs font-['Space_Mono'] uppercase tracking-wider sm:tracking-widest transition-all hover:opacity-70\" style=\"color: var(--text-secondary); border: 1px solid var(--tint-25);\">Απορριψη</button>",
+              "target": [
+                ".sm\\:rounded-xl.sm\\:px-5.sm\\:py-3:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.47 (foreground color: #5e666a, background color: #142c3a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EL /about",
+      "url": "http://localhost:3333/about",
+      "violations": []
+    },
+    {
+      "name": "EL /blog/erga-ypodomes-thesprotia",
+      "url": "http://localhost:3333/blog/erga-ypodomes-thesprotia",
+      "violations": []
+    },
+    {
+      "name": "EL /blog/nees-texnikes-asfaltostrosis",
+      "url": "http://localhost:3333/blog/nees-texnikes-asfaltostrosis",
+      "violations": []
+    },
+    {
+      "name": "EL /blog/simassia-sintirissis-odikon-diktyon",
+      "url": "http://localhost:3333/blog/simassia-sintirissis-odikon-diktyon",
+      "violations": []
+    },
+    {
+      "name": "EL /blog/xrimatodotisi-espa",
+      "url": "http://localhost:3333/blog/xrimatodotisi-espa",
+      "violations": []
+    },
+    {
+      "name": "EL /careers",
+      "url": "http://localhost:3333/careers",
+      "violations": []
+    },
+    {
+      "name": "EL /certifications",
+      "url": "http://localhost:3333/certifications",
+      "violations": []
+    },
+    {
+      "name": "EL /contact",
+      "url": "http://localhost:3333/contact",
+      "violations": []
+    },
+    {
+      "name": "DE /de",
+      "url": "http://localhost:3333/de",
+      "violations": []
+    },
+    {
+      "name": "DE /de/about",
+      "url": "http://localhost:3333/de/about",
+      "violations": []
+    },
+    {
+      "name": "DE /de/blog/erga-ypodomes-thesprotia",
+      "url": "http://localhost:3333/de/blog/erga-ypodomes-thesprotia",
+      "violations": []
+    },
+    {
+      "name": "DE /de/blog/nees-texnikes-asfaltostrosis",
+      "url": "http://localhost:3333/de/blog/nees-texnikes-asfaltostrosis",
+      "violations": []
+    },
+    {
+      "name": "DE /de/blog/simassia-sintirissis-odikon-diktyon",
+      "url": "http://localhost:3333/de/blog/simassia-sintirissis-odikon-diktyon",
+      "violations": []
+    },
+    {
+      "name": "DE /de/blog/xrimatodotisi-espa",
+      "url": "http://localhost:3333/de/blog/xrimatodotisi-espa",
+      "violations": []
+    },
+    {
+      "name": "DE /de/careers",
+      "url": "http://localhost:3333/de/careers",
+      "violations": []
+    },
+    {
+      "name": "DE /de/certifications",
+      "url": "http://localhost:3333/de/certifications",
+      "violations": []
+    },
+    {
+      "name": "DE /de/contact",
+      "url": "http://localhost:3333/de/contact",
+      "violations": []
+    },
+    {
+      "name": "DE /de/equipment",
+      "url": "http://localhost:3333/de/equipment",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/anakataskevi-odikou-diktyou",
+      "url": "http://localhost:3333/de/projects/anakataskevi-odikou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/asfaltostrosi-ethnikis-odou",
+      "url": "http://localhost:3333/de/projects/asfaltostrosi-ethnikis-odou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/diagrammisi-eparxiakou-diktyou",
+      "url": "http://localhost:3333/de/projects/diagrammisi-eparxiakou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/diagrammisi-limaniou",
+      "url": "http://localhost:3333/de/projects/diagrammisi-limaniou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/erga-ypodomis-ochetoi",
+      "url": "http://localhost:3333/de/projects/erga-ypodomis-ochetoi",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/toichio-antistirixis",
+      "url": "http://localhost:3333/de/projects/toichio-antistirixis",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/asfaltostroseis",
+      "url": "http://localhost:3333/de/services/asfaltostroseis",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/chomatourgika-ypodomes",
+      "url": "http://localhost:3333/de/services/chomatourgika-ypodomes",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/diagrammiseis-odon",
+      "url": "http://localhost:3333/de/services/diagrammiseis-odon",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/dimosia-erga",
+      "url": "http://localhost:3333/de/services/dimosia-erga",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/poiotikos-elegchos",
+      "url": "http://localhost:3333/de/services/poiotikos-elegchos",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/technikes-meletes",
+      "url": "http://localhost:3333/de/services/technikes-meletes",
+      "violations": []
+    },
+    {
+      "name": "DE /de/team",
+      "url": "http://localhost:3333/de/team",
+      "violations": []
+    },
+    {
+      "name": "EN /en",
+      "url": "http://localhost:3333/en",
+      "violations": []
+    },
+    {
+      "name": "EN /en/about",
+      "url": "http://localhost:3333/en/about",
+      "violations": []
+    },
+    {
+      "name": "EN /en/blog/erga-ypodomes-thesprotia",
+      "url": "http://localhost:3333/en/blog/erga-ypodomes-thesprotia",
+      "violations": []
+    },
+    {
+      "name": "EN /en/blog/nees-texnikes-asfaltostrosis",
+      "url": "http://localhost:3333/en/blog/nees-texnikes-asfaltostrosis",
+      "violations": []
+    },
+    {
+      "name": "EN /en/blog/simassia-sintirissis-odikon-diktyon",
+      "url": "http://localhost:3333/en/blog/simassia-sintirissis-odikon-diktyon",
+      "violations": []
+    },
+    {
+      "name": "EN /en/blog/xrimatodotisi-espa",
+      "url": "http://localhost:3333/en/blog/xrimatodotisi-espa",
+      "violations": []
+    },
+    {
+      "name": "EN /en/careers",
+      "url": "http://localhost:3333/en/careers",
+      "violations": []
+    },
+    {
+      "name": "EN /en/certifications",
+      "url": "http://localhost:3333/en/certifications",
+      "violations": []
+    },
+    {
+      "name": "EN /en/contact",
+      "url": "http://localhost:3333/en/contact",
+      "violations": []
+    },
+    {
+      "name": "EN /en/equipment",
+      "url": "http://localhost:3333/en/equipment",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/anakataskevi-odikou-diktyou",
+      "url": "http://localhost:3333/en/projects/anakataskevi-odikou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/asfaltostrosi-ethnikis-odou",
+      "url": "http://localhost:3333/en/projects/asfaltostrosi-ethnikis-odou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/diagrammisi-eparxiakou-diktyou",
+      "url": "http://localhost:3333/en/projects/diagrammisi-eparxiakou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/diagrammisi-limaniou",
+      "url": "http://localhost:3333/en/projects/diagrammisi-limaniou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/erga-ypodomis-ochetoi",
+      "url": "http://localhost:3333/en/projects/erga-ypodomis-ochetoi",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/toichio-antistirixis",
+      "url": "http://localhost:3333/en/projects/toichio-antistirixis",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/asfaltostroseis",
+      "url": "http://localhost:3333/en/services/asfaltostroseis",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/chomatourgika-ypodomes",
+      "url": "http://localhost:3333/en/services/chomatourgika-ypodomes",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/diagrammiseis-odon",
+      "url": "http://localhost:3333/en/services/diagrammiseis-odon",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/dimosia-erga",
+      "url": "http://localhost:3333/en/services/dimosia-erga",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/poiotikos-elegchos",
+      "url": "http://localhost:3333/en/services/poiotikos-elegchos",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/technikes-meletes",
+      "url": "http://localhost:3333/en/services/technikes-meletes",
+      "violations": []
+    },
+    {
+      "name": "EN /en/team",
+      "url": "http://localhost:3333/en/team",
+      "violations": []
+    },
+    {
+      "name": "EL /equipment",
+      "url": "http://localhost:3333/equipment",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/anakataskevi-odikou-diktyou",
+      "url": "http://localhost:3333/projects/anakataskevi-odikou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/asfaltostrosi-ethnikis-odou",
+      "url": "http://localhost:3333/projects/asfaltostrosi-ethnikis-odou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/diagrammisi-eparxiakou-diktyou",
+      "url": "http://localhost:3333/projects/diagrammisi-eparxiakou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/diagrammisi-limaniou",
+      "url": "http://localhost:3333/projects/diagrammisi-limaniou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/erga-ypodomis-ochetoi",
+      "url": "http://localhost:3333/projects/erga-ypodomis-ochetoi",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/toichio-antistirixis",
+      "url": "http://localhost:3333/projects/toichio-antistirixis",
+      "violations": []
+    },
+    {
+      "name": "EL /services/asfaltostroseis",
+      "url": "http://localhost:3333/services/asfaltostroseis",
+      "violations": []
+    },
+    {
+      "name": "EL /services/chomatourgika-ypodomes",
+      "url": "http://localhost:3333/services/chomatourgika-ypodomes",
+      "violations": []
+    },
+    {
+      "name": "EL /services/diagrammiseis-odon",
+      "url": "http://localhost:3333/services/diagrammiseis-odon",
+      "violations": []
+    },
+    {
+      "name": "EL /services/dimosia-erga",
+      "url": "http://localhost:3333/services/dimosia-erga",
+      "violations": []
+    },
+    {
+      "name": "EL /services/poiotikos-elegchos",
+      "url": "http://localhost:3333/services/poiotikos-elegchos",
+      "violations": []
+    },
+    {
+      "name": "EL /services/technikes-meletes",
+      "url": "http://localhost:3333/services/technikes-meletes",
+      "violations": []
+    },
+    {
+      "name": "EL /team",
+      "url": "http://localhost:3333/team",
+      "violations": []
+    }
+  ]
+}

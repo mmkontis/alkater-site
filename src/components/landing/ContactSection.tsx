@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 
 export function ContactSection() {
   const t = useTranslations("contact");
+  const a = useTranslations("a11y");
 
   const MAP_THEMES = [
     {
@@ -194,7 +195,7 @@ export function ContactSection() {
               {/* Close button */}
               <button
                 onClick={() => setShowMap(false)}
-                aria-label="Κλείσιμο χάρτη"
+                aria-label={a("closeMap")}
                 className="absolute top-4 left-4 z-10 w-9 h-9 rounded-xl bg-black/70 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-[#E63B2E]/50 transition-all"
               >
                 <X className="w-4 h-4" aria-hidden="true" />

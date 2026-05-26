@@ -170,6 +170,12 @@ interface BlogPost {
   published: boolean;
   created_at: string;
   updated_at: string;
+  title_en?: string | null;
+  excerpt_en?: string | null;
+  content_en?: string | null;
+  title_de?: string | null;
+  excerpt_de?: string | null;
+  content_de?: string | null;
 }
 
 interface ContactSubmission {
@@ -600,31 +606,87 @@ export default function Dashboard({
   // AUTO-TRANSLATE HELPER
   // ═══════════════════════════════════════
 
+  // Translates fields to both English and German variants in parallel and
+  // writes them to the matching `<col>_en` / `<col>_de` columns. fieldMap maps
+  // input key → base column name (e.g. { heading: "heading" }).
   async function autoTranslateFields(
     table: string,
     id: string,
     texts: Record<string, string>,
     fieldMap: Record<string, string>
   ) {
+    const targets: Array<{ target: "en" | "de"; suffix: "en" | "de" }> = [
+      { target: "en", suffix: "en" },
+      { target: "de", suffix: "de" },
+    ];
+
+    await Promise.all(
+      targets.map(async ({ target, suffix }) => {
+        try {
+          const res = await fetch("/api/admin/auto-translate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mode: "fields", texts, target }),
+          });
+          if (!res.ok) return;
+          const { translated } = await res.json();
+          if (!translated || Object.keys(translated).length === 0) return;
+          const updateObj: Record<string, string> = {};
+          for (const [srcKey, baseCol] of Object.entries(fieldMap)) {
+            if (translated[srcKey]) updateObj[`${baseCol}_${suffix}`] = translated[srcKey];
+          }
+          if (Object.keys(updateObj).length > 0) {
+            await supabase.from(table).update(updateObj).eq("id", id);
+          }
+        } catch {
+          // silent — translation is best-effort
+        }
+      })
+    );
+  }
+
+  // Translate a single record into one target language. Returns true on success.
+  async function autoTranslateOneLang(
+    table: string,
+    id: string,
+    texts: Record<string, string>,
+    fieldMap: Record<string, string>,
+    target: "en" | "de"
+  ): Promise<boolean> {
     try {
       const res = await fetch("/api/admin/auto-translate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "fields", texts }),
+        body: JSON.stringify({ mode: "fields", texts, target }),
       });
-      if (!res.ok) return;
+      if (!res.ok) return false;
       const { translated } = await res.json();
-      if (!translated || Object.keys(translated).length === 0) return;
+      if (!translated || Object.keys(translated).length === 0) return false;
       const updateObj: Record<string, string> = {};
-      for (const [srcKey, enCol] of Object.entries(fieldMap)) {
-        if (translated[srcKey]) updateObj[enCol] = translated[srcKey];
+      for (const [srcKey, baseCol] of Object.entries(fieldMap)) {
+        if (translated[srcKey]) updateObj[`${baseCol}_${target}`] = translated[srcKey];
       }
-      if (Object.keys(updateObj).length > 0) {
-        await supabase.from(table).update(updateObj).eq("id", id);
-      }
+      if (Object.keys(updateObj).length === 0) return false;
+      const { error } = await supabase.from(table).update(updateObj).eq("id", id);
+      return !error;
     } catch {
-      // silent — translation is best-effort
+      return false;
     }
+  }
+
+  const [translatingPost, setTranslatingPost] = useState<string | null>(null);
+
+  async function translatePostLang(post: BlogPost, target: "en" | "de") {
+    setTranslatingPost(`${post.id}-${target}`);
+    const ok = await autoTranslateOneLang(
+      "blog_posts",
+      post.id,
+      { title: post.title, excerpt: post.excerpt, content: post.content },
+      { title: "title", excerpt: "excerpt", content: "content" },
+      target,
+    );
+    if (ok) await refreshBlogPosts();
+    setTranslatingPost(null);
   }
 
   async function autoTranslateJson(
@@ -632,22 +694,31 @@ export default function Dashboard({
     pageKey: string,
     json: Record<string, unknown>
   ) {
-    try {
-      const res = await fetch("/api/admin/auto-translate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "json", json }),
-      });
-      if (!res.ok) return;
-      const { translated } = await res.json();
-      if (!translated || Object.keys(translated).length === 0) return;
-      await supabase
-        .from(table)
-        .update({ content_en: translated })
-        .eq("page_key", pageKey);
-    } catch {
-      // silent — translation is best-effort
-    }
+    const targets: Array<{ target: "en" | "de"; column: "content_en" | "content_de" }> = [
+      { target: "en", column: "content_en" },
+      { target: "de", column: "content_de" },
+    ];
+
+    await Promise.all(
+      targets.map(async ({ target, column }) => {
+        try {
+          const res = await fetch("/api/admin/auto-translate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mode: "json", json, target }),
+          });
+          if (!res.ok) return;
+          const { translated } = await res.json();
+          if (!translated || Object.keys(translated).length === 0) return;
+          await supabase
+            .from(table)
+            .update({ [column]: translated })
+            .eq("page_key", pageKey);
+        } catch {
+          // silent — translation is best-effort
+        }
+      })
+    );
   }
 
   // ═══════════════════════════════════════
@@ -680,7 +751,7 @@ export default function Dashboard({
       if (!error) {
         autoTranslateFields("hero_slides", editingSlide.id,
           { heading: slideForm.heading, heading_accent: slideForm.heading_accent, subtitle: slideForm.subtitle },
-          { heading: "heading_en", heading_accent: "heading_accent_en", subtitle: "subtitle_en" });
+          { heading: "heading", heading_accent: "heading_accent", subtitle: "subtitle" });
         setEditingSlide(null);
         setSlideForm(emptySlide);
         setSlideTab("list");
@@ -699,7 +770,7 @@ export default function Dashboard({
       if (!error && data) {
         autoTranslateFields("hero_slides", data.id,
           { heading: slideForm.heading, heading_accent: slideForm.heading_accent, subtitle: slideForm.subtitle },
-          { heading: "heading_en", heading_accent: "heading_accent_en", subtitle: "subtitle_en" });
+          { heading: "heading", heading_accent: "heading_accent", subtitle: "subtitle" });
         setSlideForm(emptySlide);
         setSlideTab("list");
         await refreshHeroSlides();
@@ -769,7 +840,7 @@ export default function Dashboard({
       if (!error) {
         autoTranslateFields("services", editingService.id,
           { name: serviceForm.name, description: serviceForm.description },
-          { name: "name_en", description: "description_en" });
+          { name: "name", description: "description" });
         setEditingService(null);
         setServiceForm(emptyService);
         setServiceTab("list");
@@ -790,7 +861,7 @@ export default function Dashboard({
       if (!error && data) {
         autoTranslateFields("services", data.id,
           { name: serviceForm.name, description: serviceForm.description },
-          { name: "name_en", description: "description_en" });
+          { name: "name", description: "description" });
         setServiceForm(emptyService);
         setServiceTab("list");
         await refreshServices();
@@ -840,7 +911,7 @@ export default function Dashboard({
       if (!error) {
         autoTranslateFields("projects", editingProject.id,
           { title: projectForm.title, description: projectForm.description },
-          { title: "title_en", description: "description_en" });
+          { title: "title", description: "description" });
         setEditingProject(null);
         setProjectForm(emptyProject);
         setProjectTab("list");
@@ -860,7 +931,7 @@ export default function Dashboard({
       if (!error && data) {
         autoTranslateFields("projects", data.id,
           { title: projectForm.title, description: projectForm.description },
-          { title: "title_en", description: "description_en" });
+          { title: "title", description: "description" });
         setProjectForm(emptyProject);
         setProjectTab("list");
         await refreshProjects();
@@ -945,7 +1016,7 @@ export default function Dashboard({
       if (!error) {
         autoTranslateFields("blog_posts", editingPost.id,
           { title: blogForm.title, excerpt: blogForm.excerpt, content: blogForm.content },
-          { title: "title_en", excerpt: "excerpt_en", content: "content_en" });
+          { title: "title", excerpt: "excerpt", content: "content" });
         setEditingPost(null);
         setBlogForm(emptyPost);
         setBlogTab("list");
@@ -964,7 +1035,7 @@ export default function Dashboard({
       if (!error && data) {
         autoTranslateFields("blog_posts", data.id,
           { title: blogForm.title, excerpt: blogForm.excerpt, content: blogForm.content },
-          { title: "title_en", excerpt: "excerpt_en", content: "content_en" });
+          { title: "title", excerpt: "excerpt", content: "content" });
         setBlogForm(emptyPost);
         setBlogTab("list");
         await refreshBlogPosts();
@@ -1200,7 +1271,7 @@ export default function Dashboard({
       if (!error) {
         autoTranslateFields("team_members", editingMember.id,
           { job_title: memberForm.job_title, bio: memberForm.bio },
-          { job_title: "job_title_en", bio: "bio_en" });
+          { job_title: "job_title", bio: "bio" });
         setEditingMember(null);
         setMemberForm(emptyMember);
         setTeamTab("list");
@@ -1220,7 +1291,7 @@ export default function Dashboard({
       if (!error && data) {
         autoTranslateFields("team_members", data.id,
           { job_title: memberForm.job_title, bio: memberForm.bio },
-          { job_title: "job_title_en", bio: "bio_en" });
+          { job_title: "job_title", bio: "bio" });
         setMemberForm(emptyMember);
         setTeamTab("list");
         await refreshTeamMembers();
@@ -2378,6 +2449,37 @@ export default function Dashboard({
                         <p className="mt-1 line-clamp-1 text-sm text-[#111111]/50">
                           {post.excerpt}
                         </p>
+                        <div className="mt-2 flex flex-wrap items-center gap-2">
+                          {(["en", "de"] as const).map((lang) => {
+                            const hasTranslation = Boolean(post[`title_${lang}` as const]);
+                            const busy = translatingPost === `${post.id}-${lang}`;
+                            return (
+                              <span
+                                key={lang}
+                                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-['Space_Mono'] text-[9px] uppercase tracking-widest ${
+                                  hasTranslation
+                                    ? "bg-emerald-50 text-emerald-600"
+                                    : "bg-amber-50 text-amber-700"
+                                }`}
+                              >
+                                {lang.toUpperCase()}
+                                {hasTranslation ? (
+                                  <span aria-hidden>✓</span>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    onClick={() => translatePostLang(post, lang)}
+                                    disabled={busy}
+                                    className="ml-1 rounded-full bg-amber-700/10 px-1.5 py-0.5 text-amber-700 hover:bg-amber-700/20 disabled:opacity-50"
+                                    title={`Μετάφραση σε ${lang.toUpperCase()}`}
+                                  >
+                                    {busy ? "..." : "Translate"}
+                                  </button>
+                                )}
+                              </span>
+                            );
+                          })}
+                        </div>
                       </div>
                       <div className="flex shrink-0 items-center gap-2 border-t sm:border-t-0 border-[#111111]/5 pt-3 sm:pt-0">
                         <a

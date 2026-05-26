@@ -196,7 +196,7 @@ export function HeroSection({ slides: slidesProp }: { slides?: HeroSlide[] }) {
           />
         </motion.div>
 
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={activeSlide}
             initial={{ opacity: 0, y: 20 }}

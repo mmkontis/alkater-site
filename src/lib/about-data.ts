@@ -26,6 +26,8 @@ export type AboutStat = {
   label: string;
   /** English label */
   label_en: string;
+  /** German label */
+  label_de: string;
 };
 
 /**
@@ -35,15 +37,24 @@ export type AboutStat = {
  */
 export function getAboutStats(): AboutStat[] {
   return [
-    { value: yearsActive(), suffix: "+", label: "Έτη Εμπειρίας", label_en: "Years of Experience" },
-    { value: ABOUT_FACTS.completedProjects, suffix: "+", label: "Ολοκληρωμένα Έργα", label_en: "Completed Projects" },
-    { value: ABOUT_FACTS.coverageRegions, suffix: "", label: "Περιοχές Κάλυψης", label_en: "Regions Served" },
-    { value: ABOUT_FACTS.staff, suffix: "+", label: "Εξειδικευμένο Προσωπικό", label_en: "Specialised Staff" },
+    { value: yearsActive(), suffix: "+", label: "Έτη Εμπειρίας", label_en: "Years of Experience", label_de: "Jahre Erfahrung" },
+    { value: ABOUT_FACTS.completedProjects, suffix: "+", label: "Ολοκληρωμένα Έργα", label_en: "Completed Projects", label_de: "Abgeschlossene Projekte" },
+    { value: ABOUT_FACTS.coverageRegions, suffix: "", label: "Περιοχές Κάλυψης", label_en: "Regions Served", label_de: "Abgedeckte Regionen" },
+    { value: ABOUT_FACTS.staff, suffix: "+", label: "Εξειδικευμένο Προσωπικό", label_en: "Specialised Staff", label_de: "Fachpersonal" },
   ];
+}
+
+export function localizedStatLabel(stat: AboutStat, locale: string): string {
+  if (locale === "de") return stat.label_de;
+  if (locale === "en") return stat.label_en;
+  return stat.label;
 }
 
 export function getAboutSubtitle(locale: string): string {
   const since = FOUNDING_YEAR;
+  if (locale === "de") {
+    return `Seit ${since} baut die ALKATER S.A. Infrastruktur, die der Zeit standhält. Mit Hauptsitz in Igoumenitsa ist unser Unternehmen eine feste Größe in der Baubranche von Epirus.`;
+  }
   if (locale === "en") {
     return `Since ${since}, ALKATER S.A. has been building infrastructure that stands the test of time. Headquartered in Igoumenitsa, our company is a benchmark in the construction sector of Epirus.`;
   }

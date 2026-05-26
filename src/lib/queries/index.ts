@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 
-// ── Types (clean — no _en fields exposed) ──
+// ── Types (clean — no _en/_de fields exposed) ──
 
 export type HeroSlide = {
   id: string;
@@ -73,6 +73,17 @@ export type AboutPageContent = {
   milestones: { label: string; title: string; title_accent: string; items: { year: string; text: string }[] };
 };
 
+// Pick the localized value for a row, with fallback chain: locale → en → el.
+function pick<T>(row: Record<string, unknown>, base: string, locale: string): T {
+  if (locale === "de") {
+    return (row[`${base}_de`] || row[`${base}_en`] || row[base]) as T;
+  }
+  if (locale === "en") {
+    return (row[`${base}_en`] || row[base]) as T;
+  }
+  return row[base] as T;
+}
+
 // ── Queries ──
 
 export async function getHeroSlides(locale: string = "el"): Promise<HeroSlide[]> {
@@ -89,20 +100,20 @@ export async function getHeroSlides(locale: string = "el"): Promise<HeroSlide[]>
 
   const { data } = await supabase
     .from("hero_slides")
-    .select("id, heading, heading_en, heading_accent, heading_accent_en, subtitle, subtitle_en, video_url, image_url, sort_order, published, created_at")
+    .select("id, heading, heading_en, heading_de, heading_accent, heading_accent_en, heading_accent_de, subtitle, subtitle_en, subtitle_de, video_url, image_url, sort_order, published, created_at")
     .eq("published", true)
     .order("sort_order", { ascending: true });
 
   return (data ?? []).map((row) => ({
-    id: row.id,
-    heading: row.heading_en || row.heading,
-    heading_accent: row.heading_accent_en || row.heading_accent,
-    subtitle: row.subtitle_en || row.subtitle,
-    video_url: row.video_url,
-    image_url: row.image_url,
-    sort_order: row.sort_order,
-    published: row.published,
-    created_at: row.created_at,
+    id: row.id as string,
+    heading: pick<string>(row, "heading", locale),
+    heading_accent: pick<string>(row, "heading_accent", locale),
+    subtitle: pick<string>(row, "subtitle", locale),
+    video_url: row.video_url as string | null,
+    image_url: row.image_url as string | null,
+    sort_order: row.sort_order as number,
+    published: row.published as boolean,
+    created_at: row.created_at as string | undefined,
   }));
 }
 
@@ -119,19 +130,19 @@ export async function getServices(locale: string = "el"): Promise<Service[]> {
 
   const { data } = await supabase
     .from("services")
-    .select("id, slug, name, name_en, description, description_en, icon, image_url, video_url, video_start_time, sort_order")
+    .select("id, slug, name, name_en, name_de, description, description_en, description_de, icon, image_url, video_url, video_start_time, sort_order")
     .order("sort_order", { ascending: true });
 
   return (data ?? []).map((row) => ({
-    id: row.id,
-    slug: row.slug,
-    name: row.name_en || row.name,
-    description: row.description_en || row.description,
-    icon: row.icon,
-    image_url: row.image_url,
-    video_url: row.video_url,
-    video_start_time: row.video_start_time,
-    sort_order: row.sort_order,
+    id: row.id as string,
+    slug: row.slug as string,
+    name: pick<string>(row, "name", locale),
+    description: pick<string>(row, "description", locale),
+    icon: row.icon as string,
+    image_url: row.image_url as string | null,
+    video_url: row.video_url as string | null,
+    video_start_time: row.video_start_time as number,
+    sort_order: row.sort_order as number,
   }));
 }
 
@@ -149,21 +160,22 @@ export async function getServiceBySlug(slug: string, locale: string = "el"): Pro
 
   const { data } = await supabase
     .from("services")
-    .select("id, slug, name, name_en, description, description_en, icon, image_url, video_url, video_start_time, sort_order")
+    .select("id, slug, name, name_en, name_de, description, description_en, description_de, icon, image_url, video_url, video_start_time, sort_order")
     .eq("slug", slug)
     .single();
 
   if (!data) return null;
+  const row = data as Record<string, unknown>;
   return {
-    id: data.id,
-    slug: data.slug,
-    name: data.name_en || data.name,
-    description: data.description_en || data.description,
-    icon: data.icon,
-    image_url: data.image_url,
-    video_url: data.video_url,
-    video_start_time: data.video_start_time,
-    sort_order: data.sort_order,
+    id: row.id as string,
+    slug: row.slug as string,
+    name: pick<string>(row, "name", locale),
+    description: pick<string>(row, "description", locale),
+    icon: row.icon as string,
+    image_url: row.image_url as string | null,
+    video_url: row.video_url as string | null,
+    video_start_time: row.video_start_time as number,
+    sort_order: row.sort_order as number,
   };
 }
 
@@ -181,25 +193,25 @@ export async function getProjects(locale: string = "el"): Promise<Project[]> {
 
   const { data } = await supabase
     .from("projects")
-    .select("id, slug, title, title_en, location, category, description, description_en, image_url, gallery, year, client, scope, duration, sort_order, service_id")
+    .select("id, slug, title, title_en, title_de, location, category, description, description_en, description_de, image_url, gallery, year, client, scope, duration, sort_order, service_id")
     .eq("published", true)
     .order("sort_order", { ascending: true });
 
   return (data ?? []).map((row) => ({
-    id: row.id,
-    slug: row.slug,
-    title: row.title_en || row.title,
-    location: row.location,
-    category: row.category,
-    description: row.description_en || row.description,
-    image_url: row.image_url,
-    gallery: row.gallery,
-    year: row.year,
-    client: row.client,
-    scope: row.scope,
-    duration: row.duration,
-    sort_order: row.sort_order,
-    service_id: row.service_id,
+    id: row.id as string,
+    slug: row.slug as string,
+    title: pick<string>(row, "title", locale),
+    location: row.location as string,
+    category: row.category as string,
+    description: pick<string>(row, "description", locale),
+    image_url: row.image_url as string,
+    gallery: row.gallery as string[],
+    year: row.year as string,
+    client: row.client as string,
+    scope: row.scope as string[],
+    duration: row.duration as string,
+    sort_order: row.sort_order as number,
+    service_id: row.service_id as string | null,
   }));
 }
 
@@ -218,27 +230,28 @@ export async function getProjectBySlug(slug: string, locale: string = "el"): Pro
 
   const { data } = await supabase
     .from("projects")
-    .select("id, slug, title, title_en, location, category, description, description_en, image_url, gallery, year, client, scope, duration, sort_order, service_id")
+    .select("id, slug, title, title_en, title_de, location, category, description, description_en, description_de, image_url, gallery, year, client, scope, duration, sort_order, service_id")
     .eq("slug", slug)
     .eq("published", true)
     .single();
 
   if (!data) return null;
+  const row = data as Record<string, unknown>;
   return {
-    id: data.id,
-    slug: data.slug,
-    title: data.title_en || data.title,
-    location: data.location,
-    category: data.category,
-    description: data.description_en || data.description,
-    image_url: data.image_url,
-    gallery: data.gallery,
-    year: data.year,
-    client: data.client,
-    scope: data.scope,
-    duration: data.duration,
-    sort_order: data.sort_order,
-    service_id: data.service_id,
+    id: row.id as string,
+    slug: row.slug as string,
+    title: pick<string>(row, "title", locale),
+    location: row.location as string,
+    category: row.category as string,
+    description: pick<string>(row, "description", locale),
+    image_url: row.image_url as string,
+    gallery: row.gallery as string[],
+    year: row.year as string,
+    client: row.client as string,
+    scope: row.scope as string[],
+    duration: row.duration as string,
+    sort_order: row.sort_order as number,
+    service_id: row.service_id as string | null,
   };
 }
 
@@ -256,17 +269,17 @@ export async function getBlogPosts(locale: string = "el"): Promise<BlogPost[]> {
 
   const { data } = await supabase
     .from("blog_posts")
-    .select("id, title, title_en, slug, excerpt, excerpt_en, cover_image, created_at")
+    .select("id, title, title_en, title_de, slug, excerpt, excerpt_en, excerpt_de, cover_image, created_at")
     .eq("published", true)
     .order("created_at", { ascending: false });
 
   return (data ?? []).map((row) => ({
-    id: row.id,
-    title: row.title_en || row.title,
-    slug: row.slug,
-    excerpt: row.excerpt_en || row.excerpt,
-    cover_image: row.cover_image,
-    created_at: row.created_at,
+    id: row.id as string,
+    title: pick<string>(row, "title", locale),
+    slug: row.slug as string,
+    excerpt: pick<string>(row, "excerpt", locale),
+    cover_image: row.cover_image as string | null,
+    created_at: row.created_at as string,
   }));
 }
 
@@ -285,20 +298,21 @@ export async function getBlogPostBySlug(slug: string, locale: string = "el"): Pr
 
   const { data } = await supabase
     .from("blog_posts")
-    .select("id, title, title_en, slug, excerpt, excerpt_en, cover_image, created_at, content, content_en")
+    .select("id, title, title_en, title_de, slug, excerpt, excerpt_en, excerpt_de, cover_image, created_at, content, content_en, content_de")
     .eq("slug", slug)
     .eq("published", true)
     .single();
 
   if (!data) return null;
+  const row = data as Record<string, unknown>;
   return {
-    id: data.id,
-    title: data.title_en || data.title,
-    slug: data.slug,
-    excerpt: data.excerpt_en || data.excerpt,
-    cover_image: data.cover_image,
-    created_at: data.created_at,
-    content: data.content_en || data.content,
+    id: row.id as string,
+    title: pick<string>(row, "title", locale),
+    slug: row.slug as string,
+    excerpt: pick<string>(row, "excerpt", locale),
+    cover_image: row.cover_image as string | null,
+    created_at: row.created_at as string,
+    content: pick<string | null>(row, "content", locale),
   };
 }
 
@@ -306,10 +320,12 @@ export async function getPageContent(pageKey: string, locale: string = "el"): Pr
   const supabase = await createClient();
   const { data } = await supabase
     .from("page_content")
-    .select("content, content_en")
+    .select("content, content_en, content_de")
     .eq("page_key", pageKey)
     .single();
   if (!data) return null;
+  if (locale === "de" && data.content_de) return data.content_de as unknown as AboutPageContent;
+  if (locale === "de" && data.content_en) return data.content_en as unknown as AboutPageContent;
   if (locale === "en" && data.content_en) return data.content_en as unknown as AboutPageContent;
   return data.content as unknown as AboutPageContent ?? null;
 }
@@ -327,17 +343,17 @@ export async function getTeamMembers(locale: string = "el"): Promise<TeamMember[
 
   const { data } = await supabase
     .from("team_members")
-    .select("id, first_name, last_name, email, job_title, job_title_en, bio, bio_en, photo_url, sort_order")
+    .select("id, first_name, last_name, email, job_title, job_title_en, job_title_de, bio, bio_en, bio_de, photo_url, sort_order")
     .order("sort_order", { ascending: true });
 
   return (data ?? []).map((row) => ({
-    id: row.id,
-    first_name: row.first_name,
-    last_name: row.last_name,
-    email: row.email,
-    job_title: row.job_title_en || row.job_title,
-    bio: row.bio_en || row.bio,
-    photo_url: row.photo_url,
-    sort_order: row.sort_order,
+    id: row.id as string,
+    first_name: row.first_name as string,
+    last_name: row.last_name as string,
+    email: row.email as string | null,
+    job_title: pick<string>(row, "job_title", locale),
+    bio: pick<string>(row, "bio", locale),
+    photo_url: row.photo_url as string | null,
+    sort_order: row.sort_order as number,
   }));
 }

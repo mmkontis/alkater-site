@@ -1,0 +1,1842 @@
+{
+  "baseUrl": "http://localhost:3333",
+  "axeVersion": "4.11.1",
+  "startedAt": "2026-05-26T22:01:54.019Z",
+  "finishedAt": "2026-05-26T22:05:03.766Z",
+  "totalViolations": 12,
+  "pages": [
+    {
+      "name": "EL /",
+      "url": "http://localhost:3333",
+      "violations": []
+    },
+    {
+      "name": "EL /about",
+      "url": "http://localhost:3333/about",
+      "violations": []
+    },
+    {
+      "name": "EL /blog/erga-ypodomes-thesprotia",
+      "url": "http://localhost:3333/blog/erga-ypodomes-thesprotia",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>10 Μαρτίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1<!-- --> λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EL /blog/nees-texnikes-asfaltostrosis",
+      "url": "http://localhost:3333/blog/nees-texnikes-asfaltostrosis",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>10 Μαρτίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1<!-- --> λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EL /blog/simassia-sintirissis-odikon-diktyon",
+      "url": "http://localhost:3333/blog/simassia-sintirissis-odikon-diktyon",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>10 Μαρτίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>5 λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EL /blog/xrimatodotisi-espa",
+      "url": "http://localhost:3333/blog/xrimatodotisi-espa",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1 Απριλίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1<!-- --> λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EL /careers",
+      "url": "http://localhost:3333/careers",
+      "violations": []
+    },
+    {
+      "name": "EL /certifications",
+      "url": "http://localhost:3333/certifications",
+      "violations": []
+    },
+    {
+      "name": "EL /contact",
+      "url": "http://localhost:3333/contact",
+      "violations": []
+    },
+    {
+      "name": "DE /de",
+      "url": "http://localhost:3333/de",
+      "violations": []
+    },
+    {
+      "name": "DE /de/about",
+      "url": "http://localhost:3333/de/about",
+      "violations": []
+    },
+    {
+      "name": "DE /de/blog/erga-ypodomes-thesprotia",
+      "url": "http://localhost:3333/de/blog/erga-ypodomes-thesprotia",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>10 Μαρτίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1<!-- --> λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DE /de/blog/nees-texnikes-asfaltostrosis",
+      "url": "http://localhost:3333/de/blog/nees-texnikes-asfaltostrosis",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>10 Μαρτίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1<!-- --> λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DE /de/blog/simassia-sintirissis-odikon-diktyon",
+      "url": "http://localhost:3333/de/blog/simassia-sintirissis-odikon-diktyon",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>10 Μαρτίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>5 λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DE /de/blog/xrimatodotisi-espa",
+      "url": "http://localhost:3333/de/blog/xrimatodotisi-espa",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1 Απριλίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1<!-- --> λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DE /de/careers",
+      "url": "http://localhost:3333/de/careers",
+      "violations": []
+    },
+    {
+      "name": "DE /de/certifications",
+      "url": "http://localhost:3333/de/certifications",
+      "violations": []
+    },
+    {
+      "name": "DE /de/contact",
+      "url": "http://localhost:3333/de/contact",
+      "violations": []
+    },
+    {
+      "name": "DE /de/equipment",
+      "url": "http://localhost:3333/de/equipment",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/anakataskevi-odikou-diktyou",
+      "url": "http://localhost:3333/de/projects/anakataskevi-odikou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/asfaltostrosi-ethnikis-odou",
+      "url": "http://localhost:3333/de/projects/asfaltostrosi-ethnikis-odou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/diagrammisi-eparxiakou-diktyou",
+      "url": "http://localhost:3333/de/projects/diagrammisi-eparxiakou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/diagrammisi-limaniou",
+      "url": "http://localhost:3333/de/projects/diagrammisi-limaniou",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/erga-ypodomis-ochetoi",
+      "url": "http://localhost:3333/de/projects/erga-ypodomis-ochetoi",
+      "violations": []
+    },
+    {
+      "name": "DE /de/projects/toichio-antistirixis",
+      "url": "http://localhost:3333/de/projects/toichio-antistirixis",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/asfaltostroseis",
+      "url": "http://localhost:3333/de/services/asfaltostroseis",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/chomatourgika-ypodomes",
+      "url": "http://localhost:3333/de/services/chomatourgika-ypodomes",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/diagrammiseis-odon",
+      "url": "http://localhost:3333/de/services/diagrammiseis-odon",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/dimosia-erga",
+      "url": "http://localhost:3333/de/services/dimosia-erga",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/poiotikos-elegchos",
+      "url": "http://localhost:3333/de/services/poiotikos-elegchos",
+      "violations": []
+    },
+    {
+      "name": "DE /de/services/technikes-meletes",
+      "url": "http://localhost:3333/de/services/technikes-meletes",
+      "violations": []
+    },
+    {
+      "name": "DE /de/team",
+      "url": "http://localhost:3333/de/team",
+      "violations": []
+    },
+    {
+      "name": "EN /en",
+      "url": "http://localhost:3333/en",
+      "violations": []
+    },
+    {
+      "name": "EN /en/about",
+      "url": "http://localhost:3333/en/about",
+      "violations": []
+    },
+    {
+      "name": "EN /en/blog/erga-ypodomes-thesprotia",
+      "url": "http://localhost:3333/en/blog/erga-ypodomes-thesprotia",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>10 Μαρτίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1<!-- --> λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EN /en/blog/nees-texnikes-asfaltostrosis",
+      "url": "http://localhost:3333/en/blog/nees-texnikes-asfaltostrosis",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>10 Μαρτίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1<!-- --> λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EN /en/blog/simassia-sintirissis-odikon-diktyon",
+      "url": "http://localhost:3333/en/blog/simassia-sintirissis-odikon-diktyon",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>10 Μαρτίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>5 λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EN /en/blog/xrimatodotisi-espa",
+      "url": "http://localhost:3333/en/blog/xrimatodotisi-espa",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1 Απριλίου 2026</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>1<!-- --> λεπτά ανάγνωσης</span>",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.gap-2.text-sm:nth-child(2) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7c7c7a",
+                    "bgColor": "#111416",
+                    "contrastRatio": 4.42,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"min-h-screen antialiased selection:bg-[#E63B2E] selection:text-white font-['Space_Grotesk']\" style=\"background-color:var(--bg-tint-97);color:var(--text-primary)\">",
+                      "target": [
+                        ".min-h-screen"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors\" href=\"/\">",
+              "target": [
+                ".text-\\[\\#E8E4DD\\]\\/50.inline-flex[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #7c7c7a, background color: #111416, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EN /en/careers",
+      "url": "http://localhost:3333/en/careers",
+      "violations": []
+    },
+    {
+      "name": "EN /en/certifications",
+      "url": "http://localhost:3333/en/certifications",
+      "violations": []
+    },
+    {
+      "name": "EN /en/contact",
+      "url": "http://localhost:3333/en/contact",
+      "violations": []
+    },
+    {
+      "name": "EN /en/equipment",
+      "url": "http://localhost:3333/en/equipment",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/anakataskevi-odikou-diktyou",
+      "url": "http://localhost:3333/en/projects/anakataskevi-odikou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/asfaltostrosi-ethnikis-odou",
+      "url": "http://localhost:3333/en/projects/asfaltostrosi-ethnikis-odou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/diagrammisi-eparxiakou-diktyou",
+      "url": "http://localhost:3333/en/projects/diagrammisi-eparxiakou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/diagrammisi-limaniou",
+      "url": "http://localhost:3333/en/projects/diagrammisi-limaniou",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/erga-ypodomis-ochetoi",
+      "url": "http://localhost:3333/en/projects/erga-ypodomis-ochetoi",
+      "violations": []
+    },
+    {
+      "name": "EN /en/projects/toichio-antistirixis",
+      "url": "http://localhost:3333/en/projects/toichio-antistirixis",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/asfaltostroseis",
+      "url": "http://localhost:3333/en/services/asfaltostroseis",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/chomatourgika-ypodomes",
+      "url": "http://localhost:3333/en/services/chomatourgika-ypodomes",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/diagrammiseis-odon",
+      "url": "http://localhost:3333/en/services/diagrammiseis-odon",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/dimosia-erga",
+      "url": "http://localhost:3333/en/services/dimosia-erga",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/poiotikos-elegchos",
+      "url": "http://localhost:3333/en/services/poiotikos-elegchos",
+      "violations": []
+    },
+    {
+      "name": "EN /en/services/technikes-meletes",
+      "url": "http://localhost:3333/en/services/technikes-meletes",
+      "violations": []
+    },
+    {
+      "name": "EN /en/team",
+      "url": "http://localhost:3333/en/team",
+      "violations": []
+    },
+    {
+      "name": "EL /equipment",
+      "url": "http://localhost:3333/equipment",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/anakataskevi-odikou-diktyou",
+      "url": "http://localhost:3333/projects/anakataskevi-odikou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/asfaltostrosi-ethnikis-odou",
+      "url": "http://localhost:3333/projects/asfaltostrosi-ethnikis-odou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/diagrammisi-eparxiakou-diktyou",
+      "url": "http://localhost:3333/projects/diagrammisi-eparxiakou-diktyou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/diagrammisi-limaniou",
+      "url": "http://localhost:3333/projects/diagrammisi-limaniou",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/erga-ypodomis-ochetoi",
+      "url": "http://localhost:3333/projects/erga-ypodomis-ochetoi",
+      "violations": []
+    },
+    {
+      "name": "EL /projects/toichio-antistirixis",
+      "url": "http://localhost:3333/projects/toichio-antistirixis",
+      "violations": []
+    },
+    {
+      "name": "EL /services/asfaltostroseis",
+      "url": "http://localhost:3333/services/asfaltostroseis",
+      "violations": []
+    },
+    {
+      "name": "EL /services/chomatourgika-ypodomes",
+      "url": "http://localhost:3333/services/chomatourgika-ypodomes",
+      "violations": []
+    },
+    {
+      "name": "EL /services/diagrammiseis-odon",
+      "url": "http://localhost:3333/services/diagrammiseis-odon",
+      "violations": []
+    },
+    {
+      "name": "EL /services/dimosia-erga",
+      "url": "http://localhost:3333/services/dimosia-erga",
+      "violations": []
+    },
+    {
+      "name": "EL /services/poiotikos-elegchos",
+      "url": "http://localhost:3333/services/poiotikos-elegchos",
+      "violations": []
+    },
+    {
+      "name": "EL /services/technikes-meletes",
+      "url": "http://localhost:3333/services/technikes-meletes",
+      "violations": []
+    },
+    {
+      "name": "EL /team",
+      "url": "http://localhost:3333/team",
+      "violations": []
+    }
+  ]
+}

@@ -37,9 +37,17 @@ type RenderOptions = {
  */
 export function renderBrandOg(opts: RenderOptions): ImageResponse {
   const { eyebrow, title, accent, subtitle, badges, locale = "el" } = opts;
+  const isDe = locale === "de";
   const isEn = locale === "en";
   const since = FOUNDING_YEAR;
   const yrs = yearsActive();
+  const wordmark = isDe ? "BAUUNTERNEHMEN" : isEn ? "CONSTRUCTION" : "ΚΑΤΑΣΚΕΥΑΣΤΙΚΗ";
+  const sinceLabel = isDe ? `Seit ${since}` : isEn ? `Since ${since}` : `Από το ${since}`;
+  const yearsLabel = isDe
+    ? `${yrs}+ Jahre · Igoumenitsa, GR`
+    : isEn
+      ? `${yrs}+ years · Igoumenitsa, GR`
+      : `${yrs}+ χρόνια · Ηγουμενίτσα`;
 
   return new ImageResponse(
     (
@@ -199,7 +207,7 @@ export function renderBrandOg(opts: RenderOptions): ImageResponse {
                 }}
               />
               <span style={{ color: BRAND.accent, display: "flex" }}>
-                {isEn ? "CONSTRUCTION" : "ΚΑΤΑΣΚΕΥΑΣΤΙΚΗ"}
+                {wordmark}
               </span>
             </div>
             <div
@@ -212,15 +220,9 @@ export function renderBrandOg(opts: RenderOptions): ImageResponse {
                 gap: 12,
               }}
             >
-              <span style={{ display: "flex" }}>
-                {isEn ? `Since ${since}` : `Από το ${since}`}
-              </span>
+              <span style={{ display: "flex" }}>{sinceLabel}</span>
               <span style={{ display: "flex", opacity: 0.4 }}>·</span>
-              <span style={{ display: "flex" }}>
-                {isEn
-                  ? `${yrs}+ years · Igoumenitsa, GR`
-                  : `${yrs}+ χρόνια · Ηγουμενίτσα`}
-              </span>
+              <span style={{ display: "flex" }}>{yearsLabel}</span>
             </div>
           </div>
 

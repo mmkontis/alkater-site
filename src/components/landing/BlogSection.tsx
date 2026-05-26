@@ -30,7 +30,7 @@ export function BlogSection({ posts: postsProp }: { posts?: BlogPost[] }) {
         <div className="mb-12 md:mb-16">
           <div className="flex items-center gap-4 mb-6">
             <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--link-color)" }} />
-            <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--link-color)" }}>{t("sectionLabel")}</span>
+            <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--link-text)" }}>{t("sectionLabel")}</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase leading-[1.1]" style={{ color: "var(--text-primary)" }}>
             {t("titleMain")} <span style={{ color: "var(--link-color)" }}>{t("titleAccent")}</span>
@@ -65,7 +65,7 @@ export function BlogSection({ posts: postsProp }: { posts?: BlogPost[] }) {
                   </div>
                 )}
                 <div className="p-6 flex flex-col flex-1">
-                  <div className="flex items-center gap-2 mb-3" style={{ color: "var(--link-color)" }}>
+                  <div className="flex items-center gap-2 mb-3" style={{ color: "var(--link-text)" }}>
                     <Calendar className="w-3.5 h-3.5" />
                     <span className="font-['Space_Mono'] text-xs uppercase tracking-widest">
                       {new Date(post.created_at).toLocaleDateString("el-GR", { day: "numeric", month: "long", year: "numeric" })}
@@ -77,7 +77,7 @@ export function BlogSection({ posts: postsProp }: { posts?: BlogPost[] }) {
                   <p className="font-['Space_Grotesk'] text-sm leading-relaxed mb-4 flex-1" style={{ color: "var(--text-muted)" }}>
                     {post.excerpt}
                   </p>
-                  <span className="inline-flex items-center gap-2 font-['Space_Mono'] text-xs uppercase tracking-widest transition-colors group-hover:opacity-80" style={{ color: "var(--link-color)" }}>
+                  <span className="inline-flex items-center gap-2 font-['Space_Mono'] text-xs uppercase tracking-widest transition-colors group-hover:opacity-80" style={{ color: "var(--link-text)" }}>
                     {t("readMore")}
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </span>

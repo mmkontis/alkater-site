@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { fontVariables } from "../layout";
-import { getBaseUrl, getSiteName } from "@/lib/seo";
+import { getBaseUrl, getSiteName, getOgLocale } from "@/lib/seo";
 
 type Props = {
   children: React.ReactNode;
@@ -49,7 +49,7 @@ export async function generateMetadata({
       title: t("ogTitle"),
       description: t("ogDescription"),
       type: "website",
-      locale: locale === "el" ? "el_GR" : "en_US",
+      locale: getOgLocale(locale),
       siteName: getSiteName(locale),
       url: baseUrl,
     },
@@ -70,7 +70,7 @@ export async function generateMetadata({
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
-  if (!routing.locales.includes(locale as "el" | "en")) {
+  if (!routing.locales.includes(locale as "el" | "en" | "de")) {
     notFound();
   }
 

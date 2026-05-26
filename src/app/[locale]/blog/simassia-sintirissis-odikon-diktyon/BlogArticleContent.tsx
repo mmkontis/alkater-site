@@ -32,11 +32,11 @@ export default function BlogArticleContent({
       {/* Article Meta */}
       <section className="border-t border-white/5">
         <div className="container mx-auto px-6 max-w-4xl py-8 flex flex-wrap items-center gap-6">
-          <div className="flex items-center gap-2 text-[#E8E4DD]/50 font-['Space_Mono'] text-sm">
+          <div className="flex items-center gap-2 text-[#E8E4DD]/70 font-['Space_Mono'] text-sm">
             <Calendar className="w-4 h-4" />
             <span>{displayDate}</span>
           </div>
-          <div className="flex items-center gap-2 text-[#E8E4DD]/50 font-['Space_Mono'] text-sm">
+          <div className="flex items-center gap-2 text-[#E8E4DD]/70 font-['Space_Mono'] text-sm">
             <Clock className="w-4 h-4" />
             <span>5 λεπτά ανάγνωσης</span>
           </div>
@@ -161,7 +161,7 @@ export default function BlogArticleContent({
           <div className="mt-16 pt-8 border-t border-white/5">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/50 hover:text-[#E63B2E] transition-colors"
+              className="inline-flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm text-[#E8E4DD]/70 hover:text-[#E63B2E] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Επιστροφη στην Αρχικη

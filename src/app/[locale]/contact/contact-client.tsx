@@ -52,7 +52,7 @@ export default function ContactPageClient() {
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <div className="flex items-center gap-4 mb-6">
             <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--link-color, #E63B2E)" }} />
-            <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--link-color, #E63B2E)" }}>{t("heroLabel")}</span>
+            <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--link-text, #E63B2E)" }}>{t("heroLabel")}</span>
           </div>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter uppercase leading-[0.9] mb-6" style={{ color: "var(--text-primary)" }}>
             {t("heroTitle")}<br />
@@ -118,7 +118,7 @@ export default function ContactPageClient() {
             >
               <div className="flex items-center gap-4 mb-6">
                 <span className="w-8 h-[2px]" style={{ backgroundColor: "var(--link-color, #E63B2E)" }} />
-                <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--link-color, #E63B2E)" }}>{t("formSectionLabel")}</span>
+                <span className="font-['Space_Mono'] uppercase tracking-widest text-sm" style={{ color: "var(--link-text, #E63B2E)" }}>{t("formSectionLabel")}</span>
               </div>
 
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase mb-6 leading-[1.1]" style={{ color: "var(--text-primary)" }}>

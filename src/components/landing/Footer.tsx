@@ -41,12 +41,14 @@ function AlkaterLogoFooter({ className }: { className?: string }) {
 export function Footer() {
   const t = useTranslations("footer");
   const tn = useTranslations("nav");
+  const a = useTranslations("a11y");
 
   const NAV_LINKS = [
     { href: "/", label: tn("home") },
     { href: "/about", label: tn("company") },
     { href: "/certifications", label: tn("certifications") },
     { href: "/contact", label: tn("contact") },
+    { href: "/espa", label: t("espaLink") },
   ];
 
   return (
@@ -65,7 +67,7 @@ export function Footer() {
 
           {/* Brand column */}
           <div className="md:col-span-5">
-            <Link href="/" aria-label="ΑΛΚΑΤΕΡ - Αρχική" className="inline-block mb-6">
+            <Link href="/" aria-label={a("logoHome")} className="inline-block mb-6">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="65 55 295 80" className="h-20 w-auto opacity-90 hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
                 <g fill="var(--logo-left, #1B6B9E)">
                   <path d="M 91.402344 83.144531 L 84.304688 101.132812 L 98.5 101.132812 Z M 102.292969 110.082031 L 80.515625 110.082031 L 77.53125 117.019531 L 65.839844 117.019531 L 89.628906 62.824219 L 93.257812 62.824219 L 116.96875 117.019531 L 105.277344 117.019531 Z" />
@@ -95,7 +97,7 @@ export function Footer() {
               </a>
               <a
                 href="tel:+302665000000"
-                aria-label="Τηλέφωνο: +30 26650 00000"
+                aria-label={a("phoneCall", { number: "+30 26650 00000" })}
                 className="w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300"
                 style={{ borderColor: "var(--border-hover)", color: "var(--text-muted)", backgroundColor: "var(--link-bg-12)" }}
               >
@@ -110,7 +112,7 @@ export function Footer() {
               <span className="w-6 h-[2px]" style={{ backgroundColor: "var(--text-muted)" }} />
               <p className="font-['Space_Mono'] text-[10px] uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>{t("navigationLabel")}</p>
             </div>
-            <nav aria-label="Πλοήγηση υποσέλιδου" className="flex flex-col gap-3">
+            <nav aria-label={a("footerNav")} className="flex flex-col gap-3">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { getAlternates, getAbsoluteUrl, articleJsonLd, breadcrumbJsonLd, getSiteName } from "@/lib/seo";
+import { getAlternates, getAbsoluteUrl, articleJsonLd, breadcrumbJsonLd, getSiteName, getOgLocale, pickByLocale } from "@/lib/seo";
 import BlogArticleContent from "./BlogArticleContent";
 
 const SLUG = "simassia-sintirissis-odikon-diktyon";
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       type: "article",
       url,
       publishedTime: post.created_at,
-      locale: locale === "el" ? "el_GR" : "en_US",
+      locale: getOgLocale(locale),
       siteName: getSiteName(locale),
     },
     twitter: {
@@ -50,8 +50,8 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ lo
     .single();
 
   const url = getAbsoluteUrl(`/blog/${SLUG}`, locale);
-  const homeLabel = locale === "el" ? "Αρχική" : "Home";
-  const blogLabel = locale === "el" ? "Άρθρα" : "Articles";
+  const homeLabel = pickByLocale(locale, "Αρχική", "Home", "Startseite");
+  const blogLabel = pickByLocale(locale, "Άρθρα", "Articles", "Artikel");
 
   return (
     <>

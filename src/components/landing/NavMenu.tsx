@@ -8,6 +8,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function NavMenu() {
   const t = useTranslations("nav");
+  const a = useTranslations("a11y");
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -46,8 +47,8 @@ export function NavMenu() {
           }}
         >
           <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between h-20">
-            <Link href="/" aria-label="ΑΛΚΑΤΕΡ - Αρχική" className="inline-block">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="65 60 295 70" className="h-10 w-auto" aria-hidden="true">
+            <Link href="/" aria-label={a("logoHome")} className="inline-block">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="65 60 295 70" className="h-8 sm:h-9 md:h-12 w-auto" aria-hidden="true">
                 <g fill="var(--logo-left, #1B6B9E)">
                   <path d="M 91.402344 83.144531 L 84.304688 101.132812 L 98.5 101.132812 Z M 102.292969 110.082031 L 80.515625 110.082031 L 77.53125 117.019531 L 65.839844 117.019531 L 89.628906 62.824219 L 93.257812 62.824219 L 116.96875 117.019531 L 105.277344 117.019531 Z" />
                   <path d="M 153.367188 117.019531 L 139.496094 84.679688 L 125.625 117.019531 L 113.929688 117.019531 L 137.71875 62.824219 L 141.347656 62.824219 L 165.0625 117.019531 Z" />
@@ -62,7 +63,7 @@ export function NavMenu() {
                 </g>
               </svg>
             </Link>
-            <nav aria-label="Κύρια πλοήγηση" className="hidden md:flex items-center gap-6">
+            <nav aria-label={a("mainNav")} className="hidden md:flex items-center gap-6">
               {NAV_LINKS.slice(1).map((link) => (
                 <Link
                   key={link.href}
@@ -77,7 +78,7 @@ export function NavMenu() {
             </nav>
             <button
               onClick={() => setOpen(true)}
-              aria-label="Άνοιγμα μενού"
+              aria-label={a("openMenu")}
               className="md:hidden font-['Space_Mono'] uppercase tracking-widest text-xs flex items-center gap-2 hover:text-[#E63B2E] transition-colors"
               style={{ color: "var(--text-muted)" }}
             >
@@ -90,7 +91,7 @@ export function NavMenu() {
       {/* Hamburger — visible only while in hero area */}
       <button
         onClick={() => setOpen(true)}
-        aria-label="Άνοιγμα μενού"
+        aria-label={a("openMenu")}
         className={`fixed top-6 left-6 z-[55] flex items-center gap-2 font-['Space_Mono'] uppercase tracking-widest text-sm md:mix-blend-difference text-white hover:text-[#E63B2E] transition-all duration-500 ${
           scrolled ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
@@ -110,7 +111,7 @@ export function NavMenu() {
             {t("close")}
           </button>
 
-          <nav aria-label="Κύρια πλοήγηση" className="flex flex-col items-center gap-4">
+          <nav aria-label={a("mainNav")} className="flex flex-col items-center gap-4">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}

@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { getAlternates, getSiteName } from "@/lib/seo";
+import { getAlternates, getOgLocale, getSiteName, pickByLocale } from "@/lib/seo";
 import CertificationsPageClient from "./certifications-client";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const title = locale === "el" ? "Πιστοποιήσεις" : "Certifications";
-  const description =
-    locale === "el"
-      ? "Οι πιστοποιήσεις ISO και μέλη μας. ΑΛΚΑΤΕΡ - πιστοποιημένη ποιότητα στα κατασκευαστικά έργα."
-      : "Our ISO certifications and memberships. ALKATER - certified quality in construction projects.";
+  const title = pickByLocale(locale, "Πιστοποιήσεις", "Certifications", "Zertifizierungen");
+  const description = pickByLocale(
+    locale,
+    "Οι πιστοποιήσεις ISO και μέλη μας. ΑΛΚΑΤΕΡ - πιστοποιημένη ποιότητα στα κατασκευαστικά έργα.",
+    "Our ISO certifications and memberships. ALKATER - certified quality in construction projects.",
+    "Unsere ISO-Zertifizierungen und Mitgliedschaften. ALKATER - zertifizierte Qualität bei Bauprojekten.",
+  );
   return {
     title,
     description,
@@ -16,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     openGraph: {
       title,
       description,
-      locale: locale === "el" ? "el_GR" : "en_US",
+      locale: getOgLocale(locale),
       siteName: getSiteName(locale),
     },
   };
