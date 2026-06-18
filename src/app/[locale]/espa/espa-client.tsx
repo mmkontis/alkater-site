@@ -12,6 +12,12 @@ export default function EspaPageClient() {
   const tf = useTranslations("footer");
   const locale = useLocale();
   const homeLabel = pickByLocale(locale, "Αρχική", "Home", "Startseite");
+
+  // ESPA signage stays Greek by law on the EL site; EN & DE show the official English logos.
+  const en = locale !== "el";
+  const euSrc = en ? "/espa/eu-flag-en.png" : "/espa/eu-flag.png";
+  const espaSrc = en ? "/espa/espa-2021-2027-en.png" : "/espa/espa-2021-2027.png";
+  const competitivenessSrc = en ? "/espa/antagonistikotita-en.png" : "/espa/antagonistikotita.jpg";
   const breadcrumb = breadcrumbJsonLd([
     { name: homeLabel, url: getAbsoluteUrl("", locale) },
     { name: t("breadcrumb"), url: getAbsoluteUrl("/espa", locale) },
@@ -50,9 +56,9 @@ export default function EspaPageClient() {
               style={{ boxShadow: "0 2px 20px rgba(0,0,0,0.06)" }}
             >
               <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
-                <Image src="/espa/eu-flag.png" alt={tf("euAlt")} width={640} height={288} className="h-20 md:h-32 w-auto object-contain" />
-                <Image src="/espa/espa-2021-2027.png" alt={tf("espaAlt")} width={560} height={288} className="h-20 md:h-32 w-auto object-contain" />
-                <Image src="/espa/antagonistikotita.jpg" alt={tf("competitivenessAlt")} width={640} height={288} className="h-20 md:h-32 w-auto object-contain" />
+                <Image src={euSrc} alt={tf("euAlt")} width={640} height={288} className="h-20 md:h-32 w-auto object-contain" />
+                <Image src={espaSrc} alt={tf("espaAlt")} width={560} height={288} className="h-20 md:h-32 w-auto object-contain" />
+                <Image src={competitivenessSrc} alt={tf("competitivenessAlt")} width={640} height={288} className="h-20 md:h-32 w-auto object-contain" />
               </div>
               <p className="font-bold font-['Arial',Calibri,Tahoma,sans-serif] text-xs md:text-sm text-center text-gray-700 max-w-2xl">
                 {t("officialPhrase")}

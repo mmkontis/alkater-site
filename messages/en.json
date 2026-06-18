@@ -308,6 +308,7 @@
     "phoneCall": "Phone: {number}",
     "localeSelect": "Language selection",
     "espaBanner": "ESPA 2021-2027 - Co-funded by the European Union",
+    "espaPoster": "Open the ESPA publicity poster in a new tab (PDF)",
     "changeLanguage": "Change language"
   },
   "langSwitcher": {

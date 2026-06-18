@@ -1,4 +1,6 @@
 import { Geist, Geist_Mono, Space_Grotesk, Space_Mono, DM_Serif_Display } from "next/font/google";
+import { headers } from "next/headers";
+import { routing } from "@/i18n/routing";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -31,10 +33,26 @@ const dmSerifDisplay = DM_Serif_Display({
 
 export const fontVariables = `${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${dmSerifDisplay.variable}`;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  // The root layout sits above the [locale] segment, so the locale isn't available
+  // as a param here. proxy.ts stamps the resolved locale on a request header —
+  // "x-app-locale" for already-prefixed routes (/en, /de), and next-intl's own
+  // "x-next-intl-locale" for rewritten ones (the default locale at "/") — which we
+  // read to put the correct lang on <html>.
+  const requestHeaders = await headers();
+  const headerLocale =
+    requestHeaders.get("x-app-locale") ?? requestHeaders.get("x-next-intl-locale");
+  const locale = routing.locales.includes(headerLocale as (typeof routing.locales)[number])
+    ? (headerLocale as string)
+    : routing.defaultLocale;
+
+  return (
+    <html lang={locale}>
+      <body className={`${fontVariables} antialiased`}>{children}</body>
+    </html>
+  );
 }

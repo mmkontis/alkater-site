@@ -3,7 +3,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { fontVariables } from "../layout";
 import { getBaseUrl, getSiteName, getOgLocale } from "@/lib/seo";
 
 type Props = {
@@ -77,12 +76,8 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
-      <body className={`${fontVariables} antialiased`}>
-        <NextIntlClientProvider>
-          {children}
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider>
+      {children}
+    </NextIntlClientProvider>
   );
 }

@@ -63,10 +63,17 @@ export async function proxy(request: NextRequest) {
   const intlResponse = intlMiddleware(request);
 
   if (intlResponse.headers.get("x-middleware-rewrite") || intlResponse.status === 307 || intlResponse.status === 308) {
+    // Rewrites (e.g. the default locale at "/") already carry next-intl's locale header.
     return intlResponse;
   }
 
-  return await updateSession(request);
+  // Already-prefixed locale routes (e.g. /en, /de) aren't rewritten, so next-intl
+  // adds no locale header. Derive it from the path so the root layout can read it.
+  const seg = pathname.split("/")[1];
+  const appLocale = (routing.locales as readonly string[]).includes(seg)
+    ? seg
+    : routing.defaultLocale;
+  return await updateSession(request, appLocale);
 }
 
 export const config = {
